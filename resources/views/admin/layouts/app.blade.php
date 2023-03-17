@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>{{ config('app.name') }} || {{ $metadata['page_title'] }}</title>
+         <!-- CSRF Token -->
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <!-- Google Font: Source Sans Pro -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback" />
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="{{ asset('public/assets/plugins/fontawesome-free/css/all.min.css?version='.config('app.version')) }}" />
+        <!-- Ionicons -->
+        <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
+        <!-- Tempusdominus Bootstrap 4 -->
+        <link rel="stylesheet" href="{{ asset('public/assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css?version='.config('app.version')) }}" />
+        <!-- iCheck -->
+        <link rel="stylesheet" href="{{ asset('public/assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css?version='.config('app.version')) }}" />
+        <!-- JQVMap -->
+        <link rel="stylesheet" href="{{ asset('public/assets/plugins/jqvmap/jqvmap.min.css?version='.config('app.version')) }}" />
+        <!-- Theme style -->
+        <link rel="stylesheet" href="{{ asset('public/assets/css/adminlte.min.css?version='.config('app.version')) }}" />
+        <!-- overlayScrollbars -->
+        <link rel="stylesheet" href="{{ asset('public/assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css?version='.config('app.version')) }}" />
+        <!-- Select2 -->
+        <link rel="stylesheet" href="{{ asset('public/assets/plugins/select2/css/select2.min.css?version='.config('app.version')) }}">
+        <link rel="stylesheet" href="{{ asset('public/assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css?version='.config('app.version')) }}">
+        <!-- Daterange picker -->
+        <link rel="stylesheet" href="{{ asset('public/assets/plugins/daterangepicker/daterangepicker.css?version='.config('app.version')) }}" />
+        <!-- summernote -->
+        <link rel="stylesheet" href="{{ asset('public/assets/plugins/summernote/summernote-bs4.min.css?version='.config('app.version')) }}" />
+        <!-- Toastr -->
+        <link rel="stylesheet" href="{{ asset('public/assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css?version='.config('app.version')) }}">
+        <link rel="stylesheet" href="{{ asset('public/assets/plugins/toastr/toastr.min.css?version='.config('app.version')) }}">
+        <!-- DataTables -->
+        <link rel="stylesheet" href="{{ asset('public/assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css?version='.config('app.version')) }}">
+        <link rel="stylesheet" href="{{ asset('public/assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css?version='.config('app.version')) }}">
+        <link rel="stylesheet" href="{{ asset('public/assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css?version='.config('app.version')) }}">
+        <!-- Date Picker CSS -->
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    </head>
+    <body class="hold-transition sidebar-mini layout-fixed">
+        <div class="wrapper">
+            <!-- Preloader -->
+            <div class="preloader flex-column justify-content-center align-items-center">
+                <img class="animation__shake" src="{{ asset('public/assets/img/AdminLTELogo.png') }}" alt="AdminLTELogo" height="60" width="60" />
+            </div>
+
+            <!-- Navbar -->
+            <nav class="main-header navbar navbar-expand navbar-white navbar-light">            
+                <!-- Right navbar links -->
+                <ul class="navbar-nav ml-auto">
+                    <!-- Navbar Search -->
+                    <li class="nav-item">
+                        <a class="nav-link" data-widget="navbar-search" href="#" role="button">
+                            <i class="fas fa-search"></i>
+                        </a>
+                        <div class="navbar-search-block">
+                            <form class="form-inline">
+                                <div class="input-group input-group-sm">
+                                    <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-navbar" type="submit">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                        <button class="btn btn-navbar" type="button" data-widget="navbar-search">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+                            <i class="fas fa-expand-arrows-alt"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-danger" href="{{ url('admin-logout') }}" role="button">
+                          <i class="fas fa-power-off"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <!-- /.navbar -->
+
+            <!-- Main Sidebar Container -->
+            <aside class="main-sidebar sidebar-dark-primary elevation-4">
+                <!-- Brand Logo -->
+                <a href="index3.html" class="brand-link">
+                    <img src="{{ asset('public/assets/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: 0.8;" />
+                    <span class="brand-text font-weight-light">{{ config('app.name') }}</span>
+                </a>
+
+                <!-- Sidebar -->
+                <div class="sidebar">
+                    <!-- Sidebar user panel (optional) -->
+                    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                        <div class="image">
+                            <img src="{{ asset('public/assets/img/avatar.png') }}" class="img-circle elevation-2" alt="User Image" />
+                        </div>
+                        <div class="info">
+                            <a href="#" class="d-block">{{ Session::get('admin_name') }}</a>
+                        </div>
+                    </div>
+                    <!-- SidebarSearch Form -->
+                    <div class="form-inline">
+                        <div class="input-group" data-widget="sidebar-search">
+                          <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+                          <div class="input-group-append">
+                            <button class="btn btn-sidebar">
+                              <i class="fas fa-search fa-fw"></i>
+                            </button>
+                          </div>
+                        </div>
+                    </div>
+                    <!-- Sidebar Menu -->
+                    <nav class="mt-2">
+                        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                            <li class="nav-item <?=strpos(Request::segment(1), 'admin-dashboard') !== false ? 'menu-open' : ''?>">
+                                <a href="{{ url('admin-dashboard') }}" class="nav-link <?=strpos(Request::segment(1), 'dashboard') !== false ? 'active' : ''?>">
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                                    <p>
+                                        Dashboard
+                                    </p>
+                                </a>
+                            </li>
+                           
+                            <li class="nav-item <?=strpos(Request::segment(1), 'masterdata') !== false ? 'menu-open' : ''?>">
+                                <a href="#" class="nav-link <?=strpos(Request::segment(1), 'masterdata') !== false ? 'active' : ''?>">
+                                    <i class="nav-icon fa fa-list-ul"></i>
+                                    <p>
+                                        Master Data
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{ url('masterdata/admin-district') }}" class="nav-link <?=strpos(Request::segment(2), 'admin-district') !== false ? 'active' : ''?>">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>District</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{ url('masterdata/admin-subdevision') }}" class="nav-link <?=strpos(Request::segment(2), 'admin-subdevision') !== false ? 'active' : ''?>">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Sub Devision</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{ url('masterdata/admin-block') }}" class="nav-link <?=strpos(Request::segment(2), 'admin-block') !== false ? 'active' : ''?>">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Block</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{ url('masterdata/admin-panchanyat') }}" class="nav-link <?=strpos(Request::segment(2), 'admin-panchanyat') !== false ? 'active' : ''?>">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Panchanyat</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <?php
+                                if(isset($permission['is_category']) && $permission['is_category']){
+                                ?>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{ url('masterdata/admin-category') }}" class="nav-link <?=strpos(Request::segment(2), 'admin-category') !== false ? 'active' : ''?>">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Type of comodity</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <?php
+                                }
+                                if(isset($permission['is_brand']) && $permission['is_brand']){
+                                ?>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{ url('masterdata/admin-brand') }}" class="nav-link <?=strpos(Request::segment(2), 'admin-brand') !== false ? 'active' : ''?>">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Manufacturer</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <?php
+                                }
+                                if(isset($permission['is_scheme']) && $permission['is_scheme']){
+                                ?>
+                                <!-- <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{ url('masterdata/admin-unit') }}" class="nav-link <?=strpos(Request::segment(2), 'admin-unit') !== false ? 'active' : ''?>">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Unit</p>
+                                        </a>
+                                    </li>
+                                </ul> -->
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{ url('masterdata/admin-designation') }}" class="nav-link <?=strpos(Request::segment(2), 'admin-designation') !== false ? 'active' : ''?>">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Designation</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{ url('masterdata/admin-scheme') }}" class="nav-link <?=strpos(Request::segment(2), 'admin-scheme') !== false ? 'active' : ''?>">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Scheme</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <?php
+                                }
+                                ?>
+                            </li>
+                            <?php
+                            
+                            if(isset($permission['is_product']) && $permission['is_product']){
+                            ?>
+                            <li class="nav-item <?=strpos(Request::segment(1), 'admin-product') !== false ? 'menu-open' : ''?>">
+                                <a href="{{ url('admin-product') }}" class="nav-link <?=strpos(Request::segment(1), 'product') !== false ? 'active' : ''?>">
+                                    <i class="nav-icon fa fa-list-ul"></i>
+                                    <p>
+                                        Comodity
+                                    </p>
+                                </a>
+                            </li>
+                            <?php
+                            }
+                            ?>
+                            <?php
+                            if(isset($permission['is_user']) && $permission['is_user']){
+                            ?>
+                            <li class="nav-item <?=strpos(Request::segment(1), 'admin-users') !== false ? 'menu-open' : ''?>">
+                                <a href="{{ url('admin-users') }}" class="nav-link <?=strpos(Request::segment(1), 'users') !== false ? 'active' : ''?>">
+                                    <i class="nav-icon fa fa-list-ul"></i>
+                                    <p>
+                                        Users
+                                    </p>
+                                </a>
+                            </li>
+                            <?php
+                            }
+                            ?>
+                            <li class="nav-item <?=strpos(Request::segment(1), 'admin-product-balance') !== false ? 'menu-open' : ''?> <?=strpos(Request::segment(1), 'admin-product-category-balance') !== false ? 'menu-open' : ''?>">
+                                <a href="#" class="nav-link <?=strpos(Request::segment(1), 'admin-product-balance') !== false ? 'active' : ''?>">
+                                    <i class="nav-icon fa fa-list-ul"></i>
+                                    <p>
+                                        Balance Sheet
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{ url('admin-product-balance') }}" class="nav-link <?=strpos(Request::segment(1), 'admin-product-balance') !== false ? 'active' : ''?>">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Comodity</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{ url('admin-product-category-balance') }}" class="nav-link <?=strpos(Request::segment(1), 'admin-product-category-balance') !== false ? 'active' : ''?>">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Type of comodity</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            
+                            <li class="nav-item <?=strpos(Request::segment(1), 'admin-report') !== false ? 'menu-open' : ''?>">
+                                <a href="{{ url('admin-report') }}" class="nav-link <?=strpos(Request::segment(1), 'report') !== false ? 'active' : ''?>">
+                                    <i class="nav-icon fa fa-list-ul"></i>
+                                    <p>
+                                        Report
+                                    </p>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <!-- /.sidebar-menu -->
+                </div>
+                <!-- /.sidebar -->
+            </aside>
+            @yield('content')
+            <footer class="main-footer">
+                <strong>Copyright &copy; {{ date('Y') }} <a href="/dashboard">{{ config('app.name', 'College Dashboard') }}</a>.</strong>
+                All rights reserved.
+                <div class="float-right d-none d-sm-inline-block"><b>Current Version</b> {{ config('app.version') }}</div>
+            </footer>
+        </div>
+        <!-- ./wrapper -->
+
+        <!-- jQuery -->
+        <script src="{{ asset('public/assets/plugins/jquery/jquery.min.js?version='.config('app.version')) }}"></script>
+        <!-- jQuery UI 1.11.4 -->
+        <script src="{{ asset('public/assets/plugins/jquery-ui/jquery-ui.min.js?version='.config('app.version')) }}"></script>
+        <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+        <script>
+            $.widget.bridge("uibutton", $.ui.button);
+        </script>
+        <!-- Bootstrap 4 -->
+        <script src="{{ asset('public/assets/plugins/bootstrap/js/bootstrap.bundle.min.js?version='.config('app.version')) }}"></script>
+        <!-- daterangepicker -->
+        <script src="{{ asset('public/assets/plugins/moment/moment.min.js?version='.config('app.version')) }}"></script>
+        <script src="{{ asset('public/assets/plugins/daterangepicker/daterangepicker.js?version='.config('app.version')) }}"></script>
+        <!-- Tempusdominus Bootstrap 4 -->
+        <script src="{{ asset('public/assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js?version='.config('app.version')) }}"></script>
+        <!-- Summernote -->
+        <script src="{{ asset('public/assets/plugins/summernote/summernote-bs4.min.js?version='.config('app.version')) }}"></script>
+        <!-- overlayScrollbars -->
+        <script src="{{ asset('public/assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js?version='.config('app.version')) }}"></script>
+        <!-- SweetAlert2 -->
+        <script src="{{ asset('public/assets/plugins/sweetalert2/sweetalert2.min.js?version='.config('app.version')) }}"></script>
+        <!-- Toastr -->
+        <script src="{{ asset('public/assets/plugins/toastr/toastr.min.js?version='.config('app.version')) }}"></script>
+        <!-- AdminLTE App -->
+        <script src="{{ asset('public/assets/js/adminlte.js?version='.config('app.version')) }}"></script>
+        <!-- AdminLTE for demo purposes -->
+        <script src="{{ asset('public/assets/js/demo.js?version='.config('app.version')) }}"></script>
+        <!-- jquery-validation -->
+        <script src="{{ asset('public/assets/plugins/jquery-validation/jquery.validate.min.js?version='.config('app.version')) }}"></script>
+
+        <!-- DataTables  & Plugins -->
+        <script src="{{ asset('public/assets/plugins/datatables/jquery.dataTables.min.js?version='.config('app.version')) }}"></script>
+        <script src="{{ asset('public/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js?version='.config('app.version')) }}"></script>
+        <script src="{{ asset('public/assets/plugins/datatables-responsive/js/dataTables.responsive.min.js?version='.config('app.version')) }}"></script>
+        <script src="{{ asset('public/assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js?version='.config('app.version')) }}"></script>
+        <script src="{{ asset('public/assets/plugins/datatables-buttons/js/dataTables.buttons.min.js?version='.config('app.version')) }}"></script>
+        <script src="{{ asset('public/assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js?version='.config('app.version')) }}"></script>
+        <script src="{{ asset('public/assets/plugins/jszip/jszip.min.js?version='.config('app.version')) }}"></script>
+        <script src="{{ asset('public/assets/plugins/pdfmake/pdfmake.min.js?version='.config('app.version')) }}"></script>
+        <script src="{{ asset('public/assets/plugins/pdfmake/vfs_fonts.js?version='.config('app.version')) }}"></script>
+        <script src="{{ asset('public/assets/plugins/datatables-buttons/js/buttons.html5.min.js?version='.config('app.version')) }}"></script>
+        <script src="{{ asset('public/assets/plugins/datatables-buttons/js/buttons.print.min.js?version='.config('app.version')) }}"></script>
+        <script src="{{ asset('public/assets/plugins/datatables-buttons/js/buttons.colVis.min.js?version='.config('app.version')) }}"></script>
+
+        <!-- Select2 -->
+        <script src="{{ asset('public/assets/plugins/select2/js/select2.full.min.js?version='.config('app.version')) }}"></script>
+        <!-- ChartJS -->
+        <script src="{{ asset('public/assets/plugins/chart.js/Chart.min.js?version='.config('app.version')) }}"></script>
+        <script type="text/javascript">
+        $(function () {
+          $('[data-toggle="tooltip"]').tooltip();
+          //Initialize Select2 Elements
+          $('.select2').select2({
+              theme: 'bootstrap4'
+          });
+
+          $('.datepicker').datepicker({
+                inline: true,
+                dateFormat: "dd/mm/yy",
+                changeFirstDay: false,
+                minDate: -7,
+                maxDate: +1,
+          });
+
+          $('.datepicker3').datepicker({
+                inline: true,
+                dateFormat: "yy-mm-dd",
+                //changeFirstDay: false,
+                //minDate: -7,
+                //maxDate: +1,
+          });
+
+          $('.datepicker2').datepicker({
+                inline: true,
+                dateFormat: "dd/mm/yy",
+          });
+
+          //$( ".datepicker" ).datepicker();
+        })
+        </script>
+        @yield('javascripts')
+    </body>
+</html>
