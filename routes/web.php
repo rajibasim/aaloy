@@ -29,63 +29,25 @@ Route::group(['middleware' => ['checkAdminLogin']], function() {
 
     /*master data start*/
     Route::group(['prefix' => '/masterdata'], function () {
-        /* district Start */
+        /* location Start */
         Route::get('/admin-district', [App\Http\Controllers\Application\Admin\Masterdata\DistrictController::class, 'index'])->name('admin-district');
         Route::get('/admin-district/form/{id?}', [App\Http\Controllers\Application\Admin\Masterdata\DistrictController::class, 'form'])->name('form');
         Route::post('/admin-district/save', [App\Http\Controllers\Application\Admin\Masterdata\DistrictController::class, 'save'])->name('save');
         Route::get('/admin-district/delete/{id}', [App\Http\Controllers\Application\Admin\Masterdata\DistrictController::class, 'delete'])->name('delete');
-        /* district End */
-        /* category Start */
-        Route::get('/admin-category', [App\Http\Controllers\Application\Admin\Masterdata\CategoryController::class, 'index'])->name('admin-category');
-        Route::get('/admin-category/form/{id?}', [App\Http\Controllers\Application\Admin\Masterdata\CategoryController::class, 'form'])->name('form');
-        Route::post('/admin-category/save', [App\Http\Controllers\Application\Admin\Masterdata\CategoryController::class, 'save'])->name('save');
-        Route::get('/admin-category/delete/{id}', [App\Http\Controllers\Application\Admin\Masterdata\CategoryController::class, 'delete'])->name('delete');
-        /* category End */
-        /* unit Start */
-        Route::get('/admin-unit', [App\Http\Controllers\Application\Admin\Masterdata\UnitController::class, 'index'])->name('admin-unit');
-        Route::get('/admin-unit/form/{id?}', [App\Http\Controllers\Application\Admin\Masterdata\UnitController::class, 'form'])->name('form');
-        Route::post('/admin-unit/save', [App\Http\Controllers\Application\Admin\Masterdata\UnitController::class, 'save'])->name('save');
-        Route::get('/admin-unit/delete/{id}', [App\Http\Controllers\Application\Admin\Masterdata\UnitController::class, 'delete'])->name('delete');
-        /* unit End */
-        /* scheme Start */
-        Route::get('/admin-scheme', [App\Http\Controllers\Application\Admin\Masterdata\SchemeController::class, 'index'])->name('admin-scheme');
-        Route::get('/admin-scheme/form/{id?}', [App\Http\Controllers\Application\Admin\Masterdata\SchemeController::class, 'form'])->name('form');
-        Route::post('/admin-scheme/save', [App\Http\Controllers\Application\Admin\Masterdata\SchemeController::class, 'save'])->name('save');
-        Route::get('/admin-scheme/delete/{id}', [App\Http\Controllers\Application\Admin\Masterdata\SchemeController::class, 'delete'])->name('delete');
-        /* scheme End */
-        /* designation Start */
-        Route::get('/admin-designation', [App\Http\Controllers\Application\Admin\Masterdata\DesignationController::class, 'index'])->name('admin-designation');
-        Route::get('/admin-designation/form/{id?}', [App\Http\Controllers\Application\Admin\Masterdata\DesignationController::class, 'form'])->name('form');
-        Route::post('/admin-designation/save', [App\Http\Controllers\Application\Admin\Masterdata\DesignationController::class, 'save'])->name('save');
-        Route::get('/admin-designation/delete/{id}', [App\Http\Controllers\Application\Admin\Masterdata\DesignationController::class, 'delete'])->name('delete');
-        /* designation End */
-        /* brand Start */
-        Route::get('/admin-brand', [App\Http\Controllers\Application\Admin\Masterdata\BrandController::class, 'index'])->name('admin-brand');
-        Route::get('/admin-brand/form/{id?}', [App\Http\Controllers\Application\Admin\Masterdata\BrandController::class, 'form'])->name('form');
-        Route::post('/admin-brand/save', [App\Http\Controllers\Application\Admin\Masterdata\BrandController::class, 'save'])->name('save');
-        Route::get('/admin-brand/delete/{id}', [App\Http\Controllers\Application\Admin\Masterdata\BrandController::class, 'delete'])->name('delete');
-        /* brand End */
-
-         /* subdevision Start */
-        Route::get('/admin-subdevision', [App\Http\Controllers\Application\Admin\Masterdata\SubdevisionController::class, 'index'])->name('admin-subdevision');
-        Route::get('/admin-subdevision/form/{id?}', [App\Http\Controllers\Application\Admin\Masterdata\SubdevisionController::class, 'form'])->name('form');
-        Route::post('/admin-subdevision/save', [App\Http\Controllers\Application\Admin\Masterdata\SubdevisionController::class, 'save'])->name('save');
-        Route::get('/admin-subdevision/delete/{id}', [App\Http\Controllers\Application\Admin\Masterdata\SubdevisionController::class, 'delete'])->name('delete');
-        /* subdevision End */
-
-         /* block Start */
-        Route::get('/admin-block', [App\Http\Controllers\Application\Admin\Masterdata\BlockController::class, 'index'])->name('admin-block');
-        Route::get('/admin-block/form/{id?}', [App\Http\Controllers\Application\Admin\Masterdata\BlockController::class, 'form'])->name('form');
-        Route::post('/admin-block/save', [App\Http\Controllers\Application\Admin\Masterdata\BlockController::class, 'save'])->name('save');
-        Route::get('/admin-block/delete/{id}', [App\Http\Controllers\Application\Admin\Masterdata\BlockController::class, 'delete'])->name('delete');
-        /* block End */
-
-         /* panchanyat Start */
-        Route::get('/admin-panchanyat', [App\Http\Controllers\Application\Admin\Masterdata\PanchanyatController::class, 'index'])->name('admin-panchanyat');
-        Route::get('/admin-panchanyat/form/{id?}', [App\Http\Controllers\Application\Admin\Masterdata\PanchanyatController::class, 'form'])->name('form');
-        Route::post('/admin-panchanyat/save', [App\Http\Controllers\Application\Admin\Masterdata\PanchanyatController::class, 'save'])->name('save');
-        Route::get('/admin-panchanyat/delete/{id}', [App\Http\Controllers\Application\Admin\Masterdata\PanchanyatController::class, 'delete'])->name('delete');
-        /* panchanyat End */
+        /* location End */
+        /* country Start */
+        Route::get('/country', [App\Http\Controllers\Application\Admin\Masterdata\CountryController::class, 'index'])->name('country');
+        Route::get('/country/form/{id?}', [App\Http\Controllers\Application\Admin\Masterdata\CountryController::class, 'form'])->name('form');
+        Route::post('/country/save', [App\Http\Controllers\Application\Admin\Masterdata\CountryController::class, 'save'])->name('save');
+        Route::get('/country/delete/{id}', [App\Http\Controllers\Application\Admin\Masterdata\CountryController::class, 'delete'])->name('delete');
+        /* country End */
+        /* state Start */
+        Route::get('/state', [App\Http\Controllers\Application\Admin\Masterdata\StateController::class, 'index'])->name('state');
+        Route::get('/state/form/{id?}', [App\Http\Controllers\Application\Admin\Masterdata\StateController::class, 'form'])->name('form');
+        Route::post('/state/save', [App\Http\Controllers\Application\Admin\Masterdata\StateController::class, 'save'])->name('save');
+        Route::get('/state/delete/{id}', [App\Http\Controllers\Application\Admin\Masterdata\StateController::class, 'delete'])->name('delete');
+        /* state End */
+        
     });
     /*master data end*/
 

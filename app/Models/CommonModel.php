@@ -110,6 +110,17 @@ class CommonModel extends Model {
         return $result;
     }
 
+    public function soft_delete($table, $where, $data) {
+        $base = DB::table($table);
+        if (!empty($where)) {
+            foreach ($where as $wh) {
+                $base->where($wh[0], $wh[1], $wh[2]);
+            }
+        }
+        $result = $base->update($data);
+        return $result;
+    }
+
     public function delete_data($table, $where) {
         $base = DB::table($table);
         if (!empty($where)) {

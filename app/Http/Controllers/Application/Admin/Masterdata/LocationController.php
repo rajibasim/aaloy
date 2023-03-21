@@ -3,30 +3,31 @@ namespace App\Http\Controllers\Application\Admin\Masterdata;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 use App\Models\CommonModel;
 use Validator;
 
-class BrandController extends Controller{
+class LocationController extends Controller{
 
     public function __construct(){
         $this->CommonModel = new CommonModel();
-        $this->slug = '/masterdata/admin-brand';
-        $this->title = 'Manufacturer';
-        $this->table = 'brand';
+        $this->slug = '/masterdata/location';
+        $this->title = 'Location';
+        $this->table = 'location';
     }
 
     /* List view */    
     public function index(Request $request){
         $serach_data = array();
-        $name = $request->name;
+        $location = $request->location;
         $status = $request->status;
         $where = array();
         $where = array(
             array('is_deleted', '=', 0)
         );
-        if($name){
-            array_push($where, array('name', 'like', "%{$name}%"));
-            $serach_data['name'] = $name;
+        if($location){
+            array_push($where, array('location', 'like', "%{$location}%"));
+            $serach_data['location'] = $location;
         }
 
         if($status){
@@ -54,7 +55,7 @@ class BrandController extends Controller{
         );
 
         $data['rows'] = $this->CommonModel->get_all($table = $this->table, $select = array('*'), $where, $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "20");        
-        return view('admin.pages.brand.view', $data);
+        return view('admin.pages.location.view', $data);
     }
 
     /* add & edit form */
@@ -88,14 +89,22 @@ class BrandController extends Controller{
             $data['details'] = !empty($details) ? $details[0] : [];
         }
 
-        return view('admin.pages.brand.form', $data);
+        $data['country'] = $this->CommonModel->get_all($table = 'country', $select = array('*'), $where = array(), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
+
+        $data['state'] = $this->CommonModel->get_all($table = 'state', $select = array('*'), $where = array(), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
+
+        $data['city'] = $this->CommonModel->get_all($table = 'city', $select = array('*'), $where = array(), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
+
+        return view('admin.pages.location.form', $data);
     }
 
     /* store & update data */
     public function save(Request $request){
         $id = $request->input('id');
         $validator = Validator::make($request->all(), [ 
-            'name' => 'required|unique:brand,name,' . $id,
+            'location' => 'required|unique:location,location,' . $id,
+            'latitude' => 'required',
+            'longitude' => 'required',
             'status' => 'required', 
         ]); 
 
@@ -104,32 +113,19 @@ class BrandController extends Controller{
         }else{
             $flash_data  = '';
             if($id){
-
-                $old_data = $this->CommonModel->get_all($table = $this->table, $select = array('*'), $where = array(array('id', '=', $id)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
-                $old_data = $old_data[0];
-
-                $issue_date = explode('/', $request->input('issue_date'));
-                $issue_date = $issue_date[2].'-'.$issue_date[1].'-'.$issue_date[0];
-
-                $expiry_date = explode('/', $request->input('expiry_date'));
-                $expiry_date = $expiry_date[2].'-'.$expiry_date[1].'-'.$expiry_date[0];
-
                 $post_data = array(
-                    'name' => $request->input('name'),
-                    'registration_address' => $request->input('registration_address'),
-                    'licence_address' => $request->input('licence_address'),
-                    'licence_number' => $request->input('licence_number'),
-                    'issue_date' => $issue_date,
-                    'expiry_date' => $expiry_date,
+                    'location' => $request->input('location'),
+                    'latitude' => $request->input('latitude'),
+                    'longitude' => $request->input('longitude'),
                     'status' => $request->input('status'),
-                    'updated_by' => $request->input('session_id'),
+                    'slug' => Str::slug($request->input('location')),
                     'updated_at' => date('Y-m-d H:i:s'),
                 );
-                $result = $this->CommonModel->update_data($this->table, array(array('id', '=', $id)), $post_data, $old_data, $id);
+                $result = $this->CommonModel->update_data($this->table, array(array('id', '=', $id)), $post_data);
                 if($result == true){
                     $flash_data = array(
                         'status' => 'success',
-                        'message' => 'Manufacturer successfully updated.',
+                        'message' => $this->title.' successfully updated.',
                     );
                 }else{
                     $flash_data = array(
@@ -139,21 +135,12 @@ class BrandController extends Controller{
                 }
             }else{
 
-                $issue_date = explode('/', $request->input('issue_date'));
-                $issue_date = $issue_date[2].'-'.$issue_date[1].'-'.$issue_date[0];
-
-                $expiry_date = explode('/', $request->input('expiry_date'));
-                $expiry_date = $expiry_date[2].'-'.$expiry_date[1].'-'.$expiry_date[0];
-
                 $post_data = array(
-                    'name' => $request->input('name'),
-                    'registration_address' => $request->input('registration_address'),
-                    'licence_address' => $request->input('licence_address'),
-                    'licence_number' => $request->input('licence_number'),
-                    'issue_date' => $issue_date,
-                    'expiry_date' => $expiry_date,
+                    'location' => $request->input('location'),
+                    'latitude' => $request->input('latitude'),
+                    'longitude' => $request->input('longitude'),
                     'status' => $request->input('status'),
-                    'created_by' => $request->input('session_id'),
+                    'slug' => Str::slug($request->input('location')),
                     'created_at' => date('Y-m-d H:i:s'),
                 );
 
@@ -161,7 +148,7 @@ class BrandController extends Controller{
                 if($result == true){
                     $flash_data = array(
                         'status' => 'success',
-                        'message' => 'Manufacturer successfully added.',
+                        'message' => $this->title.' successfully added.',
                     );
                 }else{
                     $flash_data = array(
@@ -184,14 +171,13 @@ class BrandController extends Controller{
                 $post_data = array();
                 $post_data = array(
                     'is_deleted' => 1,
-                    'updated_by' => $request->input('session_id'),
                     'updated_at' => date('Y-m-d H:i:s'),
                 );
-                $result = $this->CommonModel->soft_delete($this->table, array(array('id', '=', $id)), $post_data, $id);
+                $result = $this->CommonModel->soft_delete($this->table, array(array('id', '=', $id)), $post_data);
             }
             $flash_data = array(
                 'status' => 'success',
-                'message' => 'Brand successfully deleted.',
+                'message' => $this->title.' successfully deleted.',
             );
         }else{
             $flash_data = array(

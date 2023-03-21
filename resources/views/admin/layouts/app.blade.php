@@ -137,146 +137,53 @@
                                 </a>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a href="{{ url('masterdata/admin-district') }}" class="nav-link <?=strpos(Request::segment(2), 'admin-district') !== false ? 'active' : ''?>">
+                                        <a href="{{ url('masterdata/country') }}" class="nav-link <?=strpos(Request::segment(2), 'country') !== false ? 'active' : ''?>">
                                             <i class="far fa-circle nav-icon"></i>
-                                            <p>District</p>
+                                            <p>Country</p>
                                         </a>
                                     </li>
                                 </ul>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a href="{{ url('masterdata/admin-subdevision') }}" class="nav-link <?=strpos(Request::segment(2), 'admin-subdevision') !== false ? 'active' : ''?>">
+                                        <a href="{{ url('masterdata/state') }}" class="nav-link <?=strpos(Request::segment(2), 'state') !== false ? 'active' : ''?>">
                                             <i class="far fa-circle nav-icon"></i>
-                                            <p>Sub Devision</p>
+                                            <p>State</p>
                                         </a>
                                     </li>
                                 </ul>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a href="{{ url('masterdata/admin-block') }}" class="nav-link <?=strpos(Request::segment(2), 'admin-block') !== false ? 'active' : ''?>">
+                                        <a href="{{ url('masterdata/city') }}" class="nav-link <?=strpos(Request::segment(2), 'city') !== false ? 'active' : ''?>">
                                             <i class="far fa-circle nav-icon"></i>
-                                            <p>Block</p>
+                                            <p>City</p>
                                         </a>
                                     </li>
                                 </ul>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a href="{{ url('masterdata/admin-panchanyat') }}" class="nav-link <?=strpos(Request::segment(2), 'admin-panchanyat') !== false ? 'active' : ''?>">
+                                        <a href="{{ url('masterdata/location') }}" class="nav-link <?=strpos(Request::segment(2), 'location') !== false ? 'active' : ''?>">
                                             <i class="far fa-circle nav-icon"></i>
-                                            <p>Panchanyat</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <?php
-                                if(isset($permission['is_category']) && $permission['is_category']){
-                                ?>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="{{ url('masterdata/admin-category') }}" class="nav-link <?=strpos(Request::segment(2), 'admin-category') !== false ? 'active' : ''?>">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Type of comodity</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <?php
-                                }
-                                if(isset($permission['is_brand']) && $permission['is_brand']){
-                                ?>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="{{ url('masterdata/admin-brand') }}" class="nav-link <?=strpos(Request::segment(2), 'admin-brand') !== false ? 'active' : ''?>">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Manufacturer</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <?php
-                                }
-                                if(isset($permission['is_scheme']) && $permission['is_scheme']){
-                                ?>
-                                <!-- <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="{{ url('masterdata/admin-unit') }}" class="nav-link <?=strpos(Request::segment(2), 'admin-unit') !== false ? 'active' : ''?>">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Unit</p>
-                                        </a>
-                                    </li>
-                                </ul> -->
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="{{ url('masterdata/admin-designation') }}" class="nav-link <?=strpos(Request::segment(2), 'admin-designation') !== false ? 'active' : ''?>">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Designation</p>
+                                            <p>Location</p>
                                         </a>
                                     </li>
                                 </ul>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a href="{{ url('masterdata/admin-scheme') }}" class="nav-link <?=strpos(Request::segment(2), 'admin-scheme') !== false ? 'active' : ''?>">
+                                        <a href="{{ url('masterdata/banner') }}" class="nav-link <?=strpos(Request::segment(2), 'banner') !== false ? 'active' : ''?>">
                                             <i class="far fa-circle nav-icon"></i>
-                                            <p>Scheme</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <?php
-                                }
-                                ?>
-                            </li>
-                            <?php
-                            
-                            if(isset($permission['is_product']) && $permission['is_product']){
-                            ?>
-                            <li class="nav-item <?=strpos(Request::segment(1), 'admin-product') !== false ? 'menu-open' : ''?>">
-                                <a href="{{ url('admin-product') }}" class="nav-link <?=strpos(Request::segment(1), 'product') !== false ? 'active' : ''?>">
-                                    <i class="nav-icon fa fa-list-ul"></i>
-                                    <p>
-                                        Comodity
-                                    </p>
-                                </a>
-                            </li>
-                            <?php
-                            }
-                            ?>
-                            <?php
-                            if(isset($permission['is_user']) && $permission['is_user']){
-                            ?>
-                            <li class="nav-item <?=strpos(Request::segment(1), 'admin-users') !== false ? 'menu-open' : ''?>">
-                                <a href="{{ url('admin-users') }}" class="nav-link <?=strpos(Request::segment(1), 'users') !== false ? 'active' : ''?>">
-                                    <i class="nav-icon fa fa-list-ul"></i>
-                                    <p>
-                                        Users
-                                    </p>
-                                </a>
-                            </li>
-                            <?php
-                            }
-                            ?>
-                            <li class="nav-item <?=strpos(Request::segment(1), 'admin-product-balance') !== false ? 'menu-open' : ''?> <?=strpos(Request::segment(1), 'admin-product-category-balance') !== false ? 'menu-open' : ''?>">
-                                <a href="#" class="nav-link <?=strpos(Request::segment(1), 'admin-product-balance') !== false ? 'active' : ''?>">
-                                    <i class="nav-icon fa fa-list-ul"></i>
-                                    <p>
-                                        Balance Sheet
-                                        <i class="fas fa-angle-left right"></i>
-                                    </p>
-                                </a>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="{{ url('admin-product-balance') }}" class="nav-link <?=strpos(Request::segment(1), 'admin-product-balance') !== false ? 'active' : ''?>">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Comodity</p>
+                                            <p>Banner</p>
                                         </a>
                                     </li>
                                 </ul>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a href="{{ url('admin-product-category-balance') }}" class="nav-link <?=strpos(Request::segment(1), 'admin-product-category-balance') !== false ? 'active' : ''?>">
+                                        <a href="{{ url('masterdata/accessory') }}" class="nav-link <?=strpos(Request::segment(2), 'accessory') !== false ? 'active' : ''?>">
                                             <i class="far fa-circle nav-icon"></i>
-                                            <p>Type of comodity</p>
+                                            <p>Accessory</p>
                                         </a>
                                     </li>
                                 </ul>
                             </li>
-                            
                             <li class="nav-item <?=strpos(Request::segment(1), 'admin-report') !== false ? 'menu-open' : ''?>">
                                 <a href="{{ url('admin-report') }}" class="nav-link <?=strpos(Request::segment(1), 'report') !== false ? 'active' : ''?>">
                                     <i class="nav-icon fa fa-list-ul"></i>

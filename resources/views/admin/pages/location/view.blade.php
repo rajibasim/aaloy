@@ -76,7 +76,7 @@
                 <form method="get" action="" autocomplete="off" enctype="multipart/form-data">
                   <div class="row">
                     <div class="col-5">
-                      <input type="text" class="form-control" placeholder="Manufacturer name" name="name" value="{{ isset($serach_data['name']) && $serach_data['name'] ? $serach_data['name'] : '' }}">
+                      <input type="text" class="form-control" placeholder="Location name" name="location" value="{{ isset($serach_data['location']) && $serach_data['location'] ? $serach_data['location'] : '' }}">
                     </div>
                     <div class="col-5">
                       <select class="form-control" name="status">
@@ -117,11 +117,9 @@
                   <thead>
                     <tr>
                       <th><input class="checkall" type="checkbox" value=""></th>
-                      <th>Manufacturer</th>
-                      <th>Address</th>
-                      <th>Licence</th>
-                      <th>Issued</th>
-                      <th>Expiry</th>
+                      <th>Location</th>
+                      <th>Latitude</th>
+                      <th>Longitude</th>
                       <th>Status</th>
                       <th>Action</th>
                     </tr>
@@ -131,11 +129,9 @@
                     @foreach ( $rows as $key => $res )
                     <tr> 
                       <td style="width: 20px;"><input class="checkbox" type="checkbox" value="{{ $res->id }}"></td>
-                      <td>{{ $res->name }}</td>
-                      <td>{{ $res->registration_address }}</td>
-                      <td>{{ $res->licence_number }}</td>
-                      <td>{{ $res->issue_date }}</td>
-                      <td>{{ $res->expiry_date }}</td>
+                      <td>{{ $res->location }}</td>
+                      <td>{{ $res->latitude }}</td>
+                      <td>{{ $res->longitude }}</td>
                       <td>{{ $res->status == 1 ? 'Active' : 'In-Active' }}</td>
                       <td style="width: 100px;">
                         <a href="{{ url($metadata['page_form_url'].'/'.encrypt($res->id)) }}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Edit">

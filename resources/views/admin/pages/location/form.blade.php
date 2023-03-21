@@ -53,43 +53,50 @@
                     <div class="col-sm-4">
                       <!-- text input -->
                       <div class="form-group">
-                        <label>Manufacturer Name</label>
-                        <input type="text" class="form-control" placeholder="Enter Manufacturer name" name="name" value="{{ old('name', isset($details->name) && $details->name ? $details->name : '') }}">
+                        <label>Name</label>
+                        <input type="text" class="form-control" placeholder="Enter location name" name="location" value="{{ old('location', isset($details->location) && $details->location ? $details->location : '') }}" required="">
                       </div>
                     </div>
                     <div class="col-sm-4">
                       <!-- text input -->
                       <div class="form-group">
-                        <label>Registration Address</label>
-                        <input type="text" class="form-control" placeholder="Registration Address" name="registration_address" value="{{ old('registration_address', isset($details->registration_address) && $details->registration_address ? $details->registration_address : '') }}">
+                        <label>District Store</label>
+                        <select class="form-control select2" name="country_id" id="country_id" required="">
+                          <option value="">Select Country</option>
+                           @if($country)
+                               @foreach ($country as $val)
+                                <option value="{{ $val->id }}">{{ $val->name }}</option>
+                               @endforeach
+                            @endif
+                        </select>
                       </div>
                     </div>
                     <div class="col-sm-4">
                       <!-- text input -->
                       <div class="form-group">
-                        <label>Licence Address</label>
-                        <input type="text" class="form-control" placeholder="Licence Address" name="licence_address" value="{{ old('licence_address', isset($details->licence_address) && $details->licence_address ? $details->licence_address : '') }}">
+                        <label>District Store</label>
+                        <select class="form-control select2" name="state_id" id="state_id" required="">
+                          <option value="">Select State</option>
+                           @if($state)
+                               @foreach ($state as $val)
+                                <option value="{{ $val->id }}">{{ $val->name }}</option>
+                               @endforeach
+                            @endif
+                        </select>
                       </div>
                     </div>
                     <div class="col-sm-4">
                       <!-- text input -->
                       <div class="form-group">
-                        <label>Licence Number</label>
-                        <input type="text" class="form-control" placeholder="Licence Number" name="licence_number" value="{{ old('licence_number', isset($details->licence_number) && $details->licence_number ? $details->licence_number : '') }}">
+                        <label>Latitude</label>
+                        <input type="text" class="form-control" placeholder="Enter latitude" name="latitude" value="{{ old('latitude', isset($details->latitude) && $details->latitude ? $details->latitude : '') }}" required="">
                       </div>
                     </div>
                     <div class="col-sm-4">
                       <!-- text input -->
                       <div class="form-group">
-                        <label>Issue Date</label>
-                        <input type="text" class="form-control datepicker2" placeholder="Issue Date" name="issue_date" value="{{ old('issue_date', isset($details->issue_date) && $details->issue_date ? $details->issue_date : '') }}">
-                      </div>
-                    </div>
-                    <div class="col-sm-4">
-                      <!-- text input -->
-                      <div class="form-group">
-                        <label>Expiry Date</label>
-                        <input type="text" class="form-control datepicker2" placeholder="Expiry Date" name="expiry_date" value="{{ old('expiry_date', isset($details->expiry_date) && $details->expiry_date ? $details->expiry_date : '') }}">
+                        <label>Longitude</label>
+                        <input type="text" class="form-control" placeholder="Enter longitude" name="longitude" value="{{ old('longitude', isset($details->longitude) && $details->longitude ? $details->longitude : '') }}" required="">
                       </div>
                     </div>
                     <div class="col-sm-4">
@@ -167,6 +174,25 @@ $(document).ready(function() {
         unhighlight: function (element, errorClass, validClass) {
           $(element).removeClass('is-invalid');
         }
+    });
+
+    $(document).on('change', '#country_id', function() {
+        var country_id = $(this).val();
+        var state = '<?php echo json_encode($state)?>';
+        $("#state_id").select2("destroy");
+        var html = '<option value="">Select State</option>';
+        if(state){
+            $.each(JSON.parse(state), function (key, val) {
+                if(val.country_id == country_id){
+                    html = html + '<option value="'+val.id+'">'+val.name+'</option>';
+                }
+            });
+        }
+
+        $("#state_id").html(html);
+        $('#state_id').select2({
+              theme: 'bootstrap4'
+        });
     });
 });
 </script>
