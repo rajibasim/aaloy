@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 21, 2023 at 08:19 PM
+-- Generation Time: Mar 22, 2023 at 07:28 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -90,6 +90,13 @@ CREATE TABLE `city` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `city`
+--
+
+INSERT INTO `city` (`id`, `country_id`, `state_id`, `city`, `status`, `is_deleted`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 'Kolkata1', 1, 0, '2023-03-22 18:08:36', '2023-03-22 18:08:56');
 
 -- --------------------------------------------------------
 
@@ -178,6 +185,9 @@ INSERT INTO `furnishing_status` (`id`, `furnishing_status`, `status`, `is_delete
 DROP TABLE IF EXISTS `location`;
 CREATE TABLE `location` (
   `id` int(11) NOT NULL,
+  `country_id` int(11) NOT NULL,
+  `state_id` int(11) NOT NULL,
+  `city_id` int(11) NOT NULL,
   `location` varchar(255) NOT NULL,
   `latitude` varchar(255) NOT NULL,
   `longitude` varchar(255) NOT NULL,
@@ -192,8 +202,9 @@ CREATE TABLE `location` (
 -- Dumping data for table `location`
 --
 
-INSERT INTO `location` (`id`, `location`, `latitude`, `longitude`, `slug`, `status`, `is_deleted`, `created_at`, `updated_at`) VALUES
-(1, 'test test', '123.122', '12555', 'test-test', 1, 1, '2023-03-20 18:12:48', '2023-03-20 19:08:54');
+INSERT INTO `location` (`id`, `country_id`, `state_id`, `city_id`, `location`, `latitude`, `longitude`, `slug`, `status`, `is_deleted`, `created_at`, `updated_at`) VALUES
+(1, 0, 0, 0, 'test test', '123.122', '12555', 'test-test', 1, 1, '2023-03-20 18:12:48', '2023-03-20 19:08:54'),
+(2, 1, 1, 1, 'New Town', '12', '12345', 'new-town', 1, 0, '2023-03-22 18:21:03', NULL);
 
 -- --------------------------------------------------------
 
@@ -385,7 +396,7 @@ ALTER TABLE `car_parking`
 -- AUTO_INCREMENT for table `city`
 --
 ALTER TABLE `city`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `country`
@@ -409,7 +420,7 @@ ALTER TABLE `furnishing_status`
 -- AUTO_INCREMENT for table `location`
 --
 ALTER TABLE `location`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `positioning_status`
