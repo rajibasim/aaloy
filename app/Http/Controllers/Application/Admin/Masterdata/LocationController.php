@@ -20,6 +20,9 @@ class LocationController extends Controller{
     public function index(Request $request){
         $serach_data = array();
         $location = $request->location;
+        $country_id = $request->country_id;
+        $state_id = $request->state_id;
+        $city_id = $request->city_id;
         $status = $request->status;
         $where = array();
         $where = array(
@@ -28,6 +31,21 @@ class LocationController extends Controller{
         if($location){
             array_push($where, array('location', 'like', "%{$location}%"));
             $serach_data['location'] = $location;
+        }
+
+        if($country_id){
+            array_push($where, array('country_id', '=', $country_id));
+            $serach_data['country_id'] = $country_id;
+        }
+
+        if($state_id){
+            array_push($where, array('state_id', '=', $state_id));
+            $serach_data['state_id'] = $state_id;
+        }
+
+        if($city_id){
+            array_push($where, array('city_id', '=', $city_id));
+            $serach_data['city_id'] = $city_id;
         }
 
         if($status){
@@ -54,7 +72,13 @@ class LocationController extends Controller{
             ),
         );
 
-        $data['rows'] = $this->CommonModel->get_all($table = $this->table, $select = array('*'), $where, $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "20");        
+        $data['rows'] = $this->CommonModel->get_all($table = $this->table, $select = array('*'), $where, $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "20"); 
+
+        $data['country'] = $this->CommonModel->get_all($table = 'country', $select = array('*'), $where = array(), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
+
+        $data['state'] = $this->CommonModel->get_all($table = 'state', $select = array('*'), $where = array(), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
+
+        $data['city'] = $this->CommonModel->get_all($table = 'city', $select = array('*'), $where = array(), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");       
         return view('admin.pages.location.view', $data);
     }
 
@@ -103,6 +127,9 @@ class LocationController extends Controller{
         $id = $request->input('id');
         $validator = Validator::make($request->all(), [ 
             'location' => 'required|unique:location,location,' . $id,
+            'country_id' => 'required',
+            'state_id' => 'required',
+            'city_id' => 'required',
             'latitude' => 'required',
             'longitude' => 'required',
             'status' => 'required', 
@@ -115,6 +142,9 @@ class LocationController extends Controller{
             if($id){
                 $post_data = array(
                     'location' => $request->input('location'),
+                    'country_id' => $request->input('country_id'),
+                    'state_id' => $request->input('state_id'),
+                    'city_id' => $request->input('city_id'),
                     'latitude' => $request->input('latitude'),
                     'longitude' => $request->input('longitude'),
                     'status' => $request->input('status'),
@@ -137,6 +167,9 @@ class LocationController extends Controller{
 
                 $post_data = array(
                     'location' => $request->input('location'),
+                    'country_id' => $request->input('country_id'),
+                    'state_id' => $request->input('state_id'),
+                    'city_id' => $request->input('city_id'),
                     'latitude' => $request->input('latitude'),
                     'longitude' => $request->input('longitude'),
                     'status' => $request->input('status'),

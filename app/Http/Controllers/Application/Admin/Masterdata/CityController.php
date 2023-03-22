@@ -7,37 +7,43 @@ use Illuminate\Support\Str;
 use App\Models\CommonModel;
 use Validator;
 
-class StateController extends Controller{
+class CityController extends Controller{
 
     public function __construct(){
         $this->CommonModel = new CommonModel();
-        $this->slug = '/masterdata/state';
-        $this->title = 'State';
-        $this->table = 'state';
+        $this->slug = '/masterdata/city';
+        $this->title = 'City';
+        $this->table = 'city';
     }
 
     /* List view */    
     public function index(Request $request){
         $serach_data = array();
-        $state = $request->state;
+        $city = $request->city;
+        $state_id = $request->state_id;
         $country_id = $request->country_id;
         $status = $request->status;
         $where = array();
         $where = array(
-            array('state.is_deleted', '=', 0)
+            array('city.is_deleted', '=', 0)
         );
-        if($state){
-            array_push($where, array('state.state', 'like', "%{$state}%"));
-            $serach_data['state'] = $state;
+        if($city){
+            array_push($where, array('city.city', 'like', "%{$city}%"));
+            $serach_data['city'] = $city;
         }
 
         if($status){
-            array_push($where, array('state.status', '=', $status));
+            array_push($where, array('city.status', '=', $status));
             $serach_data['status'] = $status;
         }
 
+        if($state_id){
+            array_push($where, array('city.state_id', '=', $state_id));
+            $serach_data['state_id'] = $state_id;
+        }
+
         if($country_id){
-            array_push($where, array('state.country_id', '=', $country_id));
+            array_push($where, array('city.country_id', '=', $country_id));
             $serach_data['country_id'] = $country_id;
         }
        
@@ -60,11 +66,13 @@ class StateController extends Controller{
             ),
         );
 
-        $data['rows'] = $this->CommonModel->get_all($table = $this->table, $select = array('*','country.country'), $where, $join = array(), $left = array(array('country', 'state.country_id', '=', 'country.id')), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "20");
+        $data['rows'] = $this->CommonModel->get_all($table = $this->table, $select = array('*','country.country', 'state.state'), $where, $join = array(), $left = array(array('country', 'city.country_id', '=', 'country.id'), array('state', 'city.state_id', '=', 'state.id')), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "20");
 
         $data['country'] = $this->CommonModel->get_all($table = 'country', $select = array('*'), $where = array(), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
 
-        return view('admin.pages.state.view', $data);
+        $data['state'] = $this->CommonModel->get_all($table = 'state', $select = array('*'), $where = array(), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
+
+        return view('admin.pages.city.view', $data);
     }
 
     /* add & edit form */
@@ -100,7 +108,9 @@ class StateController extends Controller{
 
         $data['country'] = $this->CommonModel->get_all($table = 'country', $select = array('*'), $where = array(), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
 
-        return view('admin.pages.state.form', $data);
+        $data['state'] = $this->CommonModel->get_all($table = 'state', $select = array('*'), $where = array(), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
+
+        return view('admin.pages.city.form', $data);
     }
 
     /* store & update data */
@@ -108,7 +118,8 @@ class StateController extends Controller{
         $id = $request->input('id');
         $validator = Validator::make($request->all(), [ 
             'country_id' => 'required',
-            'state' => 'required|unique:state,state,' . $id,
+            'state_id' => 'required',
+            'city' => 'required|unique:city,city,' . $id,
         ]); 
 
         if ($validator->fails()) { 
@@ -118,7 +129,8 @@ class StateController extends Controller{
             if($id){
                 $post_data = array(
                     'country_id' => $request->input('country_id'),
-                    'state' => $request->input('state'),
+                    'state_id' => $request->input('state_id'),
+                    'city' => $request->input('city'),
                     'updated_at' => date('Y-m-d H:i:s'),
                 );
                 $result = $this->CommonModel->update_data($this->table, array(array('id', '=', $id)), $post_data);
@@ -137,7 +149,8 @@ class StateController extends Controller{
 
                 $post_data = array(
                     'country_id' => $request->input('country_id'),
-                    'state' => $request->input('state'),
+                    'state_id' => $request->input('state_id'),
+                    'city' => $request->input('city'),
                     'created_at' => date('Y-m-d H:i:s'),
                 );
 

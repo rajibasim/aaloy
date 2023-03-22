@@ -76,7 +76,7 @@
                 <form method="get" action="" autocomplete="off" enctype="multipart/form-data">
                   <div class="row">
                     <div class="col-4">
-                      <input type="text" class="form-control" placeholder="Location name" name="location" value="{{ isset($serach_data['location']) && $serach_data['location'] ? $serach_data['location'] : '' }}">
+                      <input type="text" class="form-control" placeholder="City name" name="city" value="{{ isset($serach_data['city']) && $serach_data['city'] ? $serach_data['city'] : '' }}">
                     </div>
                     <div class="col-sm-4">
                       <!-- text input -->
@@ -96,22 +96,9 @@
                       <div class="form-group">
                         <select class="form-control select2" name="state_id" id="state_id">
                           <option value="">Select State</option>
-                            @if($state)
+                           @if($state)
                                @foreach ($state as $val)
                                 <option value="{{ $val->id }}" {{ isset($serach_data['state_id']) && $serach_data['state_id'] == $val->id ? 'selected' : '' }}>{{ $val->state }}</option>
-                               @endforeach
-                            @endif
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-sm-4">
-                      <!-- text input -->
-                      <div class="form-group">
-                        <select class="form-control select2" name="city_id" id="city_id">
-                          <option value="">Select City</option>
-                            @if($city)
-                               @foreach ($city as $val)
-                                <option value="{{ $val->id }}" {{ isset($serach_data['city_id']) && $serach_data['city_id'] == $val->id ? 'selected' : '' }}>{{ $val->city }}</option>
                                @endforeach
                             @endif
                         </select>
@@ -156,9 +143,9 @@
                   <thead>
                     <tr>
                       <th><input class="checkall" type="checkbox" value=""></th>
-                      <th>Location</th>
-                      <th>Latitude</th>
-                      <th>Longitude</th>
+                      <th>City</th>
+                      <th>State</th>
+                      <th>Country</th>
                       <th>Status</th>
                       <th>Action</th>
                     </tr>
@@ -168,9 +155,9 @@
                     @foreach ( $rows as $key => $res )
                     <tr> 
                       <td style="width: 20px;"><input class="checkbox" type="checkbox" value="{{ $res->id }}"></td>
-                      <td>{{ $res->location }}</td>
-                      <td>{{ $res->latitude }}</td>
-                      <td>{{ $res->longitude }}</td>
+                      <td>{{ $res->city }}</td>
+                      <td>{{ $res->state }}</td>
+                      <td>{{ $res->country }}</td>
                       <td>{{ $res->status == 1 ? 'Active' : 'In-Active' }}</td>
                       <td style="width: 100px;">
                         <a href="{{ url($metadata['page_form_url'].'/'.encrypt($res->id)) }}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Edit">
@@ -184,7 +171,7 @@
                     @endforeach
                   @else
                     <tr> 
-                      <td colspan="5">No record found.</td>
+                      <td colspan="6">No record found.</td>
                     </tr>
                   @endif
                   </tbody>
@@ -286,25 +273,6 @@ $(document).ready(function() {
 
         $("#state_id").html(html);
         $('#state_id').select2({
-              theme: 'bootstrap4'
-        });
-    });
-
-    $(document).on('change', '#state_id', function() {
-        var state_id = $(this).val();
-        var city = '<?php echo json_encode($city)?>';
-        $("#city_id").select2("destroy");
-        var html = '<option value="">Select City</option>';
-        if(city){
-            $.each(JSON.parse(city), function (key, val) {
-                if(val.state_id == state_id){
-                    html = html + '<option value="'+val.id+'">'+val.city+'</option>';
-                }
-            });
-        }
-
-        $("#city_id").html(html);
-        $('#city_id').select2({
               theme: 'bootstrap4'
         });
     });

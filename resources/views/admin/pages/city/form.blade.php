@@ -68,7 +68,23 @@
                       <!-- text input -->
                       <div class="form-group">
                         <label>State</label>
-                        <input type="text" class="form-control" placeholder="Enter state name" name="state" value="{{ old('state', isset($details->state) && $details->state ? $details->state : '') }}" required="">
+                        <select class="form-control select2" name="state_id" id="state_id" required="">
+                          <option value="">Select State</option>
+                          @if(isset($details->state_id) && $details->state_id)
+                            @if($state)
+                               @foreach ($state as $val)
+                                <option value="{{ $val->id }}" {{ isset($details->state_id) && $details->state_id == $val->id ? 'selected' : '' }}>{{ $val->state }}</option>
+                               @endforeach
+                            @endif
+                          @endif
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <label>City</label>
+                        <input type="text" class="form-control" placeholder="Enter City name" name="city" value="{{ old('city', isset($details->city) && $details->city ? $details->city : '') }}" required="">
                       </div>
                     </div>
                     <div class="col-sm-4">
@@ -137,6 +153,25 @@ $(document).ready(function() {
         unhighlight: function (element, errorClass, validClass) {
           $(element).removeClass('is-invalid');
         }
+    });
+
+    $(document).on('change', '#country_id', function() {
+        var country_id = $(this).val();
+        var state = '<?php echo json_encode($state)?>';
+        $("#state_id").select2("destroy");
+        var html = '<option value="">Select State</option>';
+        if(state){
+            $.each(JSON.parse(state), function (key, val) {
+                if(val.country_id == country_id){
+                    html = html + '<option value="'+val.id+'">'+val.state+'</option>';
+                }
+            });
+        }
+
+        $("#state_id").html(html);
+        $('#state_id').select2({
+              theme: 'bootstrap4'
+        });
     });
 });
 </script>

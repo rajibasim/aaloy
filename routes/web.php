@@ -30,10 +30,10 @@ Route::group(['middleware' => ['checkAdminLogin']], function() {
     /*master data start*/
     Route::group(['prefix' => '/masterdata'], function () {
         /* location Start */
-        Route::get('/admin-district', [App\Http\Controllers\Application\Admin\Masterdata\DistrictController::class, 'index'])->name('admin-district');
-        Route::get('/admin-district/form/{id?}', [App\Http\Controllers\Application\Admin\Masterdata\DistrictController::class, 'form'])->name('form');
-        Route::post('/admin-district/save', [App\Http\Controllers\Application\Admin\Masterdata\DistrictController::class, 'save'])->name('save');
-        Route::get('/admin-district/delete/{id}', [App\Http\Controllers\Application\Admin\Masterdata\DistrictController::class, 'delete'])->name('delete');
+        Route::get('/location', [App\Http\Controllers\Application\Admin\Masterdata\LocationController::class, 'index'])->name('admin-district');
+        Route::get('/location/form/{id?}', [App\Http\Controllers\Application\Admin\Masterdata\LocationController::class, 'form'])->name('form');
+        Route::post('/location/save', [App\Http\Controllers\Application\Admin\Masterdata\LocationController::class, 'save'])->name('save');
+        Route::get('/location/delete/{id}', [App\Http\Controllers\Application\Admin\Masterdata\LocationController::class, 'delete'])->name('delete');
         /* location End */
         /* country Start */
         Route::get('/country', [App\Http\Controllers\Application\Admin\Masterdata\CountryController::class, 'index'])->name('country');
@@ -47,6 +47,12 @@ Route::group(['middleware' => ['checkAdminLogin']], function() {
         Route::post('/state/save', [App\Http\Controllers\Application\Admin\Masterdata\StateController::class, 'save'])->name('save');
         Route::get('/state/delete/{id}', [App\Http\Controllers\Application\Admin\Masterdata\StateController::class, 'delete'])->name('delete');
         /* state End */
+        /* city Start */
+        Route::get('/city', [App\Http\Controllers\Application\Admin\Masterdata\CityController::class, 'index'])->name('city');
+        Route::get('/city/form/{id?}', [App\Http\Controllers\Application\Admin\Masterdata\CityController::class, 'form'])->name('form');
+        Route::post('/city/save', [App\Http\Controllers\Application\Admin\Masterdata\CityController::class, 'save'])->name('save');
+        Route::get('/city/delete/{id}', [App\Http\Controllers\Application\Admin\Masterdata\CityController::class, 'delete'])->name('delete');
+        /* city End */
         
     });
     /*master data end*/

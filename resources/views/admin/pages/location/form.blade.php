@@ -60,12 +60,12 @@
                     <div class="col-sm-4">
                       <!-- text input -->
                       <div class="form-group">
-                        <label>District Store</label>
+                        <label>Country</label>
                         <select class="form-control select2" name="country_id" id="country_id" required="">
                           <option value="">Select Country</option>
                            @if($country)
                                @foreach ($country as $val)
-                                <option value="{{ $val->id }}">{{ $val->name }}</option>
+                                <option value="{{ $val->id }}" {{ isset($details->country_id) && $details->country_id == $val->id ? 'selected' : '' }}>{{ $val->country }}</option>
                                @endforeach
                             @endif
                         </select>
@@ -74,14 +74,32 @@
                     <div class="col-sm-4">
                       <!-- text input -->
                       <div class="form-group">
-                        <label>District Store</label>
+                        <label>State</label>
                         <select class="form-control select2" name="state_id" id="state_id" required="">
                           <option value="">Select State</option>
-                           @if($state)
+                          @if(isset($details->state_id) && $details->state_id)
+                            @if($state)
                                @foreach ($state as $val)
-                                <option value="{{ $val->id }}">{{ $val->name }}</option>
+                                <option value="{{ $val->id }}" {{ isset($details->state_id) && $details->state_id == $val->id ? 'selected' : '' }}>{{ $val->state }}</option>
                                @endforeach
                             @endif
+                          @endif
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <label>City</label>
+                        <select class="form-control select2" name="city_id" id="city_id" required="">
+                          <option value="">Select City</option>
+                          @if(isset($details->city_id) && $details->city_id)
+                            @if($city)
+                               @foreach ($city as $val)
+                                <option value="{{ $val->id }}" {{ isset($details->city_id) && $details->city_id == $val->id ? 'selected' : '' }}>{{ $val->city }}</option>
+                               @endforeach
+                            @endif
+                          @endif
                         </select>
                       </div>
                     </div>
@@ -184,13 +202,32 @@ $(document).ready(function() {
         if(state){
             $.each(JSON.parse(state), function (key, val) {
                 if(val.country_id == country_id){
-                    html = html + '<option value="'+val.id+'">'+val.name+'</option>';
+                    html = html + '<option value="'+val.id+'">'+val.state+'</option>';
                 }
             });
         }
 
         $("#state_id").html(html);
         $('#state_id').select2({
+              theme: 'bootstrap4'
+        });
+    });
+
+    $(document).on('change', '#state_id', function() {
+        var state_id = $(this).val();
+        var city = '<?php echo json_encode($city)?>';
+        $("#city_id").select2("destroy");
+        var html = '<option value="">Select City</option>';
+        if(city){
+            $.each(JSON.parse(city), function (key, val) {
+                if(val.state_id == state_id){
+                    html = html + '<option value="'+val.id+'">'+val.city+'</option>';
+                }
+            });
+        }
+
+        $("#city_id").html(html);
+        $('#city_id').select2({
               theme: 'bootstrap4'
         });
     });

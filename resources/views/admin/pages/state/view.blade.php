@@ -75,10 +75,23 @@
               <div class="card-body">
                 <form method="get" action="" autocomplete="off" enctype="multipart/form-data">
                   <div class="row">
-                    <div class="col-5">
-                      <input type="text" class="form-control" placeholder="Country name" name="country" value="{{ isset($serach_data['country']) && $serach_data['country'] ? $serach_data['country'] : '' }}">
+                    <div class="col-3">
+                      <input type="text" class="form-control" placeholder="State name" name="state" value="{{ isset($serach_data['state']) && $serach_data['state'] ? $serach_data['state'] : '' }}">
                     </div>
-                    <div class="col-5">
+                    <div class="col-sm-3">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <select class="form-control select2" name="country_id" id="country_id">
+                          <option value="">Select Country</option>
+                           @if($country)
+                               @foreach ($country as $val)
+                                <option value="{{ $val->id }}" {{ isset($serach_data['country_id']) && $serach_data['country_id'] == $val->id ? 'selected' : '' }}>{{ $val->country }}</option>
+                               @endforeach
+                            @endif
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-3">
                       <select class="form-control" name="status">
                         <option value="">Select Status</option>
                         <option value="1" {{ isset($serach_data['status']) && $serach_data['status'] == 1 ? 'selected' : '' }}>Active</option>
