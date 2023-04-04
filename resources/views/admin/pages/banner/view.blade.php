@@ -75,49 +75,10 @@
               <div class="card-body">
                 <form method="get" action="" autocomplete="off" enctype="multipart/form-data">
                   <div class="row">
-                    <div class="col-sm-4">
-                      <!-- select -->
-                      <div class="form-group">
-                        <select class="form-control select2" name="category_id" id="category_id">
-                          <option value="">Select Category</option>
-                          @if($category)
-                             @foreach ($category as $val)
-                              <option value="{{ $val->id }}" {{ isset($serach_data['category_id']) && $serach_data['category_id'] == $val->id ? 'selected' : '' }}>{{ $val->name }}</option>
-                             @endforeach
-                          @endif
-                        </select>
-                      </div>
+                    <div class="col-4">
+                      <input type="text" class="form-control" placeholder="Title" name="title" value="{{ isset($serach_data['title']) && $serach_data['title'] ? $serach_data['title'] : '' }}">
                     </div>
-                    <div class="col-sm-4">
-                      <!-- select -->
-                      <div class="form-group">
-                        <select class="form-control select2" name="brand_id" id="brand_id">
-                          <option value="">Select Brand</option>
-                          @if($brand)
-                             @foreach ($brand as $val)
-                              <option value="{{ $val->id }}" {{ isset($serach_data['brand_id']) && $serach_data['brand_id'] == $val->id ? 'selected' : '' }}>{{ $val->name }}</option>
-                             @endforeach
-                          @endif
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-sm-4">
-                      <!-- select -->
-                      <div class="form-group">
-                        <select class="form-control select2" name="unit_id" id="unit_id">
-                          <option value="">Select Unit</option>
-                          @if($unit)
-                             @foreach ($unit as $val)
-                              <option value="{{ $val->id }}" {{ isset($serach_data['unit_id']) && $serach_data['unit_id'] == $val->id ? 'selected' : '' }}>{{ $val->name }}</option>
-                             @endforeach
-                          @endif
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-5">
-                      <input type="text" class="form-control" placeholder="Comodity name" name="name" value="{{ isset($serach_data['name']) && $serach_data['name'] ? $serach_data['name'] : '' }}">
-                    </div>
-                    <div class="col-5">
+                    <div class="col-4">
                       <select class="form-control" name="status">
                         <option value="">Select Status</option>
                         <option value="1" {{ isset($serach_data['status']) && $serach_data['status'] == 1 ? 'selected' : '' }}>Active</option>
@@ -156,10 +117,9 @@
                   <thead>
                     <tr>
                       <th><input class="checkall" type="checkbox" value=""></th>
-                      <th>Comodity</th>
-                      <th>Unit</th>
-                      <th>Category</th>
-                      <th>Brand</th>
+                      <th>Image</th>
+                      <th>Title</th>
+                      <th>URL</th>
                       <th>Status</th>
                       <th>Action</th>
                     </tr>
@@ -169,31 +129,23 @@
                     @foreach ( $rows as $key => $res )
                     <tr> 
                       <td style="width: 20px;"><input class="checkbox" type="checkbox" value="{{ $res->id }}"></td>
-                      <td>{{ $res->name }}</td>
-                      <td>{{ $res->unit }}</td>
-                      <td>{{ $res->category }}</td>
-                      <td>{{ $res->brand }}</td>
+                      <td><img style="height: 100px; width: 100px;" src="<?=url($res->banner_image)?>"></td>
+                      <td>{{ $res->title }}</td>
+                      <td>{{ $res->url }}</td>
                       <td>{{ $res->status == 1 ? 'Active' : 'In-Active' }}</td>
-                      <td style="width: 140px;">
-
-                       <!--  <a href="{{ url($metadata['page_data_details_url'].'/'.encrypt($res->id)) }}" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Details">
-                          <i class="fas fa-eye" aria-hidden="true"></i>
-                        </a> -->
-
+                      <td style="width: 100px;">
                         <a href="{{ url($metadata['page_form_url'].'/'.encrypt($res->id)) }}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Edit">
                           <i class="fas fa-edit" aria-hidden="true"></i>
                         </a>
-
                         <a href="{{ url($metadata['page_delete_url'].'/'.$res->id) }}" class="btn btn-danger btn-sm single" data-toggle="tooltip" data-placement="top" title="Delete">
                           <i class="fa fa-trash" aria-hidden="true"></i>
                         </a>
-
                       </td>
                     </tr>
                     @endforeach
                   @else
                     <tr> 
-                      <td colspan="5">No record found.</td>
+                      <td colspan="3">No record found.</td>
                     </tr>
                   @endif
                   </tbody>

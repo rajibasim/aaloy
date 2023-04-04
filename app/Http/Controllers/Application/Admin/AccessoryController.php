@@ -1,36 +1,37 @@
 <?php
-namespace App\Http\Controllers\Application\Admin\Masterdata;
+namespace App\Http\Controllers\Application\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 use App\Models\CommonModel;
 use Validator;
 
-class SchemeController extends Controller{
+class AccessoryController extends Controller{
 
     public function __construct(){
         $this->CommonModel = new CommonModel();
-        $this->slug = '/masterdata/admin-scheme';
-        $this->title = 'Scheme';
-        $this->table = 'scheme';
+        $this->slug = '/accessory';
+        $this->title = 'Accessory';
+        $this->table = 'accessory';
     }
 
     /* List view */    
     public function index(Request $request){
         $serach_data = array();
-        $name = $request->name;
+        $title = $request->title;
         $status = $request->status;
         $where = array();
         $where = array(
             array('is_deleted', '=', 0)
         );
-        if($name){
-            array_push($where, array('scheme.name', 'like', "%{$name}%"));
-            $serach_data['name'] = $name;
+        if($title){
+            array_push($where, array('title', 'like', "%{$title}%"));
+            $serach_data['title'] = $title;
         }
 
         if($status){
-            array_push($where, array('scheme.status', '=', $status));
+            array_push($where, array('status', '=', $status));
             $serach_data['status'] = $status;
         }
 
@@ -54,7 +55,7 @@ class SchemeController extends Controller{
         );
 
         $data['rows'] = $this->CommonModel->get_all($table = $this->table, $select = array('*'), $where, $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "20");        
-        return view('admin.pages.scheme.view', $data);
+        return view('admin.pages.accessory.view', $data);
     }
 
     /* add & edit form */
@@ -88,14 +89,17 @@ class SchemeController extends Controller{
             $data['details'] = !empty($details) ? $details[0] : [];
         }
 
-        return view('admin.pages.scheme.form', $data);
+        return view('admin.pages.accessory.form', $data);
     }
 
     /* store & update data */
     public function save(Request $request){
         $id = $request->input('id');
         $validator = Validator::make($request->all(), [ 
-            'name' => 'required|unique:scheme,name,' . $id,
+            'title' => 'required|unique:accessory,title,' . $id,
+            'sell_price' => 'required',
+            'rent_price' => 'required',
+            'description' => 'required',
             'status' => 'required', 
         ]); 
 
@@ -104,21 +108,21 @@ class SchemeController extends Controller{
         }else{
             $flash_data  = '';
             if($id){
-
-                $old_data = $this->CommonModel->get_all($table = $this->table, $select = array('*'), $where = array(array('id', '=', $id)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
-                $old_data = $old_data[0];
-
                 $post_data = array(
-                    'name' => $request->input('name'),
+                    'title' => $request->input('title'),
+                    'sell_price' => $request->input('sell_price'),
+                    'rent_price' => $request->input('rent_price'),
+                    'description' => $request->input('description'),
                     'status' => $request->input('status'),
-                    'updated_by' => $request->input('session_id'),
+                    'slug' => Str::slug($request->input('title')),
                     'updated_at' => date('Y-m-d H:i:s'),
                 );
-                $result = $this->CommonModel->update_data($this->table, array(array('id', '=', $id)), $post_data, $old_data, $id);
+            
+                $result = $this->CommonModel->update_data($this->table, array(array('id', '=', $id)), $post_data);
                 if($result == true){
                     $flash_data = array(
                         'status' => 'success',
-                        'message' => 'Scheme successfully updated.',
+                        'message' => $this->title.' successfully updated.',
                     );
                 }else{
                     $flash_data = array(
@@ -129,9 +133,12 @@ class SchemeController extends Controller{
             }else{
 
                 $post_data = array(
-                    'name' => $request->input('name'),
+                    'title' => $request->input('title'),
+                    'sell_price' => $request->input('sell_price'),
+                    'rent_price' => $request->input('rent_price'),
+                    'description' => $request->input('description'),
                     'status' => $request->input('status'),
-                    'created_by' => $request->input('session_id'),
+                    'slug' => Str::slug($request->input('title')),
                     'created_at' => date('Y-m-d H:i:s'),
                 );
 
@@ -139,7 +146,7 @@ class SchemeController extends Controller{
                 if($result == true){
                     $flash_data = array(
                         'status' => 'success',
-                        'message' => 'Scheme successfully added.',
+                        'message' => $this->title.' successfully added.',
                     );
                 }else{
                     $flash_data = array(
@@ -162,14 +169,13 @@ class SchemeController extends Controller{
                 $post_data = array();
                 $post_data = array(
                     'is_deleted' => 1,
-                    'updated_by' => $request->input('session_id'),
                     'updated_at' => date('Y-m-d H:i:s'),
                 );
-                $result = $this->CommonModel->soft_delete($this->table, array(array('id', '=', $id)), $post_data, $id);
+                $result = $this->CommonModel->soft_delete($this->table, array(array('id', '=', $id)), $post_data);
             }
             $flash_data = array(
                 'status' => 'success',
-                'message' => 'Scheme successfully deleted.',
+                'message' => $this->title.' successfully deleted.',
             );
         }else{
             $flash_data = array(

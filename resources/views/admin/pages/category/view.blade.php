@@ -76,7 +76,7 @@
                 <form method="get" action="" autocomplete="off" enctype="multipart/form-data">
                   <div class="row">
                     <div class="col-5">
-                      <input type="text" class="form-control" placeholder="Type of comodity" name="name" value="{{ isset($serach_data['name']) && $serach_data['name'] ? $serach_data['name'] : '' }}">
+                      <input type="text" class="form-control" placeholder="Category name" name="category" value="{{ isset($serach_data['category']) && $serach_data['category'] ? $serach_data['category'] : '' }}">
                     </div>
                     <div class="col-5">
                       <select class="form-control" name="status">
@@ -117,7 +117,7 @@
                   <thead>
                     <tr>
                       <th><input class="checkall" type="checkbox" value=""></th>
-                      <th>Type of comodity</th>
+                      <th>Country</th>
                       <th>Status</th>
                       <th>Action</th>
                     </tr>
@@ -127,7 +127,7 @@
                     @foreach ( $rows as $key => $res )
                     <tr> 
                       <td style="width: 20px;"><input class="checkbox" type="checkbox" value="{{ $res->id }}"></td>
-                      <td>{{ $res->name }}</td>
+                      <td>{{ $res->category }}</td>
                       <td>{{ $res->status == 1 ? 'Active' : 'In-Active' }}</td>
                       <td style="width: 100px;">
                         <a href="{{ url($metadata['page_form_url'].'/'.encrypt($res->id)) }}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Edit">
@@ -141,7 +141,7 @@
                     @endforeach
                   @else
                     <tr> 
-                      <td colspan="5">No record found.</td>
+                      <td colspan="3">No record found.</td>
                     </tr>
                   @endif
                   </tbody>

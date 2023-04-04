@@ -53,8 +53,8 @@
                     <div class="col-sm-6">
                       <!-- text input -->
                       <div class="form-group">
-                        <label>Type of comodity </label>
-                        <input type="text" class="form-control" placeholder="Enter Type of comodity" name="name" value="{{ old('name', isset($details->name) && $details->name ? $details->name : '') }}">
+                        <label>Category</label>
+                        <input type="text" class="form-control" placeholder="Enter category name" name="category" value="{{ old('category', isset($details->category) && $details->category ? $details->category : '') }}" required="">
                       </div>
                     </div>
                     <div class="col-sm-6">
@@ -102,9 +102,15 @@ $(document).ready(function() {
 
     $('#dataForm').validate({
       rules: {
-          name: {
+          district_id: {
             required: true,
           },
+          subdevision_id: {
+            required: true,
+          },
+          name: {
+            required: true,
+          }, 
         },
         errorElement: 'span',
         errorPlacement: function (error, element) {

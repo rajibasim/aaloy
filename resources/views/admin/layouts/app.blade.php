@@ -38,6 +38,9 @@
         <link rel="stylesheet" href="{{ asset('public/assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css?version='.config('app.version')) }}">
         <!-- Date Picker CSS -->
         <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+        <!-- dropzonejs -->
+        <link rel="stylesheet" href="{{ asset('public/assets/plugins/dropzone/min/dropzone.min.css?version='.config('app.version')) }}">
+        <!-- <link rel="stylesheet" href="{{ asset('public/assets/css/bootstrap-imageupload.css?version='.config('app.version')) }}"> -->
     </head>
     <body class="hold-transition sidebar-mini layout-fixed">
         <div class="wrapper">
@@ -137,6 +140,14 @@
                                 </a>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
+                                        <a href="{{ url('masterdata/category') }}" class="nav-link <?=strpos(Request::segment(2), 'category') !== false ? 'active' : ''?>">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Category</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
                                         <a href="{{ url('masterdata/country') }}" class="nav-link <?=strpos(Request::segment(2), 'country') !== false ? 'active' : ''?>">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Country</p>
@@ -167,28 +178,36 @@
                                         </a>
                                     </li>
                                 </ul>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="{{ url('masterdata/banner') }}" class="nav-link <?=strpos(Request::segment(2), 'banner') !== false ? 'active' : ''?>">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Banner</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="{{ url('masterdata/accessory') }}" class="nav-link <?=strpos(Request::segment(2), 'accessory') !== false ? 'active' : ''?>">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Accessory</p>
-                                        </a>
-                                    </li>
-                                </ul>
                             </li>
-                            <li class="nav-item <?=strpos(Request::segment(1), 'admin-report') !== false ? 'menu-open' : ''?>">
-                                <a href="{{ url('admin-report') }}" class="nav-link <?=strpos(Request::segment(1), 'report') !== false ? 'active' : ''?>">
+                            <li class="nav-item <?=strpos(Request::segment(1), 'banner') !== false ? 'menu-open' : ''?>">
+                                <a href="{{ url('banner') }}" class="nav-link <?=strpos(Request::segment(1), 'banner') !== false ? 'active' : ''?>">
                                     <i class="nav-icon fa fa-list-ul"></i>
                                     <p>
-                                        Report
+                                        Banner
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item <?=strpos(Request::segment(1), 'accessory') !== false ? 'menu-open' : ''?>">
+                                <a href="{{ url('accessory') }}" class="nav-link <?=strpos(Request::segment(1), 'accessory') !== false ? 'active' : ''?>">
+                                    <i class="nav-icon fa fa-list-ul"></i>
+                                    <p>
+                                        Accessory
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item <?=strpos(Request::segment(1), 'admin-blog') !== false ? 'menu-open' : ''?>">
+                                <a href="{{ url('admin-blog') }}" class="nav-link <?=strpos(Request::segment(1), 'blog') !== false ? 'active' : ''?>">
+                                    <i class="nav-icon fa fa-list-ul"></i>
+                                    <p>
+                                        Blog
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item <?=strpos(Request::segment(1), 'admin-property') !== false ? 'menu-open' : ''?>">
+                                <a href="{{ url('admin-property') }}" class="nav-link <?=strpos(Request::segment(1), 'property') !== false ? 'active' : ''?>">
+                                    <i class="nav-icon fa fa-list-ul"></i>
+                                    <p>
+                                        Property
                                     </p>
                                 </a>
                             </li>
@@ -250,6 +269,8 @@
         <script src="{{ asset('public/assets/plugins/datatables-buttons/js/buttons.html5.min.js?version='.config('app.version')) }}"></script>
         <script src="{{ asset('public/assets/plugins/datatables-buttons/js/buttons.print.min.js?version='.config('app.version')) }}"></script>
         <script src="{{ asset('public/assets/plugins/datatables-buttons/js/buttons.colVis.min.js?version='.config('app.version')) }}"></script>
+        <!-- dropzonejs -->
+        <script src="{{ asset('public/assets/plugins/dropzone/min/dropzone.min.js?version='.config('app.version')) }}"></script>
 
         <!-- Select2 -->
         <script src="{{ asset('public/assets/plugins/select2/js/select2.full.min.js?version='.config('app.version')) }}"></script>
@@ -285,8 +306,70 @@
           });
 
           //$( ".datepicker" ).datepicker();
+
+          // DropzoneJS Demo Code Start
+          Dropzone.autoDiscover = false
+
+          // Get the template HTML and remove it from the doumenthe template HTML and remove it from the doument
+          var previewNode = document.querySelector("#template")
+          previewNode.id = ""
+          var previewTemplate = previewNode.parentNode.innerHTML
+          previewNode.parentNode.removeChild(previewNode)
+
+          var myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
+            url: "/target-url", // Set the url
+            thumbnailWidth: 80,
+            thumbnailHeight: 80,
+            parallelUploads: 20,
+            previewTemplate: previewTemplate,
+            autoQueue: false, // Make sure the files aren't queued until manually added
+            previewsContainer: "#previews", // Define the container to display the previews
+            clickable: ".fileinput-button" // Define the element that should be used as click trigger to select files.
+          })
+
+          myDropzone.on("addedfile", function(file) {
+            // Hookup the start button
+            file.previewElement.querySelector(".start").onclick = function() { myDropzone.enqueueFile(file) }
+          })
+
+          // Update the total progress bar
+          myDropzone.on("totaluploadprogress", function(progress) {
+            document.querySelector("#total-progress .progress-bar").style.width = progress + "%"
+          })
+
+          myDropzone.on("sending", function(file) {
+            // Show the total progress bar when upload starts
+            document.querySelector("#total-progress").style.opacity = "1"
+            // And disable the start button
+            file.previewElement.querySelector(".start").setAttribute("disabled", "disabled")
+          })
+
+          // Hide the total progress bar when nothing's uploading anymore
+          myDropzone.on("queuecomplete", function(progress) {
+            document.querySelector("#total-progress").style.opacity = "0"
+          })
+
+          // Setup the buttons for all transfers
+          // The "add files" button doesn't need to be setup because the config
+          // `clickable` has already been specified.
+          document.querySelector("#actions .start").onclick = function() {
+            myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED))
+          }
+          document.querySelector("#actions .cancel").onclick = function() {
+            myDropzone.removeAllFiles(true)
+          }
+          // DropzoneJS Demo Code End
         })
         </script>
+
+        
+        <!-- <script src="{{ asset('public/assets/js/bootstrap-imageupload.js') }}"></script>
+
+        <script>
+            var $imageupload = $('.imageupload');
+            $imageupload.imageupload();
+
+        </script> -->
         @yield('javascripts')
     </body>
 </html>

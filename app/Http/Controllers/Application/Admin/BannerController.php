@@ -1,45 +1,46 @@
 <?php
-namespace App\Http\Controllers\Application\Admin\Masterdata;
+namespace App\Http\Controllers\Application\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 use App\Models\CommonModel;
 use Validator;
 
-class PanchanyatController extends Controller{
+class BannerController extends Controller{
 
     public function __construct(){
         $this->CommonModel = new CommonModel();
-        $this->slug = '/masterdata/admin-panchanyat';
-        $this->title = 'Panchanyat';
-        $this->table = 'panchanyat';
+        $this->slug = '/banner';
+        $this->title = 'Banner';
+        $this->table = 'banner';
     }
 
     /* List view */    
     public function index(Request $request){
         $serach_data = array();
-        $name = $request->name;
+        $title = $request->title;
         $status = $request->status;
         $where = array();
         $where = array(
-            array('panchanyat.is_deleted', '=', 0)
+            array('is_deleted', '=', 0)
         );
-        if($name){
-            array_push($where, array('panchanyat.name', 'like', "%{$name}%"));
-            $serach_data['name'] = $name;
+        if($title){
+            array_push($where, array('title', 'like', "%{$title}%"));
+            $serach_data['title'] = $title;
         }
 
         if($status){
-            array_push($where, array('panchanyat.status', '=', $status)); 
+            array_push($where, array('status', '=', $status));
             $serach_data['status'] = $status;
         }
 
         $data['metadata'] = array(
             'page_title' => $this->title,
             'page_url' => $this->slug,
-            'page_form_url' => '#',
-            'page_delete_url' => '#',
-            'page_data_store_url' => '#',
+            'page_form_url' => $this->slug.'/form',
+            'page_delete_url' => $this->slug.'/delete',
+            'page_data_store_url' => $this->slug.'/save',
             'serach_data' => $serach_data,
             'breadcumb' => array(
                     array(
@@ -53,8 +54,8 @@ class PanchanyatController extends Controller{
             ),
         );
 
-        $data['rows'] = $this->CommonModel->get_all($table = $this->table, $select = array('panchanyat.*', 'district.name as district', 'subdevision.name as subdevision', 'block.name as block'), $where, $join = array(), $left = array(array('district', 'panchanyat.district_id', '=', 'district.id'), array('subdevision', 'panchanyat.subdevision_id', '=', 'subdevision.id'), array('block', 'panchanyat.block_id', '=', 'block.id')), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "20");        
-        return view('admin.pages.panchanyat.view', $data);
+        $data['rows'] = $this->CommonModel->get_all($table = $this->table, $select = array('*'), $where, $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "20");        
+        return view('admin.pages.banner.view', $data);
     }
 
     /* add & edit form */
@@ -88,24 +89,16 @@ class PanchanyatController extends Controller{
             $data['details'] = !empty($details) ? $details[0] : [];
         }
 
-        $data['district'] = $this->CommonModel->get_all($table = 'district', $select = array('*'), $where = array(array('is_deleted', '=', 0)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
-
-        $data['subdevision'] = $this->CommonModel->get_all($table = 'subdevision', $select = array('*'), $where = array(array('is_deleted', '=', 0)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
-
-        $data['block'] = $this->CommonModel->get_all($table = 'block', $select = array('*'), $where = array(array('is_deleted', '=', 0)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
-
-
-        return view('admin.pages.panchanyat.form', $data);
+        return view('admin.pages.banner.form', $data);
     }
 
     /* store & update data */
     public function save(Request $request){
         $id = $request->input('id');
         $validator = Validator::make($request->all(), [ 
-            'name' => 'required|unique:panchanyat,name,' . $id,
-            'district_id' => 'required',
-            'subdevision_id' => 'required',
-            'block_id' => 'required',
+            'title' => 'required|unique:banner,title,' . $id,
+            'url' => 'required',
+            'description' => 'required',
             'status' => 'required', 
         ]); 
 
@@ -115,19 +108,27 @@ class PanchanyatController extends Controller{
             $flash_data  = '';
             if($id){
                 $post_data = array(
-                    'district_id' => $request->input('district_id'),
-                    'subdevision_id' => $request->input('subdevision_id'),
-                    'block_id' => $request->input('block_id'),
-                    'name' => $request->input('name'),
+                    'title' => $request->input('title'),
+                    'url' => $request->input('url'),
+                    'description' => $request->input('description'),
                     'status' => $request->input('status'),
-                    'updated_by' => $request->input('session_id'),
+                    'slug' => Str::slug($request->input('title')),
                     'updated_at' => date('Y-m-d H:i:s'),
                 );
+                $destinationPath = 'public/uploads/banner_image/';
+                if (!empty($_FILES)) {
+                    if ($_FILES['banner_image'] && $_FILES['banner_image']['name'] != "") {
+                        $profile_image_new_name = str_replace(" ", "_", time() . $_FILES['banner_image']['name']);
+                        if (move_uploaded_file($_FILES['banner_image']['tmp_name'], $destinationPath . $profile_image_new_name)) {
+                            $post_data['banner_image'] = $destinationPath . $profile_image_new_name;
+                        }
+                    }
+                }
                 $result = $this->CommonModel->update_data($this->table, array(array('id', '=', $id)), $post_data);
                 if($result == true){
                     $flash_data = array(
                         'status' => 'success',
-                        'message' => 'Panchanyat successfully updated.',
+                        'message' => $this->title.' successfully updated.',
                     );
                 }else{
                     $flash_data = array(
@@ -138,20 +139,29 @@ class PanchanyatController extends Controller{
             }else{
 
                 $post_data = array(
-                    'district_id' => $request->input('district_id'),
-                    'subdevision_id' => $request->input('subdevision_id'),
-                    'block_id' => $request->input('block_id'),
-                    'name' => $request->input('name'),
+                    'title' => $request->input('title'),
+                    'url' => $request->input('url'),
+                    'description' => $request->input('description'),
                     'status' => $request->input('status'),
-                    'created_by' => $request->input('session_id'),
+                    'slug' => Str::slug($request->input('title')),
                     'created_at' => date('Y-m-d H:i:s'),
                 );
+
+                $destinationPath = 'public/uploads/banner_image/';
+                if (!empty($_FILES)) {
+                    if ($_FILES['banner_image'] && $_FILES['banner_image']['name'] != "") {
+                        $profile_image_new_name = str_replace(" ", "_", time() . $_FILES['banner_image']['name']);
+                        if (move_uploaded_file($_FILES['banner_image']['tmp_name'], $destinationPath . $profile_image_new_name)) {
+                            $post_data['banner_image'] = $destinationPath . $profile_image_new_name;
+                        }
+                    }
+                }
 
                 $result = $this->CommonModel->insert_data_get_id($this->table, $post_data);
                 if($result == true){
                     $flash_data = array(
                         'status' => 'success',
-                        'message' => 'Panchanyat successfully added.',
+                        'message' => $this->title.' successfully added.',
                     );
                 }else{
                     $flash_data = array(
@@ -174,14 +184,13 @@ class PanchanyatController extends Controller{
                 $post_data = array();
                 $post_data = array(
                     'is_deleted' => 1,
-                    'updated_by' => $request->input('session_id'),
                     'updated_at' => date('Y-m-d H:i:s'),
                 );
-                $result = $this->CommonModel->update_data($this->table, array(array('id', '=', $id)), $post_data);
+                $result = $this->CommonModel->soft_delete($this->table, array(array('id', '=', $id)), $post_data);
             }
             $flash_data = array(
                 'status' => 'success',
-                'message' => 'Panchanyat successfully deleted.',
+                'message' => $this->title.' successfully deleted.',
             );
         }else{
             $flash_data = array(

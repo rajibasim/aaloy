@@ -50,14 +50,35 @@
                 <input type="hidden" name="id" value="{{ isset($details->id) && $details->id ? $details->id : '' }}">
                 <div class="card-body">
                   <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                       <!-- text input -->
                       <div class="form-group">
-                        <label>Dustrict Name</label>
-                        <input type="text" class="form-control" placeholder="Enter district name" name="name" value="{{ old('name', isset($details->name) && $details->name ? $details->name : '') }}">
+                        <label>Title</label>
+                        <input type="text" class="form-control" placeholder="Title" name="title" value="{{ old('title', isset($details->title) && $details->title ? $details->title : '') }}" required="">
                       </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <label>Sell Price</label>
+                        <input type="number" class="form-control" placeholder="Sell Price" name="sell_price" value="{{ old('sell_price', isset($details->sell_price) && $details->sell_price ? $details->sell_price : '') }}" required="">
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <label>Rent Price</label>
+                        <input type="number" class="form-control" placeholder="Rent Price" name="rent_price" value="{{ old('rent_price', isset($details->rent_price) && $details->rent_price ? $details->rent_price : '') }}" required="">
+                      </div>
+                    </div>
+                    <div class="col-sm-8">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <label>Description</label>
+                        <input type="text" class="form-control" placeholder="Description" name="description" value="{{ old('description', isset($details->description) && $details->description ? $details->description : '') }}" required="">
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
                       <!-- select -->
                       <div class="form-group">
                         <label>Select</label>
@@ -102,9 +123,15 @@ $(document).ready(function() {
 
     $('#dataForm').validate({
       rules: {
-          name: {
+          district_id: {
             required: true,
           },
+          subdevision_id: {
+            required: true,
+          },
+          name: {
+            required: true,
+          }, 
         },
         errorElement: 'span',
         errorPlacement: function (error, element) {

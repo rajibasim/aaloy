@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Application\Admin\Masterdata;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 use App\Models\CommonModel;
 use Validator;
 
@@ -10,23 +11,23 @@ class CategoryController extends Controller{
 
     public function __construct(){
         $this->CommonModel = new CommonModel();
-        $this->slug = '/masterdata/admin-category';
-        $this->title = 'Type of comodity';
+        $this->slug = '/masterdata/category';
+        $this->title = 'Category';
         $this->table = 'category';
     }
 
     /* List view */    
     public function index(Request $request){
         $serach_data = array();
-        $name = $request->name;
+        $category = $request->category;
         $status = $request->status;
         $where = array();
         $where = array(
             array('is_deleted', '=', 0)
         );
-        if($name){
-            array_push($where, array('name', 'like', "%{$name}%"));
-            $serach_data['name'] = $name;
+        if($category){
+            array_push($where, array('category', 'like', "%{$category}%"));
+            $serach_data['category'] = $category;
         }
 
         if($status){
@@ -95,8 +96,7 @@ class CategoryController extends Controller{
     public function save(Request $request){
         $id = $request->input('id');
         $validator = Validator::make($request->all(), [ 
-            'name' => 'required|unique:category,name,' . $id,
-            'status' => 'required', 
+            'category' => 'required|unique:category,category,' . $id,
         ]); 
 
         if ($validator->fails()) { 
@@ -105,16 +105,14 @@ class CategoryController extends Controller{
             $flash_data  = '';
             if($id){
                 $post_data = array(
-                    'name' => $request->input('name'),
-                    'status' => $request->input('status'),
-                    'updated_by' => $request->input('session_id'),
+                    'category' => $request->input('category'),
                     'updated_at' => date('Y-m-d H:i:s'),
                 );
                 $result = $this->CommonModel->update_data($this->table, array(array('id', '=', $id)), $post_data);
                 if($result == true){
                     $flash_data = array(
                         'status' => 'success',
-                        'message' => 'Type of comodity successfully updated.',
+                        'message' => $this->title.' successfully updated.',
                     );
                 }else{
                     $flash_data = array(
@@ -125,9 +123,7 @@ class CategoryController extends Controller{
             }else{
 
                 $post_data = array(
-                    'name' => $request->input('name'),
-                    'status' => $request->input('status'),
-                    'created_by' => $request->input('session_id'),
+                    'category' => $request->input('category'),
                     'created_at' => date('Y-m-d H:i:s'),
                 );
 
@@ -135,7 +131,7 @@ class CategoryController extends Controller{
                 if($result == true){
                     $flash_data = array(
                         'status' => 'success',
-                        'message' => 'Type of comodity successfully added.',
+                        'message' => $this->title.' successfully added.',
                     );
                 }else{
                     $flash_data = array(
@@ -158,14 +154,13 @@ class CategoryController extends Controller{
                 $post_data = array();
                 $post_data = array(
                     'is_deleted' => 1,
-                    'updated_by' => $request->input('session_id'),
                     'updated_at' => date('Y-m-d H:i:s'),
                 );
-                $result = $this->CommonModel->update_data($this->table, array(array('id', '=', $id)), $post_data);
+                $result = $this->CommonModel->soft_delete($this->table, array(array('id', '=', $id)), $post_data);
             }
             $flash_data = array(
                 'status' => 'success',
-                'message' => 'Category successfully deleted.',
+                'message' => $this->title.' successfully deleted.',
             );
         }else{
             $flash_data = array(

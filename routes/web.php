@@ -52,84 +52,29 @@ Route::group(['middleware' => ['checkAdminLogin']], function() {
         Route::get('/city/form/{id?}', [App\Http\Controllers\Application\Admin\Masterdata\CityController::class, 'form'])->name('form');
         Route::post('/city/save', [App\Http\Controllers\Application\Admin\Masterdata\CityController::class, 'save'])->name('save');
         Route::get('/city/delete/{id}', [App\Http\Controllers\Application\Admin\Masterdata\CityController::class, 'delete'])->name('delete');
-        /* city End */
+        /* city End */        
+        /* category Start */
+        Route::get('/category', [App\Http\Controllers\Application\Admin\Masterdata\CategoryController::class, 'index'])->name('category');
+        Route::get('/category/form/{id?}', [App\Http\Controllers\Application\Admin\Masterdata\CategoryController::class, 'form'])->name('form');
+        Route::post('/category/save', [App\Http\Controllers\Application\Admin\Masterdata\CategoryController::class, 'save'])->name('save');
+        Route::get('/category/delete/{id}', [App\Http\Controllers\Application\Admin\Masterdata\CategoryController::class, 'delete'])->name('delete');
+        /* category End */
         
     });
     /*master data end*/
 
-    /*store start*/
-    Route::group(['prefix' => '/store'], function () {
-        /* district-store Start */
-        Route::get('/admin-district-store', [App\Http\Controllers\Application\Admin\Store\DistrictstoreController::class, 'index'])->name('admin-district-store');
-        Route::get('/admin-district-store/form/{id?}', [App\Http\Controllers\Application\Admin\Store\DistrictstoreController::class, 'form'])->name('form');
-        Route::post('/admin-district-store/save', [App\Http\Controllers\Application\Admin\Store\DistrictstoreController::class, 'save'])->name('save');
-        Route::get('/admin-district-store/delete/{id}', [App\Http\Controllers\Application\Admin\Store\DistrictstoreController::class, 'delete'])->name('delete');
-        /* district-store End */
-        /* main-store Start */
-        Route::get('/admin-main-store', [App\Http\Controllers\Application\Admin\Store\MainstoreController::class, 'index'])->name('admin-main-store');
-        Route::get('/admin-main-store/form/{id?}', [App\Http\Controllers\Application\Admin\Store\MainstoreController::class, 'form'])->name('form');
-        Route::post('/admin-main-store/save', [App\Http\Controllers\Application\Admin\Store\MainstoreController::class, 'save'])->name('save');
-        Route::get('/admin-main-store/delete/{id}', [App\Http\Controllers\Application\Admin\Store\MainstoreController::class, 'delete'])->name('delete');
-        /* main-store End */
-        /* subseed-store Start */
-        Route::get('/admin-subseed-store', [App\Http\Controllers\Application\Admin\Store\SubseedstoreController::class, 'index'])->name('admin-subseed-store');
-        Route::get('/admin-subseed-store/form/{id?}', [App\Http\Controllers\Application\Admin\Store\SubseedstoreController::class, 'form'])->name('form');
-        Route::post('/admin-subseed-store/save', [App\Http\Controllers\Application\Admin\Store\SubseedstoreController::class, 'save'])->name('save');
-        Route::get('/admin-subseed-store/delete/{id}', [App\Http\Controllers\Application\Admin\Store\SubseedstoreController::class, 'delete'])->name('delete');
-        /* subseed-store End */
-    });
-    /*store end*/
-
-    /* product Start */
-    Route::get('/admin-product', [App\Http\Controllers\Application\Admin\ProductController::class, 'index'])->name('admin-product');
-    Route::get('/admin-product/form/{id?}', [App\Http\Controllers\Application\Admin\ProductController::class, 'form'])->name('form');
-    Route::post('/admin-product/save', [App\Http\Controllers\Application\Admin\ProductController::class, 'save'])->name('save');
-    Route::get('/admin-product/delete/{id}', [App\Http\Controllers\Application\Admin\ProductController::class, 'delete'])->name('delete');
-    Route::get('/admin-product/details/{id?}', [App\Http\Controllers\Application\Admin\ProductController::class, 'details'])->name('details');
-    Route::any('/admin-product/update-stock', [App\Http\Controllers\Application\Admin\ProductController::class, 'updatestock'])->name('update-stock');
-    /* product End */
-
-     /* users Start */
-    Route::get('/admin-users', [App\Http\Controllers\Application\Admin\UsersController::class, 'index'])->name('admin-users');
-    Route::get('/admin-users/form/{id?}', [App\Http\Controllers\Application\Admin\UsersController::class, 'form'])->name('form');
-    Route::post('/admin-users/save', [App\Http\Controllers\Application\Admin\UsersController::class, 'save'])->name('save');
-    Route::get('/admin-users/delete/{id}', [App\Http\Controllers\Application\Admin\UsersController::class, 'delete'])->name('delete');
-    /* users End */
-
-    /* report Start */
-    Route::get('/admin-report', [App\Http\Controllers\Application\Admin\ReportController::class, 'index'])->name('admin-report');
-    /* report end */
-
-    /* balance sheet Start */
-    Route::get('/admin-product-balance', [App\Http\Controllers\Application\Admin\BalanceController::class, 'product'])->name('admin-product-balance');
-    Route::get('/admin-product-category-balance', [App\Http\Controllers\Application\Admin\BalanceController::class, 'category'])->name('admin-product-category-balance');
-    /* balance sheet end */
-    
-    /*stock start*/
-    Route::group(['prefix' => '/stock'], function () {
-        /* district-stock Start */
-        Route::get('/district-store/admin-district-stock', [App\Http\Controllers\Application\Admin\stock\DistrictstockController::class, 'index'])->name('admin-district-stock');
-        Route::get('/district-store/admin-district-history', [App\Http\Controllers\Application\Admin\stock\DistrictstockController::class, 'history'])->name('admin-district-history');
-        Route::get('/district-store/admin-district-stock/form/{id?}', [App\Http\Controllers\Application\Admin\stock\DistrictstockController::class, 'form'])->name('form');
-        Route::post('/district-store/admin-district-stock/save', [App\Http\Controllers\Application\Admin\stock\DistrictstockController::class, 'save'])->name('save');
-        Route::get('/district-store/admin-district-stock/delete/{id}', [App\Http\Controllers\Application\Admin\stock\DistrictstockController::class, 'delete'])->name('delete');
-        /* district-stock End */
-        /* main-stock Start */
-        Route::get('/main-store/admin-main-stock', [App\Http\Controllers\Application\Admin\stock\MainstockController::class, 'index'])->name('admin-main-stock');
-        Route::get('/main-store/admin-main-history', [App\Http\Controllers\Application\Admin\stock\MainstockController::class, 'history'])->name('admin-main-history');
-        Route::get('/main-store/admin-main-stock/form/{id?}', [App\Http\Controllers\Application\Admin\stock\MainstockController::class, 'form'])->name('form');
-        Route::post('/main-store/admin-main-stock/save', [App\Http\Controllers\Application\Admin\stock\MainstockController::class, 'save'])->name('save');
-        Route::get('/main-store/admin-main-stock/delete/{id}', [App\Http\Controllers\Application\Admin\stock\MainstockController::class, 'delete'])->name('delete');
-        /* main-stock End */
-        /* subseed-stock Start */
-        Route::get('/subseed-store/admin-subseed-stock', [App\Http\Controllers\Application\Admin\stock\SubseedstockController::class, 'index'])->name('admin-subseed-stock');
-        Route::get('/subseed-store/admin-subseed-history', [App\Http\Controllers\Application\Admin\stock\SubseedstockController::class, 'history'])->name('admin-subseed-history');
-        Route::get('/subseed-store/admin-subseed-stock/form/{id?}', [App\Http\Controllers\Application\Admin\stock\SubseedstockController::class, 'form'])->name('form');
-        Route::post('/subseed-store/admin-subseed-stock/save', [App\Http\Controllers\Application\Admin\stock\SubseedstockController::class, 'save'])->name('save');
-        Route::get('/subseed-store/admin-subseed-stock/delete/{id}', [App\Http\Controllers\Application\Admin\stock\SubseedstockController::class, 'delete'])->name('delete');
-        /* subseed-stock End */
-    });
-    /*stock end*/
+    /* accessory Start */
+    Route::get('/accessory', [App\Http\Controllers\Application\Admin\AccessoryController::class, 'index'])->name('accessory');
+    Route::get('/accessory/form/{id?}', [App\Http\Controllers\Application\Admin\AccessoryController::class, 'form'])->name('form');
+    Route::post('/accessory/save', [App\Http\Controllers\Application\Admin\AccessoryController::class, 'save'])->name('save');
+    Route::get('/accessory/delete/{id}', [App\Http\Controllers\Application\Admin\AccessoryController::class, 'delete'])->name('delete');
+    /* accessory End */
+    /* banner Start */
+    Route::get('/banner', [App\Http\Controllers\Application\Admin\BannerController::class, 'index'])->name('banner');
+    Route::get('/banner/form/{id?}', [App\Http\Controllers\Application\Admin\BannerController::class, 'form'])->name('form');
+    Route::post('/banner/save', [App\Http\Controllers\Application\Admin\BannerController::class, 'save'])->name('save');
+    Route::get('/banner/delete/{id}', [App\Http\Controllers\Application\Admin\BannerController::class, 'delete'])->name('delete');
+    /* banner End */
 
     
 });
