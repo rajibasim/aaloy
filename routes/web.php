@@ -58,8 +58,7 @@ Route::group(['middleware' => ['checkAdminLogin']], function() {
         Route::get('/category/form/{id?}', [App\Http\Controllers\Application\Admin\Masterdata\CategoryController::class, 'form'])->name('form');
         Route::post('/category/save', [App\Http\Controllers\Application\Admin\Masterdata\CategoryController::class, 'save'])->name('save');
         Route::get('/category/delete/{id}', [App\Http\Controllers\Application\Admin\Masterdata\CategoryController::class, 'delete'])->name('delete');
-        /* category End */
-        
+        /* category End */    
     });
     /*master data end*/
 
@@ -75,7 +74,75 @@ Route::group(['middleware' => ['checkAdminLogin']], function() {
     Route::post('/banner/save', [App\Http\Controllers\Application\Admin\BannerController::class, 'save'])->name('save');
     Route::get('/banner/delete/{id}', [App\Http\Controllers\Application\Admin\BannerController::class, 'delete'])->name('delete');
     /* banner End */
+    /* blog Start */
+    Route::get('/blog', [App\Http\Controllers\Application\Admin\BlogController::class, 'index'])->name('blog');
+    Route::get('/blog/form/{id?}', [App\Http\Controllers\Application\Admin\BlogController::class, 'form'])->name('form');
+    Route::post('/blog/save', [App\Http\Controllers\Application\Admin\BlogController::class, 'save'])->name('save');
+    Route::get('/blog/delete/{id}', [App\Http\Controllers\Application\Admin\BlogController::class, 'delete'])->name('delete');
+    /* blog End */
+     /* property Start */
+    Route::get('/property', [App\Http\Controllers\Application\Admin\PropertyController::class, 'index'])->name('property');
+    Route::get('/property/form/{id?}', [App\Http\Controllers\Application\Admin\PropertyController::class, 'form'])->name('form');
+    Route::post('/property/save', [App\Http\Controllers\Application\Admin\PropertyController::class, 'save'])->name('save');
+    Route::get('/property/delete/{id}', [App\Http\Controllers\Application\Admin\PropertyController::class, 'delete'])->name('delete');
+    Route::get('/property/details/{id?}', [App\Http\Controllers\Application\Admin\PropertyController::class, 'details'])->name('details');
+    Route::post('/property/save_image', [App\Http\Controllers\Application\Admin\PropertyController::class, 'save_image'])->name('save_image');
+    Route::post('/property/save_food', [App\Http\Controllers\Application\Admin\PropertyController::class, 'save_food'])->name('save_food');
+    Route::get('/property/delete_image/{id?}', [App\Http\Controllers\Application\Admin\PropertyController::class, 'delete_image'])->name('delete_image');
+    Route::get('/property/delete_food/{id?}', [App\Http\Controllers\Application\Admin\PropertyController::class, 'delete_food'])->name('delete_food');
+    /* property End */
 
+    /*master data start*/
+    Route::group(['prefix' => '/users'], function () {
+        /* location Start */
+        Route::get('/location', [App\Http\Controllers\Application\Admin\users\LocationController::class, 'index'])->name('admin-district');
+        Route::get('/location/form/{id?}', [App\Http\Controllers\Application\Admin\users\LocationController::class, 'form'])->name('form');
+        Route::post('/location/save', [App\Http\Controllers\Application\Admin\users\LocationController::class, 'save'])->name('save');
+        Route::get('/location/delete/{id}', [App\Http\Controllers\Application\Admin\users\LocationController::class, 'delete'])->name('delete');
+        /* location End */
+        /* country Start */
+        Route::get('/country', [App\Http\Controllers\Application\Admin\users\CountryController::class, 'index'])->name('country');
+        Route::get('/country/form/{id?}', [App\Http\Controllers\Application\Admin\users\CountryController::class, 'form'])->name('form');
+        Route::post('/country/save', [App\Http\Controllers\Application\Admin\users\CountryController::class, 'save'])->name('save');
+        Route::get('/country/delete/{id}', [App\Http\Controllers\Application\Admin\users\CountryController::class, 'delete'])->name('delete');
+        /* country End */
+        /* state Start */
+        Route::get('/state', [App\Http\Controllers\Application\Admin\users\StateController::class, 'index'])->name('state');
+        Route::get('/state/form/{id?}', [App\Http\Controllers\Application\Admin\users\StateController::class, 'form'])->name('form');
+        Route::post('/state/save', [App\Http\Controllers\Application\Admin\users\StateController::class, 'save'])->name('save');
+        Route::get('/state/delete/{id}', [App\Http\Controllers\Application\Admin\users\StateController::class, 'delete'])->name('delete');
+        /* state End */
+        /* city Start */
+        Route::get('/city', [App\Http\Controllers\Application\Admin\users\CityController::class, 'index'])->name('city');
+        Route::get('/city/form/{id?}', [App\Http\Controllers\Application\Admin\users\CityController::class, 'form'])->name('form');
+        Route::post('/city/save', [App\Http\Controllers\Application\Admin\users\CityController::class, 'save'])->name('save');
+        Route::get('/city/delete/{id}', [App\Http\Controllers\Application\Admin\users\CityController::class, 'delete'])->name('delete');
+        /* city End */        
+        /* category Start */
+        Route::get('/category', [App\Http\Controllers\Application\Admin\users\CategoryController::class, 'index'])->name('category');
+        Route::get('/category/form/{id?}', [App\Http\Controllers\Application\Admin\users\CategoryController::class, 'form'])->name('form');
+        Route::post('/category/save', [App\Http\Controllers\Application\Admin\users\CategoryController::class, 'save'])->name('save');
+        Route::get('/category/delete/{id}', [App\Http\Controllers\Application\Admin\users\CategoryController::class, 'delete'])->name('delete');
+        /* category End */    
+    });
+    /*master data end*/
+
+    /*User data start*/
+    Route::group(['prefix' => '/users'], function () {
+        /* agent Start */
+        Route::get('/agent', [App\Http\Controllers\Application\Admin\Users\AgentController::class, 'index'])->name('admin-district');
+        Route::get('/agent/form/{id?}', [App\Http\Controllers\Application\Admin\Users\AgentController::class, 'form'])->name('form');
+        Route::post('/agent/save', [App\Http\Controllers\Application\Admin\Users\AgentController::class, 'save'])->name('save');
+        Route::get('/agent/delete/{id}', [App\Http\Controllers\Application\Admin\Users\AgentController::class, 'delete'])->name('delete');
+        /* agent End */
+
+        /* user Start */
+        Route::get('/user', [App\Http\Controllers\Application\Admin\Users\UserController::class, 'index'])->name('admin-district');
+        Route::get('/user/form/{id?}', [App\Http\Controllers\Application\Admin\Users\UserController::class, 'form'])->name('form');
+        Route::post('/user/save', [App\Http\Controllers\Application\Admin\Users\UserController::class, 'save'])->name('save');
+        Route::get('/user/delete/{id}', [App\Http\Controllers\Application\Admin\Users\UserController::class, 'delete'])->name('delete');
+        /* user End */
+    });    
     
 });
 

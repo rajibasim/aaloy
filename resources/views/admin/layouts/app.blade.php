@@ -36,11 +36,13 @@
         <link rel="stylesheet" href="{{ asset('public/assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css?version='.config('app.version')) }}">
         <link rel="stylesheet" href="{{ asset('public/assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css?version='.config('app.version')) }}">
         <link rel="stylesheet" href="{{ asset('public/assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css?version='.config('app.version')) }}">
+        <!-- Ekko Lightbox -->
+        <link rel="stylesheet" href="{{ asset('public/assets/plugins/ekko-lightbox/ekko-lightbox.css?version='.config('app.version')) }}">
         <!-- Date Picker CSS -->
         <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-        <!-- dropzonejs -->
-        <link rel="stylesheet" href="{{ asset('public/assets/plugins/dropzone/min/dropzone.min.css?version='.config('app.version')) }}">
-        <!-- <link rel="stylesheet" href="{{ asset('public/assets/css/bootstrap-imageupload.css?version='.config('app.version')) }}"> -->
+        <!-- summernote -->
+        <link rel="stylesheet" href="{{ asset('public/assets/plugins/summernote/summernote-bs4.min.css?version='.config('app.version')) }}">
+        
     </head>
     <body class="hold-transition sidebar-mini layout-fixed">
         <div class="wrapper">
@@ -195,21 +197,46 @@
                                     </p>
                                 </a>
                             </li>
-                            <li class="nav-item <?=strpos(Request::segment(1), 'admin-blog') !== false ? 'menu-open' : ''?>">
-                                <a href="{{ url('admin-blog') }}" class="nav-link <?=strpos(Request::segment(1), 'blog') !== false ? 'active' : ''?>">
+                            <li class="nav-item <?=strpos(Request::segment(1), 'blog') !== false ? 'menu-open' : ''?>">
+                                <a href="{{ url('blog') }}" class="nav-link <?=strpos(Request::segment(1), 'blog') !== false ? 'active' : ''?>">
                                     <i class="nav-icon fa fa-list-ul"></i>
                                     <p>
                                         Blog
                                     </p>
                                 </a>
                             </li>
-                            <li class="nav-item <?=strpos(Request::segment(1), 'admin-property') !== false ? 'menu-open' : ''?>">
-                                <a href="{{ url('admin-property') }}" class="nav-link <?=strpos(Request::segment(1), 'property') !== false ? 'active' : ''?>">
+                            <li class="nav-item <?=strpos(Request::segment(1), 'property') !== false ? 'menu-open' : ''?>">
+                                <a href="{{ url('property') }}" class="nav-link <?=strpos(Request::segment(1), 'property') !== false ? 'active' : ''?>">
                                     <i class="nav-icon fa fa-list-ul"></i>
                                     <p>
                                         Property
                                     </p>
                                 </a>
+                            </li>
+                            <li class="nav-item <?=strpos(Request::segment(1), 'users') !== false ? 'menu-open' : ''?>">
+                                <a href="#" class="nav-link <?=strpos(Request::segment(1), 'users') !== false ? 'active' : ''?>">
+                                    <i class="nav-icon fa fa-list-ul"></i>
+                                    <p>
+                                        Users
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{ url('users/agent') }}" class="nav-link <?=strpos(Request::segment(2), 'agent') !== false ? 'active' : ''?>">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Agent/Broker</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{ url('users/user') }}" class="nav-link <?=strpos(Request::segment(2), 'user') !== false ? 'active' : ''?>">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Normal Users</p>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
                         </ul>
                     </nav>
@@ -274,8 +301,12 @@
 
         <!-- Select2 -->
         <script src="{{ asset('public/assets/plugins/select2/js/select2.full.min.js?version='.config('app.version')) }}"></script>
+        <!-- Ekko Lightbox -->
+        <script src="{{ asset('public/assets/plugins/ekko-lightbox/ekko-lightbox.min.js?version='.config('app.version')) }}"></script>
         <!-- ChartJS -->
         <script src="{{ asset('public/assets/plugins/chart.js/Chart.min.js?version='.config('app.version')) }}"></script>
+        <!-- Summernote -->
+        <script src="{{ asset('public/assets/plugins/summernote/summernote-bs4.min.js?version='.config('app.version')) }}"></script>
         <script type="text/javascript">
         $(function () {
           $('[data-toggle="tooltip"]').tooltip();
@@ -286,7 +317,7 @@
 
           $('.datepicker').datepicker({
                 inline: true,
-                dateFormat: "dd/mm/yy",
+                dateFormat: "yy/mm/yy",
                 changeFirstDay: false,
                 minDate: -7,
                 maxDate: +1,
@@ -307,69 +338,18 @@
 
           //$( ".datepicker" ).datepicker();
 
-          // DropzoneJS Demo Code Start
-          Dropzone.autoDiscover = false
+          // Summernote
+          $('#summernote').summernote();
 
-          // Get the template HTML and remove it from the doumenthe template HTML and remove it from the doument
-          var previewNode = document.querySelector("#template")
-          previewNode.id = ""
-          var previewTemplate = previewNode.parentNode.innerHTML
-          previewNode.parentNode.removeChild(previewNode)
-
-          var myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
-            url: "/target-url", // Set the url
-            thumbnailWidth: 80,
-            thumbnailHeight: 80,
-            parallelUploads: 20,
-            previewTemplate: previewTemplate,
-            autoQueue: false, // Make sure the files aren't queued until manually added
-            previewsContainer: "#previews", // Define the container to display the previews
-            clickable: ".fileinput-button" // Define the element that should be used as click trigger to select files.
-          })
-
-          myDropzone.on("addedfile", function(file) {
-            // Hookup the start button
-            file.previewElement.querySelector(".start").onclick = function() { myDropzone.enqueueFile(file) }
-          })
-
-          // Update the total progress bar
-          myDropzone.on("totaluploadprogress", function(progress) {
-            document.querySelector("#total-progress .progress-bar").style.width = progress + "%"
-          })
-
-          myDropzone.on("sending", function(file) {
-            // Show the total progress bar when upload starts
-            document.querySelector("#total-progress").style.opacity = "1"
-            // And disable the start button
-            file.previewElement.querySelector(".start").setAttribute("disabled", "disabled")
-          })
-
-          // Hide the total progress bar when nothing's uploading anymore
-          myDropzone.on("queuecomplete", function(progress) {
-            document.querySelector("#total-progress").style.opacity = "0"
-          })
-
-          // Setup the buttons for all transfers
-          // The "add files" button doesn't need to be setup because the config
-          // `clickable` has already been specified.
-          document.querySelector("#actions .start").onclick = function() {
-            myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED))
-          }
-          document.querySelector("#actions .cancel").onclick = function() {
-            myDropzone.removeAllFiles(true)
-          }
-          // DropzoneJS Demo Code End
+          $(document).on('click', '[data-toggle="lightbox"]', function(event) {
+              event.preventDefault();
+              $(this).ekkoLightbox({
+                alwaysShowClose: true
+              });
+          });
+          
         })
         </script>
-
-        
-        <!-- <script src="{{ asset('public/assets/js/bootstrap-imageupload.js') }}"></script>
-
-        <script>
-            var $imageupload = $('.imageupload');
-            $imageupload.imageupload();
-
-        </script> -->
         @yield('javascripts')
     </body>
 </html>

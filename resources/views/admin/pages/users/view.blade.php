@@ -75,22 +75,24 @@
               <div class="card-body">
                 <form method="get" action="" autocomplete="off" enctype="multipart/form-data">
                   <div class="row">
-                    <div class="col-sm-6">
-                      <!-- select -->
+                    <div class="col-4">
+                      <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Name" name="name" value="{{ isset($serach_data['name']) && $serach_data['name'] ? $serach_data['name'] : '' }}">
+                      </div>
+                    </div>
+
+                    <div class="col-4">
                       <div class="form-group">
                         <input type="text" class="form-control" placeholder="Email" name="email" value="{{ isset($serach_data['email']) && $serach_data['email'] ? $serach_data['email'] : '' }}">
                       </div>
                     </div>
-                    <div class="col-sm-6">
-                      <!-- select -->
+                    <div class="col-4">
                       <div class="form-group">
                         <input type="text" class="form-control" placeholder="Phone" name="phone" value="{{ isset($serach_data['phone']) && $serach_data['phone'] ? $serach_data['phone'] : '' }}">
                       </div>
                     </div>
-                    <div class="col-5">
-                      <input type="text" class="form-control" placeholder="Name" name="name" value="{{ isset($serach_data['name']) && $serach_data['name'] ? $serach_data['name'] : '' }}">
-                    </div>
-                    <div class="col-5">
+                    
+                    <div class="col-4">
                       <select class="form-control" name="status">
                         <option value="">Select Status</option>
                         <option value="1" {{ isset($serach_data['status']) && $serach_data['status'] == 1 ? 'selected' : '' }}>Active</option>
@@ -130,12 +132,8 @@
                     <tr>
                       <th><input class="checkall" type="checkbox" value=""></th>
                       <th>Name</th>
-                      <th>Designation</th>
-                      <th>In-Charge</th>
                       <th>Email</th>
                       <th>Phone</th>
-                      <th>Store Type</th>
-                      <th>Store</th>
                       <th>Status</th>
                       <th>Action</th>
                     </tr>
@@ -146,32 +144,8 @@
                     <tr> 
                       <td style="width: 20px;"><input class="checkbox" type="checkbox" value="{{ $res->id }}"></td>
                       <td>{{ $res->name }}</td>
-                      <td>{{ $res->designation }}</td>
-                      <td>{{ $res->incharge }}</td>
                       <td>{{ $res->email }}</td>
                       <td>{{ $res->phone }}</td>
-                      <td>
-                        <?php
-                        if($res->type == 1){
-                          echo 'District';
-                        }else if($res->type == 2){
-                          echo 'main';
-                        }else{
-                          echo "Sub-Seed";
-                        }
-                        ?>
-                      </td>
-                      <td>
-                        <?php
-                        if($res->type == 1){
-                          echo $res->districtstore_name;
-                        }else if($res->type == 2){
-                          echo $res->mainstore_name;
-                        }else{
-                          echo $res->subseedstore_name;
-                        }
-                        ?>
-                      </td>
                       <td>{{ $res->status == 1 ? 'Active' : 'In-Active' }}</td>
                       <td style="width: 100px;">
                         <a href="{{ url($metadata['page_form_url'].'/'.encrypt($res->id)) }}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Edit">
@@ -185,7 +159,7 @@
                     @endforeach
                   @else
                     <tr> 
-                      <td colspan="10">No record found.</td>
+                      <td colspan="6">No record found.</td>
                     </tr>
                   @endif
                   </tbody>

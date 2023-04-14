@@ -53,32 +53,46 @@
                     <div class="col-sm-4">
                       <!-- text input -->
                       <div class="form-group">
-                        <label>Name</label>
-                        <input type="text" class="form-control" placeholder="Name" name="name" value="{{ old('name', isset($details->name) && $details->name ? $details->name : '') }}" required="">
+                        <label>Select Image</label>
+                        <input type="file" class="form-control" placeholder="Select Image" name="blog_image" value="" accept="image/png, image/gif, image/jpeg">
                       </div>
                     </div>
                     <div class="col-sm-4">
                       <!-- text input -->
                       <div class="form-group">
-                        <label>Email</label>
-                        <input type="text" class="form-control" placeholder="Email" name="email" value="{{ old('email', isset($details->email) && $details->email ? $details->email : '') }}" required="">
+                        <label>Category</label>
+                        <select class="form-control select2" name="category_id" id="category_id" required="">
+                          <option value="">Select Category</option>
+                           @if($category)
+                               @foreach ($category as $val)
+                                <option value="{{ $val->id }}" {{ isset($details->category_id) && $details->category_id == $val->id ? 'selected' : '' }}>{{ $val->category }}</option>
+                               @endforeach
+                            @endif
+                        </select>
                       </div>
                     </div>
                     <div class="col-sm-4">
                       <!-- text input -->
                       <div class="form-group">
-                        <label>Phone</label>
-                        <input type="number" class="form-control" placeholder="Phone" name="phone" value="{{ old('phone', isset($details->phone) && $details->phone ? $details->phone : '') }}" required="">
+                        <label>Author</label>
+                        <input type="text" class="form-control" placeholder="Author" name="author" value="{{ old('author', isset($details->author) && $details->author ? $details->author : '') }}" required="">
                       </div>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-12">
                       <!-- text input -->
                       <div class="form-group">
-                        <label>Password</label>
-                        <input type="text" class="form-control" placeholder="Password" name="password" value="">
+                        <label>Title</label>
+                        <input type="text" class="form-control" placeholder="Title" name="title" value="{{ old('title', isset($details->title) && $details->title ? $details->title : '') }}" required="">
                       </div>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-9">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <label>Tags</label>
+                        <input type="text" class="form-control" placeholder="Tags" name="tags" value="{{ old('tags', isset($details->tags) && $details->tags ? $details->tags : '') }}" required="">
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
                       <!-- select -->
                       <div class="form-group">
                         <label>Select</label>
@@ -88,6 +102,16 @@
                         </select>
                       </div>
                     </div>
+                    <div class="col-sm-12">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <label>Description</label>
+                        <textarea id="summernote" name="description">
+                          {{ old('description', isset($details->description) && $details->description ? $details->description : '') }}
+                        </textarea>
+                      </div>
+                    </div>
+                    
                   </div>
                 </div>
                 <!-- /.card-body -->
@@ -123,14 +147,13 @@ $(document).ready(function() {
 
     $('#dataForm').validate({
       rules: {
+          district_id: {
+            required: true,
+          },
+          subdevision_id: {
+            required: true,
+          },
           name: {
-            required: true,
-          },
-          email: {
-            required: true,
-            email:true
-          },
-          phone: {
             required: true,
           }, 
         },

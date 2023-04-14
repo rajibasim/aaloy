@@ -75,10 +75,84 @@
               <div class="card-body">
                 <form method="get" action="" autocomplete="off" enctype="multipart/form-data">
                   <div class="row">
-                    <div class="col-5">
-                      <input type="text" class="form-control" placeholder="Category name" name="category" value="{{ isset($serach_data['category']) && $serach_data['category'] ? $serach_data['category'] : '' }}">
+                    <div class="col-4">
+                      <input type="text" class="form-control" placeholder="Title" name="title" value="{{ isset($serach_data['title']) && $serach_data['title'] ? $serach_data['title'] : '' }}">
                     </div>
-                    <div class="col-5">
+                    <div class="col-sm-4">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <select class="form-control select2" name="location_id" id="location_id">
+                          <option value="">Select Location</option>
+                           @if($location)
+                               @foreach ($location as $val)
+                                <option value="{{ $val->id }}" {{ isset($serach_data['location_id']) && $serach_data['location_id'] == $val->id ? 'selected' : '' }}>{{ $val->location }}</option>
+                               @endforeach
+                            @endif
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <select class="form-control select2" name="property_for" id="property_for">
+                          <option value="">Select One</option>
+                          <option value="1" {{ isset($serach_data['property_for']) && $serach_data['property_for'] == 1 ? 'selected' : '' }}>Rent</option>
+                          <option value="2" {{ isset($serach_data['property_for']) && $serach_data['property_for'] == 2 ? 'selected' : '' }}>Sell</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <select class="form-control select2" name="posted_by" id="posted_by">
+                          <option value="">Select One</option>
+                          <option value="1" {{ isset($serach_data['posted_by']) && $serach_data['posted_by'] == 1 ? 'selected' : '' }}>Broker</option>
+                          <option value="2" {{ isset($serach_data['posted_by']) && $serach_data['posted_by'] == 2 ? 'selected' : '' }}>User</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <select class="form-control select2" name="posted_by_id" id="posted_by_id">
+                          <option value="">Posted By(User)</option>
+                          <?php
+                          if($users){
+                            foreach ($users as $key => $val) {
+                          ?>
+                                 <option value="{{ $val->id }}" {{ isset($serach_data['posted_by_id']) && $serach_data['posted_by_id'] == $val->id ? 'selected' : '' }}>{{ $val->name }}</option>
+                          <?php
+                            }
+                          }
+                          ?>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <select class="form-control select2" name="property_type_id" id="property_type_id" >
+                          <option value="">Select Property Type</option>
+                           @if($property_type)
+                               @foreach ($property_type as $val)
+                                <option value="{{ $val->id }}" {{ isset($serach_data['property_type_id']) && $serach_data['property_type_id'] == $val->id ? 'selected' : '' }}>{{ $val->property_type }}</option>
+                               @endforeach
+                            @endif
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <select class="form-control select2" name="preferance" id="preferance">
+                          <option value="">Select One</option>
+                          <option value="1" {{ isset($serach_data['preferance']) && $serach_data['preferance'] == 1 ? 'selected' : '' }}>Bachelor</option>
+                          <option value="2" {{ isset($serach_data['preferance']) && $serach_data['preferance'] == 2 ? 'selected' : '' }}>Family</option>
+                          <option value="3" {{ isset($serach_data['preferance']) && $serach_data['preferance'] == 3 ? 'selected' : '' }}>No Preferance</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-4">
                       <select class="form-control" name="status">
                         <option value="">Select Status</option>
                         <option value="1" {{ isset($serach_data['status']) && $serach_data['status'] == 1 ? 'selected' : '' }}>Active</option>
@@ -117,7 +191,12 @@
                   <thead>
                     <tr>
                       <th><input class="checkall" type="checkbox" value=""></th>
-                      <th>Country</th>
+                      <th>Title</th>
+                      <th>Property Type</th>
+                      <th>Property For</th>
+                      <th>Posted By</th>
+                      <th>Admin Aprove</th>
+                      <!-- <th>Created At</th> -->
                       <th>Status</th>
                       <th>Action</th>
                     </tr>
@@ -127,9 +206,17 @@
                     @foreach ( $rows as $key => $res )
                     <tr> 
                       <td style="width: 20px;"><input class="checkbox" type="checkbox" value="{{ $res->id }}"></td>
-                      <td>{{ $res->category }}</td>
+                      <td>{{ $res->title }}</td>
+                      <td>{{ $res->property_type }}</td>
+                      <td>{{ $res->property_for == 1 ? 'Rent' : 'Sell' }}</td>
+                      <td>{{ $res->posted_by == 1 ? 'Broker' : 'Owner' }}</td>
+                      <td>{{ $res->status == 1 ? 'Yes' : 'No' }}</td>
+                      <!-- <td>{{ $res->created_at }}</td> -->
                       <td>{{ $res->status == 1 ? 'Active' : 'In-Active' }}</td>
-                      <td style="width: 100px;">
+                      <td style="width: 130px;">
+                        <a href="{{ url($metadata['page_details'].'/'.encrypt($res->id)) }}" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Details">
+                          <i class="fas fa-eye" aria-hidden="true"></i>
+                        </a>
                         <a href="{{ url($metadata['page_form_url'].'/'.encrypt($res->id)) }}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Edit">
                           <i class="fas fa-edit" aria-hidden="true"></i>
                         </a>
@@ -141,7 +228,7 @@
                     @endforeach
                   @else
                     <tr> 
-                      <td colspan="4">No record found.</td>
+                      <td colspan="8">No record found.</td>
                     </tr>
                   @endif
                   </tbody>

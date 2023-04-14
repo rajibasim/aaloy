@@ -35,8 +35,8 @@
                 <!-- small box -->
                 <div class="small-box bg-success">
                   <div class="inner">
-                    <h3><small><i class="fa fa-rupee-sign pr-1"></i></small>00</h3>
-                    <p>Today's Cash Sale</p>
+                    <h3>00</h3>
+                    <p>Property</p>
                   </div>
                   <div class="icon">
                     <i class="ion ion-bag"></i>
@@ -48,8 +48,8 @@
                 <!-- small box -->
                 <div class="small-box bg-info">
                   <div class="inner">
-                    <h3><small><i class="fa fa-rupee-sign pr-1"></i></small>00</h3>
-                    <p>Today's Cash Subsidy</p>
+                    <h3>00</h3>
+                    <p>User</p>
                   </div>
                   <div class="icon">
                     <i class="ion ion-ios-people"></i>
@@ -59,23 +59,10 @@
               <!-- ./col -->
               <div class="col-md-3 col-sm-12">
                 <!-- small box -->
-                <div class="small-box bg-success">
+                <div class="small-box bg-secondary">
                   <div class="inner">
-                    <h3><small><i class="fa fa-rupee-sign pr-1"></i></small>00</h3>
-                    <p>Monthly's Cash Sale</p>
-                  </div>
-                  <div class="icon">
-                    <i class="ion ion-bag"></i>
-                  </div>
-                </div>
-              </div>
-              <!-- ./col -->
-              <div class="col-md-3 col-sm-12">
-                <!-- small box -->
-                <div class="small-box bg-info">
-                  <div class="inner">
-                    <h3><small><i class="fa fa-rupee-sign pr-1"></i></small>00</h3>
-                    <p>Monthly's Cash Subsidy</p>
+                    <h3>00</h3>
+                    <p>Owner</p>
                   </div>
                   <div class="icon">
                     <i class="ion ion-ios-people"></i>
@@ -87,28 +74,14 @@
                 <!-- small box -->
                 <div class="small-box bg-warning">
                   <div class="inner">
-                    <h3><small><i class="fa fa-rupee-sign pr-1"></i></small>00</h3>
-                    <p>Today's Scheme Sale</p>
+                    <h3>00</h3>
+                    <p>Agent</p>
                   </div>
                   <div class="icon">
-                    <i class="ion ion-ios-paper"></i>
+                    <i class="ion ion-ios-people"></i>
                   </div>
                 </div>
               </div>
-              <!-- ./col -->
-              <div class="col-md-3 col-sm-12">
-                <!-- small box -->
-                <div class="small-box bg-warning">
-                  <div class="inner">
-                    <h3><small><i class="fa fa-rupee-sign pr-1"></i></small>00</h3>
-                    <p>Monthly's Scheme Sale</p>
-                  </div>
-                  <div class="icon">
-                    <i class="ion ion-ios-paper"></i>
-                  </div>
-                </div>
-              </div>
-              
             </div>
           </div>
       </div><!-- /.container-fluid -->

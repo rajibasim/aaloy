@@ -75,10 +75,13 @@
               <div class="card-body">
                 <form method="get" action="" autocomplete="off" enctype="multipart/form-data">
                   <div class="row">
-                    <div class="col-5">
-                      <input type="text" class="form-control" placeholder="Category name" name="category" value="{{ isset($serach_data['category']) && $serach_data['category'] ? $serach_data['category'] : '' }}">
+                    <div class="col-3">
+                      <input type="text" class="form-control" placeholder="Title" name="title" value="{{ isset($serach_data['title']) && $serach_data['title'] ? $serach_data['title'] : '' }}">
                     </div>
-                    <div class="col-5">
+                    <div class="col-3">
+                      <input type="text" class="form-control" placeholder="Author" name="author" value="{{ isset($serach_data['author']) && $serach_data['author'] ? $serach_data['author'] : '' }}">
+                    </div>
+                    <div class="col-3">
                       <select class="form-control" name="status">
                         <option value="">Select Status</option>
                         <option value="1" {{ isset($serach_data['status']) && $serach_data['status'] == 1 ? 'selected' : '' }}>Active</option>
@@ -117,7 +120,9 @@
                   <thead>
                     <tr>
                       <th><input class="checkall" type="checkbox" value=""></th>
-                      <th>Country</th>
+                      <th>Image</th>
+                      <th>Title</th>
+                      <th>Author</th>
                       <th>Status</th>
                       <th>Action</th>
                     </tr>
@@ -127,7 +132,9 @@
                     @foreach ( $rows as $key => $res )
                     <tr> 
                       <td style="width: 20px;"><input class="checkbox" type="checkbox" value="{{ $res->id }}"></td>
-                      <td>{{ $res->category }}</td>
+                      <td><img style="height: 100px; width: 100px;" src="<?=url($res->blog_image)?>"></td>
+                      <td>{{ $res->title }}</td>
+                      <td>{{ $res->author }}</td>
                       <td>{{ $res->status == 1 ? 'Active' : 'In-Active' }}</td>
                       <td style="width: 100px;">
                         <a href="{{ url($metadata['page_form_url'].'/'.encrypt($res->id)) }}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Edit">
@@ -141,7 +148,7 @@
                     @endforeach
                   @else
                     <tr> 
-                      <td colspan="4">No record found.</td>
+                      <td colspan="3">No record found.</td>
                     </tr>
                   @endif
                   </tbody>

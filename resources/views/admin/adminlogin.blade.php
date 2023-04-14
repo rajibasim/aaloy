@@ -30,7 +30,7 @@
                </a>
             </div>
             <div class="card-body">
-               <p class="login-box-msg">Department of Agriculture and Farmer's Affairs, Govt. of Tripura</p>
+               <p class="login-box-msg">Configure of Admin Panel</p>
                <form id="login-form" action=" {{url('admin-post-login')}}" method="post">
                   @csrf
                  <!--  <div class="input-group mb-3">
