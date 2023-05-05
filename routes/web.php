@@ -80,6 +80,12 @@ Route::group(['middleware' => ['checkAdminLogin']], function() {
     Route::post('/blog/save', [App\Http\Controllers\Application\Admin\BlogController::class, 'save'])->name('save');
     Route::get('/blog/delete/{id}', [App\Http\Controllers\Application\Admin\BlogController::class, 'delete'])->name('delete');
     /* blog End */
+    /* food Start */
+    Route::get('/food', [App\Http\Controllers\Application\Admin\FoodController::class, 'index'])->name('food');
+    Route::get('/food/form/{id?}', [App\Http\Controllers\Application\Admin\FoodController::class, 'form'])->name('form');
+    Route::post('/food/save', [App\Http\Controllers\Application\Admin\FoodController::class, 'save'])->name('save');
+    Route::get('/food/delete/{id}', [App\Http\Controllers\Application\Admin\FoodController::class, 'delete'])->name('delete');
+    /* food End */
      /* property Start */
     Route::get('/property', [App\Http\Controllers\Application\Admin\PropertyController::class, 'index'])->name('property');
     Route::get('/property/form/{id?}', [App\Http\Controllers\Application\Admin\PropertyController::class, 'form'])->name('form');

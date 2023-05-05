@@ -7,37 +7,37 @@ use Illuminate\Support\Str;
 use App\Models\CommonModel;
 use Validator;
 
-class BlogController extends Controller{
+class FoodController extends Controller{
 
     public function __construct(){
         $this->CommonModel = new CommonModel();
-        $this->slug = '/blog';
-        $this->title = 'Blog';
-        $this->table = 'blog';
+        $this->slug = '/food';
+        $this->title = 'Food';
+        $this->table = 'property_food';
     }
 
     /* List view */    
     public function index(Request $request){
         $serach_data = array();
         $title = $request->title;
-        $author = $request->title;
+        $location_id = $request->location_id;
         $status = $request->status;
         $where = array();
         $where = array(
-            array('is_deleted', '=', 0)
+            array('property_food.is_deleted', '=', 0)
         );
         if($title){
-            array_push($where, array('title', 'like', "%{$title}%"));
+            array_push($where, array('property_food.title', 'like', "%{$title}%"));
             $serach_data['title'] = $title;
         }
 
-        if($author){
-            array_push($where, array('author', 'like', "%{$author}%"));
-            $serach_data['author'] = $author;
+        if($location_id){
+            array_push($where, array('property_food.location_id', '=', $location_id));
+            $serach_data['location_id'] = $location_id;
         }
 
         if($status){
-            array_push($where, array('status', '=', $status));
+            array_push($where, array('property_food.status', '=', $status));
             $serach_data['status'] = $status;
         }
 
@@ -60,8 +60,10 @@ class BlogController extends Controller{
             ),
         );
 
-        $data['rows'] = $this->CommonModel->get_all($table = $this->table, $select = array('*'), $where, $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "20");        
-        return view('admin.pages.blog.view', $data);
+        $data['rows'] = $this->CommonModel->get_all($table = $this->table, $select = array('property_food.*','location.location'), $where, $join = array(), $left = array(array('location', 'property_food.location_id', '=', 'location.id')), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "20");  
+
+        $data['location'] = $this->CommonModel->get_all($table = 'location', $select = array('*'), $where = array(array('is_deleted', '=', 0)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");      
+        return view('admin.pages.food.view', $data);
     }
 
     /* add & edit form */
@@ -95,19 +97,17 @@ class BlogController extends Controller{
             $data['details'] = !empty($details) ? $details[0] : [];
         }
 
-        $data['category'] = $this->CommonModel->get_all($table = 'category', $select = array('*'), $where = array(array('is_deleted', '=', 0)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
+        $data['location'] = $this->CommonModel->get_all($table = 'location', $select = array('*'), $where = array(array('is_deleted', '=', 0)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
 
-        return view('admin.pages.blog.form', $data);
+        return view('admin.pages.food.form', $data);
     }
 
     /* store & update data */
     public function save(Request $request){
         $id = $request->input('id');
         $validator = Validator::make($request->all(), [ 
-            'title' => 'required|unique:blog,title,' . $id,
-            'category_id' => 'required',
-            'author' => 'required',
-            'tags' => 'required',
+            'title' => 'required|unique:property_food,title,' . $id,
+            'location_id' => 'required',
             'description' => 'required',
             'status' => 'required', 
         ]); 
@@ -118,21 +118,18 @@ class BlogController extends Controller{
             $flash_data  = '';
             if($id){
                 $post_data = array(
+                    'location_id' => $request->input('location_id'),
                     'title' => $request->input('title'),
-                    'category_id' => $request->input('category_id'),
-                    'author' => $request->input('author'),
-                    'tags' => $request->input('tags'),
                     'description' => $request->input('description'),
-                    'status' => $request->input('status'),
-                    'slug' => Str::slug($request->input('title')),
-                    'updated_at' => date('Y-m-d H:i:s'),
+                    'created_at' => date('Y-m-d H:i:s'),
                 );
-                $destinationPath = 'public/uploads/blog_image/';
+
+                $destinationPath = 'public/uploads/food_info_file/';
                 if (!empty($_FILES)) {
-                    if ($_FILES['blog_image'] && $_FILES['blog_image']['name'] != "") {
-                        $profile_image_new_name = str_replace(" ", "_", time() . $_FILES['blog_image']['name']);
-                        if (move_uploaded_file($_FILES['blog_image']['tmp_name'], $destinationPath . $profile_image_new_name)) {
-                            $post_data['blog_image'] = $destinationPath . $profile_image_new_name;
+                    if ($_FILES['food_info_file'] && $_FILES['food_info_file']['name'] != "") {
+                        $profile_image_new_name = str_replace(" ", "_", time() . $_FILES['food_info_file']['name']);
+                        if (move_uploaded_file($_FILES['food_info_file']['tmp_name'], $destinationPath . $profile_image_new_name)) {
+                            $post_data['food_info_file'] = $destinationPath . $profile_image_new_name;
                         }
                     }
                 }
@@ -151,22 +148,18 @@ class BlogController extends Controller{
             }else{
 
                 $post_data = array(
+                    'location_id' => $request->input('location_id'),
                     'title' => $request->input('title'),
-                    'category_id' => $request->input('category_id'),
-                    'author' => $request->input('author'),
-                    'tags' => $request->input('tags'),
                     'description' => $request->input('description'),
-                    'status' => $request->input('status'),
-                    'slug' => Str::slug($request->input('title')),
                     'created_at' => date('Y-m-d H:i:s'),
                 );
 
-                $destinationPath = 'public/uploads/blog_image/';
+                $destinationPath = 'public/uploads/food_info_file/';
                 if (!empty($_FILES)) {
-                    if ($_FILES['blog_image'] && $_FILES['blog_image']['name'] != "") {
-                        $profile_image_new_name = str_replace(" ", "_", time() . $_FILES['blog_image']['name']);
-                        if (move_uploaded_file($_FILES['blog_image']['tmp_name'], $destinationPath . $profile_image_new_name)) {
-                            $post_data['blog_image'] = $destinationPath . $profile_image_new_name;
+                    if ($_FILES['food_info_file'] && $_FILES['food_info_file']['name'] != "") {
+                        $profile_image_new_name = str_replace(" ", "_", time() . $_FILES['food_info_file']['name']);
+                        if (move_uploaded_file($_FILES['food_info_file']['tmp_name'], $destinationPath . $profile_image_new_name)) {
+                            $post_data['food_info_file'] = $destinationPath . $profile_image_new_name;
                         }
                     }
                 }

@@ -73,50 +73,6 @@
         <!-- ./row -->
       </div><!-- /.container-fluid -->
     </section>
-    <section class="content">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="card card-primary card-outline">
-              <div class="card-header">
-                <h3 class="card-title">Food Info Add</h3>
-                <div class="card-tools">
-                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                </div>
-              </div>
-              <div class="card-body">
-                <form id="dataForm" method="post" action="{{ url($metadata['save_food']) }}" autocomplete="off" enctype="multipart/form-data">
-                  @csrf
-                  <input type="hidden" name="id" value="{{ isset($details->id) && $details->id ? $details->id : '' }}">
-                  <div class="row">
-                    <div class="col-3">
-                      <input type="text" class="form-control" placeholder="Title" name="title" required="">
-                    </div>
-                    <div class="col-5">
-                      <input type="text" class="form-control" placeholder="Description" name="description" required="">
-                    </div>
-                    <div class="col-2">
-                      <input type="file" class="form-control" name="food_info_file" required="" accept="application/pdf">
-                    </div>
-                    <div class="col-1">
-                      <button type="submit" class="btn btn-block btn-primary">Save</button>
-                    </div>
-                    <div class="col-1">
-                      <a href="{{ url($metadata['page_details'].'/'.encrypt($details->id)) }}" class="btn btn-block btn-danger">Reset</a>
-                    </div>
-                  </div>
-                </form>
-              </div>
-              <!-- /.card-body -->
-            </div>
-          </div>
-          <!-- /.col -->
-        </div>
-        <!-- ./row -->
-      </div><!-- /.container-fluid -->
-    </section>
     <!-- /.content-header -->
     <section class="content">
       <div class="container-fluid">
@@ -418,7 +374,6 @@
                       <th>Title</th>
                       <th>Description</th>
                       <th>View</th>
-                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -430,11 +385,6 @@
                       <td>
                         <a href="{{ url($res->food_info_file) }}" target="_blank" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Details">
                           <i class="fas fa-eye" aria-hidden="true"></i>
-                        </a>
-                      </td>
-                      <td style="width: 30px;">
-                        <a href="{{ url($metadata['delete_food'].'/'.$res->id) }}" class="btn btn-danger btn-sm delete" data-toggle="tooltip" data-placement="top" title="Delete">
-                          <i class="fa fa-trash" aria-hidden="true"></i>
                         </a>
                       </td>
                     </tr>

@@ -205,6 +205,14 @@
                                     </p>
                                 </a>
                             </li>
+                            <li class="nav-item <?=strpos(Request::segment(1), 'food') !== false ? 'menu-open' : ''?>">
+                                <a href="{{ url('food') }}" class="nav-link <?=strpos(Request::segment(1), 'food') !== false ? 'active' : ''?>">
+                                    <i class="nav-icon fa fa-list-ul"></i>
+                                    <p>
+                                        Food
+                                    </p>
+                                </a>
+                            </li>
                             <li class="nav-item <?=strpos(Request::segment(1), 'property') !== false ? 'menu-open' : ''?>">
                                 <a href="{{ url('property') }}" class="nav-link <?=strpos(Request::segment(1), 'property') !== false ? 'active' : ''?>">
                                     <i class="nav-icon fa fa-list-ul"></i>
