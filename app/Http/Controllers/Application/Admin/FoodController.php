@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers\Application\Admin\Masterdata;
+namespace App\Http\Controllers\Application\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -7,31 +7,37 @@ use Illuminate\Support\Str;
 use App\Models\CommonModel;
 use Validator;
 
-class CategoryController extends Controller{
+class FoodController extends Controller{
 
     public function __construct(){
         $this->CommonModel = new CommonModel();
-        $this->slug = '/masterdata/category';
-        $this->title = 'Category';
-        $this->table = 'category';
+        $this->slug = '/food';
+        $this->title = 'Food';
+        $this->table = 'property_food';
     }
 
     /* List view */    
     public function index(Request $request){
         $serach_data = array();
-        $category = $request->category;
+        $title = $request->title;
+        $location_id = $request->location_id;
         $status = $request->status;
         $where = array();
         $where = array(
-            array('is_deleted', '=', 0)
+            array('property_food.is_deleted', '=', 0)
         );
-        if($category){
-            array_push($where, array('category', 'like', "%{$category}%"));
-            $serach_data['category'] = $category;
+        if($title){
+            array_push($where, array('property_food.title', 'like', "%{$title}%"));
+            $serach_data['title'] = $title;
+        }
+
+        if($location_id){
+            array_push($where, array('property_food.location_id', '=', $location_id));
+            $serach_data['location_id'] = $location_id;
         }
 
         if($status){
-            array_push($where, array('status', '=', $status));
+            array_push($where, array('property_food.status', '=', $status));
             $serach_data['status'] = $status;
         }
 
@@ -54,8 +60,10 @@ class CategoryController extends Controller{
             ),
         );
 
-        $data['rows'] = $this->CommonModel->get_all($table = $this->table, $select = array('*'), $where, $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "20");        
-        return view('admin.pages.category.view', $data);
+        $data['rows'] = $this->CommonModel->get_all($table = $this->table, $select = array('property_food.*','location.location'), $where, $join = array(), $left = array(array('location', 'property_food.location_id', '=', 'location.id')), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "20");  
+
+        $data['location'] = $this->CommonModel->get_all($table = 'location', $select = array('*'), $where = array(array('is_deleted', '=', 0)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");      
+        return view('admin.pages.food.view', $data);
     }
 
     /* add & edit form */
@@ -89,14 +97,19 @@ class CategoryController extends Controller{
             $data['details'] = !empty($details) ? $details[0] : [];
         }
 
-        return view('admin.pages.category.form', $data);
+        $data['location'] = $this->CommonModel->get_all($table = 'location', $select = array('*'), $where = array(array('is_deleted', '=', 0)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
+
+        return view('admin.pages.food.form', $data);
     }
 
     /* store & update data */
     public function save(Request $request){
         $id = $request->input('id');
         $validator = Validator::make($request->all(), [ 
-            'category' => 'required|unique:category,category,' . $id,
+            'title' => 'required|unique:property_food,title,' . $id,
+            'location_id' => 'required',
+            'description' => 'required',
+            'status' => 'required', 
         ]); 
 
         if ($validator->fails()) { 
@@ -105,9 +118,21 @@ class CategoryController extends Controller{
             $flash_data  = '';
             if($id){
                 $post_data = array(
-                    'category' => $request->input('category'),
-                    'updated_at' => date('Y-m-d H:i:s'),
+                    'location_id' => $request->input('location_id'),
+                    'title' => $request->input('title'),
+                    'description' => $request->input('description'),
+                    'created_at' => date('Y-m-d H:i:s'),
                 );
+
+                $destinationPath = 'public/uploads/food_info_file/';
+                if (!empty($_FILES)) {
+                    if ($_FILES['food_info_file'] && $_FILES['food_info_file']['name'] != "") {
+                        $profile_image_new_name = str_replace(" ", "_", time() . $_FILES['food_info_file']['name']);
+                        if (move_uploaded_file($_FILES['food_info_file']['tmp_name'], $destinationPath . $profile_image_new_name)) {
+                            $post_data['food_info_file'] = $destinationPath . $profile_image_new_name;
+                        }
+                    }
+                }
                 $result = $this->CommonModel->update_data($this->table, array(array('id', '=', $id)), $post_data);
                 if($result == true){
                     $flash_data = array(
@@ -123,9 +148,21 @@ class CategoryController extends Controller{
             }else{
 
                 $post_data = array(
-                    'category' => $request->input('category'),
+                    'location_id' => $request->input('location_id'),
+                    'title' => $request->input('title'),
+                    'description' => $request->input('description'),
                     'created_at' => date('Y-m-d H:i:s'),
                 );
+
+                $destinationPath = 'public/uploads/food_info_file/';
+                if (!empty($_FILES)) {
+                    if ($_FILES['food_info_file'] && $_FILES['food_info_file']['name'] != "") {
+                        $profile_image_new_name = str_replace(" ", "_", time() . $_FILES['food_info_file']['name']);
+                        if (move_uploaded_file($_FILES['food_info_file']['tmp_name'], $destinationPath . $profile_image_new_name)) {
+                            $post_data['food_info_file'] = $destinationPath . $profile_image_new_name;
+                        }
+                    }
+                }
 
                 $result = $this->CommonModel->insert_data_get_id($this->table, $post_data);
                 if($result == true){

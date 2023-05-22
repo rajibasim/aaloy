@@ -50,14 +50,42 @@
                 <input type="hidden" name="id" value="{{ isset($details->id) && $details->id ? $details->id : '' }}">
                 <div class="card-body">
                   <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                       <!-- text input -->
                       <div class="form-group">
-                        <label>Category</label>
-                        <input type="text" class="form-control" placeholder="Enter category name" name="category" value="{{ old('category', isset($details->category) && $details->category ? $details->category : '') }}" required="">
+                        <label>Upload File</label>
+                        <input type="file" class="form-control" name="food_info_file" placeholder="Select File" required="" accept="application/pdf">
                       </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" class="form-control" placeholder="Title" name="title" value="{{ old('title', isset($details->title) && $details->title ? $details->title : '') }}" required="">
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <label>Location</label>
+                        <select class="form-control select2" name="location_id" id="location_id" required="">
+                          <option value="">Select Location</option>
+                           @if($location)
+                               @foreach ($location as $val)
+                                <option value="{{ $val->id }}" {{ isset($details->location_id) && $details->location_id == $val->id ? 'selected' : '' }}>{{ $val->location }}</option>
+                               @endforeach
+                            @endif
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-sm-9">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <label>Description</label>
+                        <input type="text" class="form-control" placeholder="Description" name="description" value="{{ old('description', isset($details->description) && $details->description ? $details->description : '') }}" required="">
+                      </div>
+                    </div> 
+                    <div class="col-sm-3">
                       <!-- select -->
                       <div class="form-group">
                         <label>Select</label>
@@ -66,7 +94,7 @@
                           <option value="2" {{ isset($details->status) && $details->status == 2 ? 'selected' : '' }}>In-Active</option>
                         </select>
                       </div>
-                    </div>
+                    </div>                   
                   </div>
                 </div>
                 <!-- /.card-body -->

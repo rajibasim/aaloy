@@ -1,33 +1,46 @@
 <?php
-namespace App\Http\Controllers\Application\Admin\Masterdata;
+namespace App\Http\Controllers\Application\Admin\Users;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Str;
 use App\Models\CommonModel;
 use Validator;
 
-class CategoryController extends Controller{
+class UserController extends Controller{
 
     public function __construct(){
         $this->CommonModel = new CommonModel();
-        $this->slug = '/masterdata/category';
-        $this->title = 'Category';
-        $this->table = 'category';
+        $this->slug = '/users/user';
+        $this->title = 'Users';
+        $this->table = 'users';
     }
 
     /* List view */    
     public function index(Request $request){
         $serach_data = array();
-        $category = $request->category;
+        $name = $request->name;
+        $email = $request->email;
+        $phone = $request->phone;
         $status = $request->status;
         $where = array();
         $where = array(
-            array('is_deleted', '=', 0)
+            array('is_deleted', '=', 0),
+            array('type', '=', 2)
         );
-        if($category){
-            array_push($where, array('category', 'like', "%{$category}%"));
-            $serach_data['category'] = $category;
+
+        if($name){
+            array_push($where, array('name', 'like', "%{$name}%"));
+            $serach_data['name'] = $name;
+        }
+
+        if($email){
+            array_push($where, array('email', 'like', "%{$email}%"));
+            $serach_data['email'] = $email;
+        }
+
+        if($phone){
+            array_push($where, array('phone', 'like', "%{$phone}%"));
+            $serach_data['phone'] = $phone;
         }
 
         if($status){
@@ -55,7 +68,7 @@ class CategoryController extends Controller{
         );
 
         $data['rows'] = $this->CommonModel->get_all($table = $this->table, $select = array('*'), $where, $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "20");        
-        return view('admin.pages.category.view', $data);
+        return view('admin.pages.users.view', $data);
     }
 
     /* add & edit form */
@@ -89,14 +102,17 @@ class CategoryController extends Controller{
             $data['details'] = !empty($details) ? $details[0] : [];
         }
 
-        return view('admin.pages.category.form', $data);
+        return view('admin.pages.users.form', $data);
     }
 
     /* store & update data */
     public function save(Request $request){
         $id = $request->input('id');
         $validator = Validator::make($request->all(), [ 
-            'category' => 'required|unique:category,category,' . $id,
+            'email' => 'required|unique:users,email,' . $id,
+            'phone' => 'required|unique:users,phone,' . $id,
+            'name' => 'required',
+            'status' => 'required', 
         ]); 
 
         if ($validator->fails()) { 
@@ -105,9 +121,15 @@ class CategoryController extends Controller{
             $flash_data  = '';
             if($id){
                 $post_data = array(
-                    'category' => $request->input('category'),
+                    'name' => $request->input('name'),
+                    'email' => $request->input('email'),
+                    'phone' => $request->input('phone'),
+                    'status' => $request->input('status'),
                     'updated_at' => date('Y-m-d H:i:s'),
                 );
+                if (!empty($request->input('password'))) {
+                   $post_data['password'] = bcrypt($request->input('password'));
+                }
                 $result = $this->CommonModel->update_data($this->table, array(array('id', '=', $id)), $post_data);
                 if($result == true){
                     $flash_data = array(
@@ -123,9 +145,17 @@ class CategoryController extends Controller{
             }else{
 
                 $post_data = array(
-                    'category' => $request->input('category'),
+                    'type' => 2,
+                    'name' => $request->input('name'),
+                    'email' => $request->input('email'),
+                    'phone' => $request->input('phone'),
+                    'status' => $request->input('status'),
                     'created_at' => date('Y-m-d H:i:s'),
                 );
+
+                if (!empty($request->input('password'))) {
+                   $post_data['password'] = bcrypt($request->input('password'));
+                }
 
                 $result = $this->CommonModel->insert_data_get_id($this->table, $post_data);
                 if($result == true){

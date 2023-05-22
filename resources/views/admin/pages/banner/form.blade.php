@@ -50,14 +50,35 @@
                 <input type="hidden" name="id" value="{{ isset($details->id) && $details->id ? $details->id : '' }}">
                 <div class="card-body">
                   <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                       <!-- text input -->
                       <div class="form-group">
-                        <label>Category</label>
-                        <input type="text" class="form-control" placeholder="Enter category name" name="category" value="{{ old('category', isset($details->category) && $details->category ? $details->category : '') }}" required="">
+                        <label>Select Image</label>
+                        <input type="file" class="form-control" placeholder="Select Image" name="banner_image" value="" accept="image/png, image/gif, image/jpeg">
                       </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" class="form-control" placeholder="Title" name="title" value="{{ old('title', isset($details->title) && $details->title ? $details->title : '') }}" required="">
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <label>URL</label>
+                        <input type="text" class="form-control" placeholder="Redirect URL" name="url" value="{{ old('url', isset($details->url) && $details->url ? $details->url : '') }}" required="">
+                      </div>
+                    </div>
+                    <div class="col-sm-8">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <label>Description</label>
+                        <input type="text" class="form-control" placeholder="Description" name="description" value="{{ old('description', isset($details->description) && $details->description ? $details->description : '') }}" required="">
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
                       <!-- select -->
                       <div class="form-group">
                         <label>Select</label>

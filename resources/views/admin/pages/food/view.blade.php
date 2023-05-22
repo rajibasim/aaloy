@@ -75,10 +75,23 @@
               <div class="card-body">
                 <form method="get" action="" autocomplete="off" enctype="multipart/form-data">
                   <div class="row">
-                    <div class="col-5">
-                      <input type="text" class="form-control" placeholder="Category name" name="category" value="{{ isset($serach_data['category']) && $serach_data['category'] ? $serach_data['category'] : '' }}">
+                    <div class="col-3">
+                      <input type="text" class="form-control" placeholder="Title" name="title" value="{{ isset($serach_data['title']) && $serach_data['title'] ? $serach_data['title'] : '' }}">
                     </div>
-                    <div class="col-5">
+                    <div class="col-sm-4">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <select class="form-control select2" name="location_id" id="location_id">
+                          <option value="">Select Location</option>
+                           @if($location)
+                               @foreach ($location as $val)
+                                <option value="{{ $val->id }}" {{ isset($serach_data['location_id']) && $serach_data['location_id'] == $val->id ? 'selected' : '' }}>{{ $val->location }}</option>
+                               @endforeach
+                            @endif
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-3">
                       <select class="form-control" name="status">
                         <option value="">Select Status</option>
                         <option value="1" {{ isset($serach_data['status']) && $serach_data['status'] == 1 ? 'selected' : '' }}>Active</option>
@@ -117,7 +130,8 @@
                   <thead>
                     <tr>
                       <th><input class="checkall" type="checkbox" value=""></th>
-                      <th>Country</th>
+                      <th>Title</th>
+                      <th>Location</th>
                       <th>Status</th>
                       <th>Action</th>
                     </tr>
@@ -127,9 +141,14 @@
                     @foreach ( $rows as $key => $res )
                     <tr> 
                       <td style="width: 20px;"><input class="checkbox" type="checkbox" value="{{ $res->id }}"></td>
-                      <td>{{ $res->category }}</td>
+                      
+                      <td>{{ $res->title }}</td>
+                      <td>{{ $res->location }}</td>
                       <td>{{ $res->status == 1 ? 'Active' : 'In-Active' }}</td>
-                      <td style="width: 100px;">
+                      <td style="width: 140px;">
+                        <a href="{{ url($res->food_info_file) }}" target="_blank" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="View">
+                          <i class="fas fa-eye" aria-hidden="true"></i>
+                        </a>
                         <a href="{{ url($metadata['page_form_url'].'/'.encrypt($res->id)) }}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Edit">
                           <i class="fas fa-edit" aria-hidden="true"></i>
                         </a>
@@ -141,7 +160,7 @@
                     @endforeach
                   @else
                     <tr> 
-                      <td colspan="4">No record found.</td>
+                      <td colspan="3">No record found.</td>
                     </tr>
                   @endif
                   </tbody>

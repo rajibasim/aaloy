@@ -36,8 +36,13 @@
         <link rel="stylesheet" href="{{ asset('public/assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css?version='.config('app.version')) }}">
         <link rel="stylesheet" href="{{ asset('public/assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css?version='.config('app.version')) }}">
         <link rel="stylesheet" href="{{ asset('public/assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css?version='.config('app.version')) }}">
+        <!-- Ekko Lightbox -->
+        <link rel="stylesheet" href="{{ asset('public/assets/plugins/ekko-lightbox/ekko-lightbox.css?version='.config('app.version')) }}">
         <!-- Date Picker CSS -->
         <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+        <!-- summernote -->
+        <link rel="stylesheet" href="{{ asset('public/assets/plugins/summernote/summernote-bs4.min.css?version='.config('app.version')) }}">
+        
     </head>
     <body class="hold-transition sidebar-mini layout-fixed">
         <div class="wrapper">
@@ -137,6 +142,14 @@
                                 </a>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
+                                        <a href="{{ url('masterdata/category') }}" class="nav-link <?=strpos(Request::segment(2), 'category') !== false ? 'active' : ''?>">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Category</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
                                         <a href="{{ url('masterdata/country') }}" class="nav-link <?=strpos(Request::segment(2), 'country') !== false ? 'active' : ''?>">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Country</p>
@@ -167,30 +180,71 @@
                                         </a>
                                     </li>
                                 </ul>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="{{ url('masterdata/banner') }}" class="nav-link <?=strpos(Request::segment(2), 'banner') !== false ? 'active' : ''?>">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Banner</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="{{ url('masterdata/accessory') }}" class="nav-link <?=strpos(Request::segment(2), 'accessory') !== false ? 'active' : ''?>">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Accessory</p>
-                                        </a>
-                                    </li>
-                                </ul>
                             </li>
-                            <li class="nav-item <?=strpos(Request::segment(1), 'admin-report') !== false ? 'menu-open' : ''?>">
-                                <a href="{{ url('admin-report') }}" class="nav-link <?=strpos(Request::segment(1), 'report') !== false ? 'active' : ''?>">
+                            <li class="nav-item <?=strpos(Request::segment(1), 'banner') !== false ? 'menu-open' : ''?>">
+                                <a href="{{ url('banner') }}" class="nav-link <?=strpos(Request::segment(1), 'banner') !== false ? 'active' : ''?>">
                                     <i class="nav-icon fa fa-list-ul"></i>
                                     <p>
-                                        Report
+                                        Banner
                                     </p>
                                 </a>
+                            </li>
+                            <li class="nav-item <?=strpos(Request::segment(1), 'accessory') !== false ? 'menu-open' : ''?>">
+                                <a href="{{ url('accessory') }}" class="nav-link <?=strpos(Request::segment(1), 'accessory') !== false ? 'active' : ''?>">
+                                    <i class="nav-icon fa fa-list-ul"></i>
+                                    <p>
+                                        Accessory
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item <?=strpos(Request::segment(1), 'blog') !== false ? 'menu-open' : ''?>">
+                                <a href="{{ url('blog') }}" class="nav-link <?=strpos(Request::segment(1), 'blog') !== false ? 'active' : ''?>">
+                                    <i class="nav-icon fa fa-list-ul"></i>
+                                    <p>
+                                        Blog
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item <?=strpos(Request::segment(1), 'food') !== false ? 'menu-open' : ''?>">
+                                <a href="{{ url('food') }}" class="nav-link <?=strpos(Request::segment(1), 'food') !== false ? 'active' : ''?>">
+                                    <i class="nav-icon fa fa-list-ul"></i>
+                                    <p>
+                                        Food
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item <?=strpos(Request::segment(1), 'property') !== false ? 'menu-open' : ''?>">
+                                <a href="{{ url('property') }}" class="nav-link <?=strpos(Request::segment(1), 'property') !== false ? 'active' : ''?>">
+                                    <i class="nav-icon fa fa-list-ul"></i>
+                                    <p>
+                                        Property
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item <?=strpos(Request::segment(1), 'users') !== false ? 'menu-open' : ''?>">
+                                <a href="#" class="nav-link <?=strpos(Request::segment(1), 'users') !== false ? 'active' : ''?>">
+                                    <i class="nav-icon fa fa-list-ul"></i>
+                                    <p>
+                                        Users
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{ url('users/agent') }}" class="nav-link <?=strpos(Request::segment(2), 'agent') !== false ? 'active' : ''?>">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Agent/Broker</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{ url('users/user') }}" class="nav-link <?=strpos(Request::segment(2), 'user') !== false ? 'active' : ''?>">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Normal Users</p>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
                         </ul>
                     </nav>
@@ -250,11 +304,17 @@
         <script src="{{ asset('public/assets/plugins/datatables-buttons/js/buttons.html5.min.js?version='.config('app.version')) }}"></script>
         <script src="{{ asset('public/assets/plugins/datatables-buttons/js/buttons.print.min.js?version='.config('app.version')) }}"></script>
         <script src="{{ asset('public/assets/plugins/datatables-buttons/js/buttons.colVis.min.js?version='.config('app.version')) }}"></script>
+        <!-- dropzonejs -->
+        <script src="{{ asset('public/assets/plugins/dropzone/min/dropzone.min.js?version='.config('app.version')) }}"></script>
 
         <!-- Select2 -->
         <script src="{{ asset('public/assets/plugins/select2/js/select2.full.min.js?version='.config('app.version')) }}"></script>
+        <!-- Ekko Lightbox -->
+        <script src="{{ asset('public/assets/plugins/ekko-lightbox/ekko-lightbox.min.js?version='.config('app.version')) }}"></script>
         <!-- ChartJS -->
         <script src="{{ asset('public/assets/plugins/chart.js/Chart.min.js?version='.config('app.version')) }}"></script>
+        <!-- Summernote -->
+        <script src="{{ asset('public/assets/plugins/summernote/summernote-bs4.min.js?version='.config('app.version')) }}"></script>
         <script type="text/javascript">
         $(function () {
           $('[data-toggle="tooltip"]').tooltip();
@@ -265,7 +325,7 @@
 
           $('.datepicker').datepicker({
                 inline: true,
-                dateFormat: "dd/mm/yy",
+                dateFormat: "yy/mm/yy",
                 changeFirstDay: false,
                 minDate: -7,
                 maxDate: +1,
@@ -285,6 +345,17 @@
           });
 
           //$( ".datepicker" ).datepicker();
+
+          // Summernote
+          $('#summernote').summernote();
+
+          $(document).on('click', '[data-toggle="lightbox"]', function(event) {
+              event.preventDefault();
+              $(this).ekkoLightbox({
+                alwaysShowClose: true
+              });
+          });
+          
         })
         </script>
         @yield('javascripts')

@@ -19,10 +19,11 @@ use Illuminate\Support\Facades\Route;
 });*/
 
 Route::group(['prefix' => 'v1'],  function(){     
-	Route::post('brand', 'App\Http\Controllers\Application\API\MainController@brand');
-	Route::post('scheme', 'App\Http\Controllers\Application\API\MainController@scheme');
-    Route::post('category', 'App\Http\Controllers\Application\API\MainController@category');
-    Route::post('product', 'App\Http\Controllers\Application\API\MainController@product');
+	Route::get('master-data', 'App\Http\Controllers\Application\API\MainController@masterData');
+	Route::get('banner', 'App\Http\Controllers\Application\API\MainController@banner');
+    Route::get('accessory', 'App\Http\Controllers\Application\API\MainController@accessory');
+    Route::get('location', 'App\Http\Controllers\Application\API\MainController@location');
+    Route::post('signup', 'App\Http\Controllers\Application\API\MainController@signup');
     Route::post('login', 'App\Http\Controllers\Application\API\MainController@login');
     Route::post('resend', 'App\Http\Controllers\Application\API\MainController@resend');
     Route::post('verify', 'App\Http\Controllers\Application\API\MainController@verify');

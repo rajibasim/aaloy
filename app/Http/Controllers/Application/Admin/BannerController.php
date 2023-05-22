@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers\Application\Admin\Masterdata;
+namespace App\Http\Controllers\Application\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -7,27 +7,27 @@ use Illuminate\Support\Str;
 use App\Models\CommonModel;
 use Validator;
 
-class CategoryController extends Controller{
+class BannerController extends Controller{
 
     public function __construct(){
         $this->CommonModel = new CommonModel();
-        $this->slug = '/masterdata/category';
-        $this->title = 'Category';
-        $this->table = 'category';
+        $this->slug = '/banner';
+        $this->title = 'Banner';
+        $this->table = 'banner';
     }
 
     /* List view */    
     public function index(Request $request){
         $serach_data = array();
-        $category = $request->category;
+        $title = $request->title;
         $status = $request->status;
         $where = array();
         $where = array(
             array('is_deleted', '=', 0)
         );
-        if($category){
-            array_push($where, array('category', 'like', "%{$category}%"));
-            $serach_data['category'] = $category;
+        if($title){
+            array_push($where, array('title', 'like', "%{$title}%"));
+            $serach_data['title'] = $title;
         }
 
         if($status){
@@ -55,7 +55,7 @@ class CategoryController extends Controller{
         );
 
         $data['rows'] = $this->CommonModel->get_all($table = $this->table, $select = array('*'), $where, $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "20");        
-        return view('admin.pages.category.view', $data);
+        return view('admin.pages.banner.view', $data);
     }
 
     /* add & edit form */
@@ -89,14 +89,17 @@ class CategoryController extends Controller{
             $data['details'] = !empty($details) ? $details[0] : [];
         }
 
-        return view('admin.pages.category.form', $data);
+        return view('admin.pages.banner.form', $data);
     }
 
     /* store & update data */
     public function save(Request $request){
         $id = $request->input('id');
         $validator = Validator::make($request->all(), [ 
-            'category' => 'required|unique:category,category,' . $id,
+            'title' => 'required|unique:banner,title,' . $id,
+            'url' => 'required',
+            'description' => 'required',
+            'status' => 'required', 
         ]); 
 
         if ($validator->fails()) { 
@@ -105,9 +108,22 @@ class CategoryController extends Controller{
             $flash_data  = '';
             if($id){
                 $post_data = array(
-                    'category' => $request->input('category'),
+                    'title' => $request->input('title'),
+                    'url' => $request->input('url'),
+                    'description' => $request->input('description'),
+                    'status' => $request->input('status'),
+                    'slug' => Str::slug($request->input('title')),
                     'updated_at' => date('Y-m-d H:i:s'),
                 );
+                $destinationPath = 'public/uploads/banner_image/';
+                if (!empty($_FILES)) {
+                    if ($_FILES['banner_image'] && $_FILES['banner_image']['name'] != "") {
+                        $profile_image_new_name = str_replace(" ", "_", time() . $_FILES['banner_image']['name']);
+                        if (move_uploaded_file($_FILES['banner_image']['tmp_name'], $destinationPath . $profile_image_new_name)) {
+                            $post_data['banner_image'] = $destinationPath . $profile_image_new_name;
+                        }
+                    }
+                }
                 $result = $this->CommonModel->update_data($this->table, array(array('id', '=', $id)), $post_data);
                 if($result == true){
                     $flash_data = array(
@@ -123,9 +139,23 @@ class CategoryController extends Controller{
             }else{
 
                 $post_data = array(
-                    'category' => $request->input('category'),
+                    'title' => $request->input('title'),
+                    'url' => $request->input('url'),
+                    'description' => $request->input('description'),
+                    'status' => $request->input('status'),
+                    'slug' => Str::slug($request->input('title')),
                     'created_at' => date('Y-m-d H:i:s'),
                 );
+
+                $destinationPath = 'public/uploads/banner_image/';
+                if (!empty($_FILES)) {
+                    if ($_FILES['banner_image'] && $_FILES['banner_image']['name'] != "") {
+                        $profile_image_new_name = str_replace(" ", "_", time() . $_FILES['banner_image']['name']);
+                        if (move_uploaded_file($_FILES['banner_image']['tmp_name'], $destinationPath . $profile_image_new_name)) {
+                            $post_data['banner_image'] = $destinationPath . $profile_image_new_name;
+                        }
+                    }
+                }
 
                 $result = $this->CommonModel->insert_data_get_id($this->table, $post_data);
                 if($result == true){

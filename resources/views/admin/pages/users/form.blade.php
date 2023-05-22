@@ -54,110 +54,34 @@
                       <!-- text input -->
                       <div class="form-group">
                         <label>Name</label>
-                        <input type="text" class="form-control" placeholder="Enter name" name="name" value="{{ old('name', isset($details->name) && $details->name ? $details->name : '') }}">
+                        <input type="text" class="form-control" placeholder="Name" name="name" value="{{ old('name', isset($details->name) && $details->name ? $details->name : '') }}" required="">
                       </div>
                     </div>
                     <div class="col-sm-4">
                       <!-- text input -->
                       <div class="form-group">
                         <label>Email</label>
-                        <input type="text" class="form-control" placeholder="Enter email" name="email" value="{{ old('email', isset($details->email) && $details->email ? $details->email : '') }}">
+                        <input type="text" class="form-control" placeholder="Email" name="email" value="{{ old('email', isset($details->email) && $details->email ? $details->email : '') }}" required="">
                       </div>
                     </div>
                     <div class="col-sm-4">
                       <!-- text input -->
                       <div class="form-group">
                         <label>Phone</label>
-                        <input type="text" class="form-control" placeholder="Enter phone" name="phone" value="{{ old('phone', isset($details->phone) && $details->phone ? $details->phone : '') }}">
-                      </div>
-                    </div>
-                    <div class="col-sm-4">
-                      <!-- text input -->
-                      <div class="form-group">
-                        <label>In-Charge Name</label>
-                        <input type="text" class="form-control" placeholder="Enter incharge name" name="incharge" value="{{ old('incharge', isset($details->incharge) && $details->incharge ? $details->incharge : '') }}">
-                      </div>
-                    </div>
-                    <div class="col-sm-4">
-                      <!-- select -->
-                      <div class="form-group">
-                        <label>Designation</label>
-                        <select class="form-control select2" name="designation_id" id="designation_id" required="">
-                          <option value="">Select a Designation</option>
-                          <?php
-                          if(isset($designation) && $designation){
-                              foreach ($designation as $key => $value) {
-                              ?>
-                                <option value="{{ $value->id }}" data-designation="{{ $value->name }}" {{ isset($details->designation_id) && $details->designation_id == $value->id ? 'selected' : '' }}>{{ $value->name }}</option>
-                              <?php
-                              }
-                          }
-                          ?>
-                        </select>
-                        <input type="hidden" name="designation" id="designation" value="{{ isset($details->designation) && $details->designation ? $details->designation : '' }}" >
-                      </div>
-                    </div>
-                    <div class="col-sm-4">
-                      <!-- select -->
-                      <div class="form-group">
-                        <label>Type Of Store</label>
-                        <select class="form-control select2" name="type" id="type" required="">
-                          <option value="">Select Store</option>
-                          <?php
-                          $permission = session()->get('permission_array');
-                          if(isset($permission['is_admin']) && $permission['is_admin']){
-                          ?>
-                            <option value="1" {{ isset($details->type) && $details->type == 1 ? 'selected' : '' }}>District</option>
-                            <option value="2" {{ isset($details->type) && $details->type == 2 ? 'selected' : '' }}>Main</option>
-                            <option value="3" {{ isset($details->type) && $details->type == 3 ? 'selected' : '' }}>Sub-Seed</option>
-                          <?php
-                          }
-                          ?>
-                          <?php
-                          if(isset($permission['is_district']) && $permission['is_district']){
-                          ?>
-                            <option value="2" {{ isset($details->type) && $details->type == 2 ? 'selected' : '' }}>Main</option>
-                            <!-- <option value="3" {{ isset($details->type) && $details->type == 3 ? 'selected' : '' }}>Sub-Seed</option> -->
-                          <?php
-                          }
-                          if(isset($permission['is_main']) && $permission['is_main']){
-                          ?>
-                            <option value="3" {{ isset($details->type) && $details->type == 3 ? 'selected' : '' }}>Sub-Seed</option>
-                          <?php
-                          }
-                          ?>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-sm-4">
-                      <!-- select -->
-                      <div class="form-group">
-                        <label>Store Name</label>
-                        <select class="form-control select2" name="store_id" id="store_id" required="">
-                          <option value="">Select Store</option>
-                          <?php
-                          if(isset($stores) && $stores){
-                              foreach ($stores as $key => $value) {
-                              ?>
-                                <option value="{{ $value->id }}" {{ isset($details->stores_id) && $details->stores_id == $value->id ? 'selected' : '' }}>{{ $value->name }}</option>
-                              <?php
-                              }
-                          }
-                          ?>
-                        </select>
+                        <input type="number" class="form-control" placeholder="Phone" name="phone" value="{{ old('phone', isset($details->phone) && $details->phone ? $details->phone : '') }}" required="">
                       </div>
                     </div>
                     <div class="col-sm-4">
                       <!-- text input -->
                       <div class="form-group">
                         <label>Password</label>
-                        <input type="password" class="form-control" placeholder="Enter password" name="password">
+                        <input type="text" class="form-control" placeholder="Password" name="password" value="">
                       </div>
                     </div>
                     <div class="col-sm-4">
                       <!-- select -->
                       <div class="form-group">
-                        <label>Status</label>
+                        <label>Select</label>
                         <select class="form-control" name="status" id="status">
                           <option value="1" {{ isset($details->status) && $details->status == 1 ? 'selected' : '' }}>Active</option>
                           <option value="2" {{ isset($details->status) && $details->status == 2 ? 'selected' : '' }}>In-Active</option>
@@ -204,32 +128,11 @@ $(document).ready(function() {
           },
           email: {
             required: true,
-            email: true,
+            email:true
           },
           phone: {
             required: true,
-            number: true,
-            minlength: 10,
-            maxlength: 10,
-          },
-          incharge: {
-            required: true,
-          },
-          designation_id: {
-            required: true,
-          },
-          designation: {
-            required: true,
-          },
-          type: {
-            required: true,
-          },
-          store_id: {
-            required: true,
-          },
-          password: {
-            required: <?=isset($details->password) && $details->password ? 'false' : 'true'?>,
-          },
+          }, 
         },
         errorElement: 'span',
         errorPlacement: function (error, element) {
@@ -242,39 +145,6 @@ $(document).ready(function() {
         unhighlight: function (element, errorClass, validClass) {
           $(element).removeClass('is-invalid');
         }
-    });
-
-    $(document).on('change', '#type', function() {
-        var type = $(this).val();
-        if(type == 1){
-            var data = '<?php echo json_encode($districtstore)?>';
-        }
-
-        if(type == 2){
-            var data = '<?php echo json_encode($mainstore)?>';
-        }
-
-        if(type == 3){
-            var data = '<?php echo json_encode($subseedstore)?>';
-        }
-
-        var html = '<option value="">Select Store</option>';
-        $("#store_id").select2("destroy");
-        if(data){
-            $.each(JSON.parse(data), function (key, val) {
-                html = html + '<option value="'+val.id+'">'+val.name+'</option>';
-            });
-        }
-
-        $("#store_id").html(html);
-        $('#store_id').select2({
-              theme: 'bootstrap4'
-        });
-    });
-
-    $(document).on('change', '#designation_id', function() {
-      var designation = $(this).find(':selected').attr('data-designation');
-      $("#designation").val(designation);
     });
 });
 </script>

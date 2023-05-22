@@ -29,16 +29,38 @@ class MainController extends Controller
 		$this->CommonModel = new CommonModel();
 	}
 
-    ### Brand List
-	public function brand(Request $request){
+    ### master data List
+	public function masterData(Request $request){
         try {
 
-            $brand = $this->CommonModel->get_all($table = "brand", $select = array('*'), $where = array(array('is_deleted', '=', 0), array('status', '=', 1)), $join = array(), $left = array(), $right = array(), $order = array(array('name' => "ASC")), $group = "", $limit = array(), $raw = "", $paging = "");
+            $car_parking = $this->CommonModel->get_all($table = "car_parking", $select = array('*'), $where = array(array('is_deleted', '=', 0), array('status', '=', 1)), $join = array(), $left = array(), $right = array(), $order = array(array('car_parking' => "ASC")), $group = "", $limit = array(), $raw = "", $paging = "");
+
+            $data['car_parking'] = !empty($car_parking) ? $car_parking : [];
+
+            $category = $this->CommonModel->get_all($table = "category", $select = array('*'), $where = array(array('is_deleted', '=', 0), array('status', '=', 1)), $join = array(), $left = array(), $right = array(), $order = array(array('category' => "ASC")), $group = "", $limit = array(), $raw = "", $paging = "");
+
+            $data['category'] = !empty($category) ? $category : [];
+
+            $furnishing_status = $this->CommonModel->get_all($table = "furnishing_status", $select = array('*'), $where = array(array('is_deleted', '=', 0), array('status', '=', 1)), $join = array(), $left = array(), $right = array(), $order = array(array('furnishing_status' => "ASC")), $group = "", $limit = array(), $raw = "", $paging = "");
+
+            $data['furnishing_status'] = !empty($furnishing_status) ? $furnishing_status : [];
+
+            $no_of_room = $this->CommonModel->get_all($table = "no_of_room", $select = array('*'), $where = array(array('is_deleted', '=', 0), array('status', '=', 1)), $join = array(), $left = array(), $right = array(), $order = array(array('no_of_room' => "ASC")), $group = "", $limit = array(), $raw = "", $paging = "");
+
+            $data['no_of_room'] = !empty($no_of_room) ? $no_of_room : [];
+
+            $positioning_status = $this->CommonModel->get_all($table = "positioning_status", $select = array('*'), $where = array(array('is_deleted', '=', 0), array('status', '=', 1)), $join = array(), $left = array(), $right = array(), $order = array(array('positioning_status' => "ASC")), $group = "", $limit = array(), $raw = "", $paging = "");
+
+            $data['positioning_status'] = !empty($positioning_status) ? $positioning_status : [];
+
+            $property_type = $this->CommonModel->get_all($table = "property_type", $select = array('*'), $where = array(array('is_deleted', '=', 0), array('status', '=', 1)), $join = array(), $left = array(), $right = array(), $order = array(array('property_type' => "ASC")), $group = "", $limit = array(), $raw = "", $paging = "");
+
+            $data['property_type'] = !empty($property_type) ? $property_type : [];
 
             return response()->json([
                 'result' => true,
                 'message' => '',
-                'data' => !empty($brand) ? $brand : [],
+                'data' => $data,
             ],200,[],JSON_NUMERIC_CHECK);
 
         } catch (\Exception $e) {
@@ -51,16 +73,16 @@ class MainController extends Controller
         }
 	}
 
-    ### Scheme List
-    public function scheme(Request $request){
+    ### banner List
+    public function banner(Request $request){
         try {
 
-            $scheme = $this->CommonModel->get_all($table = "scheme", $select = array('*'), $where = array(array('is_deleted', '=', 0), array('status', '=', 1)), $join = array(), $left = array(), $right = array(), $order = array(array('name' => "ASC")), $group = "", $limit = array(), $raw = "", $paging = "");
+            $banner = $this->CommonModel->get_all($table = "banner", $select = array('*'), $where = array(array('is_deleted', '=', 0), array('status', '=', 1)), $join = array(), $left = array(), $right = array(), $order = array(array('id' => "ASC")), $group = "", $limit = array(), $raw = "", $paging = "");
 
             return response()->json([
                 'result' => true,
                 'message' => '',
-                'data' => !empty($scheme) ? $scheme : [],
+                'data' => !empty($banner) ? $banner : [],
             ],200,[],JSON_NUMERIC_CHECK);
 
         } catch (\Exception $e) {
@@ -73,16 +95,16 @@ class MainController extends Controller
         }
     }
 
-    ### Category List
-    public function category(Request $request){
+    ### accessory List
+    public function accessory(Request $request){
         try {
 
-            $category = $this->CommonModel->get_all($table = "category", $select = array('*'), $where = array(array('is_deleted', '=', 0), array('status', '=', 1)), $join = array(), $left = array(), $right = array(), $order = array(array('name' => "ASC")), $group = "", $limit = array(), $raw = "", $paging = "");
+            $accessory = $this->CommonModel->get_all($table = "accessory", $select = array('*'), $where = array(array('is_deleted', '=', 0), array('status', '=', 1)), $join = array(), $left = array(), $right = array(), $order = array(array('id' => "ASC")), $group = "", $limit = array(), $raw = "", $paging = "");
 
             return response()->json([
                 'result' => true,
                 'message' => '',
-                'data' => !empty($category) ? $category : [],
+                'data' => !empty($accessory) ? $accessory : [],
             ],200,[],JSON_NUMERIC_CHECK);
 
         } catch (\Exception $e) {
@@ -95,24 +117,24 @@ class MainController extends Controller
         }
     }
 
-    ### Product List
-    public function product(Request $request){
+    ### location List
+    public function location(Request $request){
         try {
 
-            if (!$request->category_id) {
-                throw new \Exception("Category id required.");
+            $location = $this->CommonModel->get_all($table = "location", $select = array('*'), $where = array(array('is_deleted', '=', 0), array('status', '=', 1)), $join = array(), $left = array(), $right = array(), $order = array(array('id' => "ASC")), $group = "", $limit = array(), $raw = "", $paging = "");
+            $locationArr = [];
+            if($location){
+                foreach ($location as $key => $value) {
+                    //TO DO : Distance will calculate here
+                    $value->distance = 0;
+                    $locationArr[] = $value;
+                }
             }
-
-            if (!$request->brand_id) {
-                throw new \Exception("Brand id required.");
-            }
-
-            $product = $this->CommonModel->get_all($table = "product", $select = array('*'), $where = array(array('is_deleted', '=', 0), array('status', '=', 1), array('category_id', '=', $request->category_id), array('brand_id', '=', $request->brand_id)), $join = array(), $left = array(), $right = array(), $order = array(array('name' => "ASC")), $group = "", $limit = array(), $raw = "", $paging = "");
 
             return response()->json([
                 'result' => true,
                 'message' => '',
-                'data' => !empty($product) ? $product : [],
+                'data' => !empty($locationArr) ? $locationArr : [],
             ],200,[],JSON_NUMERIC_CHECK);
 
         } catch (\Exception $e) {
@@ -122,6 +144,63 @@ class MainController extends Controller
                 'data' => array(),
             ],200,[],JSON_NUMERIC_CHECK);
 
+        }
+    }
+
+    ### Login
+    public function signup(Request $request){
+        dd("to do");
+        try {
+
+            if (!$request->phone) {
+                throw new \Exception("Enter valid phone no.");
+            }
+
+            if ($request->phone && !preg_match('/^[0-9]{10}+$/', $request->phone)) {
+                throw new \Exception("Enter valid phone no.");
+            }
+
+            if (!$request->password) {
+                throw new \Exception("Enter your password.");
+            }
+
+            $check_user = $this->CommonModel->get_all($table = "users", $select = array('*'), $where = array(array('phone', '=', $request->phone), array('password', '=', md5($request->password)), array('type', '=', 3), array('status', '=', 1), array('is_deleted', '=', 0)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
+
+            $verification_code = rand(1000,9999);
+            if (empty($check_user)) {
+                throw new \Exception("Invalid login credentials.");
+            }
+
+            $user_data = $check_user[0];
+
+            $save_data['updated_at'] = date('Y-m-d H:i:s');
+            $save_data['device_id'] = $request->device_id;
+            $update = $this->CommonModel->update_data($table = "users", array(array('id', '=', $user_data->id)), $data = $save_data);
+
+
+            $check_email = User::where('phone','=',$user_data->phone)->first();
+            $token = JWTAuth::fromUser($check_email);
+            
+            $result_data = array(
+                'id' => $user_data->id,
+                'access_token' => $token,
+                'token_type' => 'bearer',
+                'expires_in' => auth()->factory()->getTTL() * 604800,
+                'user_data' => $user_data,
+            );
+
+            return response()->json([
+                'result' => true,
+                'message' => "",
+                'data' => $result_data,
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'result' => false,
+                'message' => $e->getMessage(),
+                'data' => array(),
+            ]);
         }
     }
 
