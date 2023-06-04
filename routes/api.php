@@ -24,7 +24,7 @@ Route::group(['prefix' => 'v1'],  function(){
     Route::get('accessory', 'App\Http\Controllers\Application\API\MainController@accessory');
     Route::get('location', 'App\Http\Controllers\Application\API\MainController@location');
     Route::post('signup', 'App\Http\Controllers\Application\API\MainController@signup');
-    Route::post('login', 'App\Http\Controllers\Application\API\MainController@login');
+    Route::post('signin', 'App\Http\Controllers\Application\API\MainController@signin');
     Route::post('resend', 'App\Http\Controllers\Application\API\MainController@resend');
     Route::post('verify', 'App\Http\Controllers\Application\API\MainController@verify');
 });
