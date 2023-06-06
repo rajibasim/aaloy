@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Crypt;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Http\Requests;
 use App\Models\CommonModel;
@@ -203,8 +204,8 @@ class MainController extends Controller
             $user_id = $this->CommonModel->insert_data_get_id($table = "users", $data = $user_data);
             //TO DO : SMS gatway intregation
             $result_data = array(
-                'user_id' => $user_id,
-                'user_phone_num' => $request->phone,
+                //'user_id' => $user_id,
+                'phone' => $request->phone,
                 'phone_verification_code' => $phone_verification_code,
             );
 
@@ -251,10 +252,15 @@ class MainController extends Controller
             $check_user = $this->CommonModel->get_all($table = "users", $select = array('*'), $where = array(array('phone', '=', $request->phone), array('is_deleted', '=', 0)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
 
             if (empty($check_user)) {
-                throw new \Exception("Invalid login credentials.");
+                throw new \Exception("This user not register with us.");
             }
 
             $user_data = $check_user[0];
+
+            if(!Hash::check($request->password, $user_data->password)) {
+                throw new \Exception("Invalid login credentials.");
+            } 
+
             if($user_data->is_phone_verified == 1){
                 $check_email = User::where('phone','=',$user_data->phone)->first();
                 $token = JWTAuth::fromUser($check_email);
@@ -288,7 +294,7 @@ class MainController extends Controller
                 $message = "Verificaion code send successfully.";
                 $result_data = array(
                     'is_phone_verified' => $user_data->is_phone_verified,
-                    'user_id' => $user_data->id,
+                    //'user_id' => $user_data->id,
                     'phone' => $user_data->phone,
                     'phone_verification_code' => $phone_verification_code,
                 );
@@ -314,9 +320,9 @@ class MainController extends Controller
         
         try {
 
-            if (!$request->user_id) {
+            /*if (!$request->user_id) {
                 throw new \Exception("User id is required.");
-            }  
+            }*/  
 
             if (!$request->phone) {
                 throw new \Exception("Enter valid phone no.");
@@ -331,13 +337,13 @@ class MainController extends Controller
                 'phone_verification_code' => $phone_verification_code,
                 'updated_at' => date('Y-m-d H:i:s'),
             );
-            $update = $this->CommonModel->update_data($table = "users", array(array('id', '=', $request->user_id), array('phone', '=', $request->phone)), $data = $update_data);
+            $update = $this->CommonModel->update_data($table = "users", array(array('phone', '=', $request->phone)), $data = $update_data);
             if(!$update){
-                throw new \Exception("Please enter valid user id & phone.");
+                throw new \Exception("Please enter valid phone no.");
             }
 
             $result_data = array(
-                'user_id' => $request->user_id,
+                //'user_id' => $request->user_id,
                 'phone' => $request->phone,
                 'phone_verification_code' => $phone_verification_code,
             );
@@ -361,15 +367,23 @@ class MainController extends Controller
     public function verify(Request $request){
         try {
 
-            if (!$request->user_id) {
+            /*if (!$request->user_id) {
                 throw new \Exception("User id is required.");
+            }*/
+
+            if (!$request->phone) {
+                throw new \Exception("Enter valid phone no.");
+            }
+
+            if ($request->phone && !preg_match('/^[0-9]{10}+$/', $request->phone)) {
+                throw new \Exception("Enter valid phone no.");
             }
 
             if (!$request->phone_verification_code) {
                 throw new \Exception("Verification code is required.");
             }
 
-            $check_data = $this->CommonModel->get_all($table = "users", $select = array('*'), $where = array(array('id', '=', $request->user_id), array('phone_verification_code', '=', $request->phone_verification_code)), $join = array(), $left = array(), $right = array(), $order = array(array('id' => "ASC")), $group = "", $limit = array(), $raw = "", $paging = "");
+            $check_data = $this->CommonModel->get_all($table = "users", $select = array('*'), $where = array(array('phone', '=', $request->phone), array('phone_verification_code', '=', $request->phone_verification_code)), $join = array(), $left = array(), $right = array(), $order = array(array('id' => "ASC")), $group = "", $limit = array(), $raw = "", $paging = "");
 
             if(empty($check_data)){
                 throw new \Exception("Invalid verification code.");
@@ -381,7 +395,7 @@ class MainController extends Controller
             $save_data['updated_at'] = date('Y-m-d H:i:s');
             $save_data['is_phone_verified'] = 1;
             $save_data['phone_verified_at'] = date('Y-m-d H:i:s');
-            $update = $this->CommonModel->update_data($table = "users", array(array('id', '=', $request->user_id)), $data = $save_data);
+            $update = $this->CommonModel->update_data($table = "users", array(array('phone', '=', $request->phone)), $data = $save_data);
 
             return response()->json([
                 'result' => true,
@@ -398,6 +412,109 @@ class MainController extends Controller
             ]);
         }
     }
+
+    ### Forgot Password
+    public function forgotPassword(Request $request){
+
+        try {
+
+            if (!$request->phone) {
+                throw new \Exception("Enter valid phone no.");
+            }
+
+            if ($request->phone && !preg_match('/^[0-9]{10}+$/', $request->phone)) {
+                throw new \Exception("Enter valid phone no.");
+            }
+
+            $check_user = $this->CommonModel->get_all($table = "users", $select = array('*'), $where = array(array('phone', '=', $request->phone), array('is_deleted', '=', 0)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
+
+            if (empty($check_user)) {
+                throw new \Exception("This user not register with us.");
+            }
+
+            $user_data = $check_user[0];
+            $reset_password_code = $this->sendOtp($user_data->phone, 2);        
+            $update_data = array(
+                'reset_password_code' => $reset_password_code,
+                'is_reset_password' => 1,
+                'reset_password_code_created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            );
+            $update = $this->CommonModel->update_data($table = "users", array(array('id', '=', $user_data->id), array('phone', '=', $user_data->phone)), $data = $update_data);
+
+            $result_data = array(
+                //'user_id' => $user_data->id,
+                'phone' => $user_data->phone,
+                'reset_password_code' => $reset_password_code,
+            );
+
+            return response()->json([
+                'result' => true,
+                'message' => "Reset password code send to your mobile.",
+                'data' => $result_data,
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'result' => false,
+                'message' => $e->getMessage(),
+                'data' => array(),
+            ]);
+        }
+    }
+
+    ### Reset Password
+    public function resetPassword(Request $request){
+
+        try {
+
+            if (!$request->phone) {
+                throw new \Exception("Enter valid phone no.");
+            }
+
+            if ($request->phone && !preg_match('/^[0-9]{10}+$/', $request->phone)) {
+                throw new \Exception("Enter valid phone no.");
+            }
+
+            if (!$request->reset_password_code) {
+                throw new \Exception("Reset password code is required.");
+            }
+
+            if (!$request->password) {
+                throw new \Exception("Enter your password.");
+            }
+
+            $check_user = $this->CommonModel->get_all($table = "users", $select = array('*'), $where = array(array('phone', '=', $request->phone), array('reset_password_code', '=', $request->reset_password_code), array('is_deleted', '=', 0)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
+
+            if (empty($check_user)) {
+                throw new \Exception("This code is invalid.");
+            }
+
+            $user_data = $check_user[0];        
+            $update_data = array(
+                'password' => bcrypt($request->password),
+                'reset_password_code' => 0,
+                'is_reset_password' => 0,
+                'reset_password_code_created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            );
+            $update = $this->CommonModel->update_data($table = "users", array(array('id', '=', $user_data->id), array('phone', '=', $user_data->phone)), $data = $update_data);
+
+            return response()->json([
+                'result' => true,
+                'message' => "Password reset successfully. Signin to continue.",
+                'data' => [],
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'result' => false,
+                'message' => $e->getMessage(),
+                'data' => array(),
+            ]);
+        }
+    }
+
 
     ### Logout
     public function logout(Request $request){

@@ -27,6 +27,9 @@ Route::group(['prefix' => 'v1'],  function(){
     Route::post('signin', 'App\Http\Controllers\Application\API\MainController@signin');
     Route::post('resend', 'App\Http\Controllers\Application\API\MainController@resend');
     Route::post('verify', 'App\Http\Controllers\Application\API\MainController@verify');
+    Route::post('forgot-password', 'App\Http\Controllers\Application\API\MainController@forgotPassword');
+    Route::post('reset-password', 'App\Http\Controllers\Application\API\MainController@resetPassword');
+
 });
 
 Route::group(['prefix' => 'v1','middleware' => ['auth:api']], function () {
