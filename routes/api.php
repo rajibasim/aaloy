@@ -33,14 +33,10 @@ Route::group(['prefix' => 'v1'],  function(){
 });
 
 Route::group(['prefix' => 'v1','middleware' => ['auth:api']], function () {
-    	Route::post('logout', 'App\Http\Controllers\Application\API\MainController@logout');
-    	Route::post('stock', 'App\Http\Controllers\Application\API\MainController@stock');
-    	Route::post('history', 'App\Http\Controllers\Application\API\MainController@history');
-    	Route::post('stockList', 'App\Http\Controllers\Application\API\MainController@stockList');
-        Route::post('stockDetails', 'App\Http\Controllers\Application\API\MainController@stockDetails');
-    	Route::post('stockEntry', 'App\Http\Controllers\Application\API\MainController@stockEntry');
-        Route::post('stockUpdate', 'App\Http\Controllers\Application\API\MainController@stockUpdate');
-    	Route::post('report', 'App\Http\Controllers\Application\API\MainController@report');
-        Route::post('categoryBalance', 'App\Http\Controllers\Application\API\MainController@categoryBalance');
-        Route::post('productBalance', 'App\Http\Controllers\Application\API\MainController@productBalance');
+    	Route::post('logout', 'App\Http\Controllers\Application\API\UserController@logout');
+        Route::post('property/list', 'App\Http\Controllers\Application\API\PropertyController@list');
+    	Route::post('property/add', 'App\Http\Controllers\Application\API\PropertyController@add');
+    	Route::post('property/edit/{id}', 'App\Http\Controllers\Application\API\PropertyController@edit');
+        Route::post('property/delete/{id}', 'App\Http\Controllers\Application\API\PropertyController@delete');
+    	Route::post('property/details/{id}', 'App\Http\Controllers\Application\API\PropertyController@details');
 });
