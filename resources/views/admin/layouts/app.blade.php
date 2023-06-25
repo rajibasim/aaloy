@@ -315,6 +315,7 @@
         <script src="{{ asset('public/assets/plugins/chart.js/Chart.min.js?version='.config('app.version')) }}"></script>
         <!-- Summernote -->
         <script src="{{ asset('public/assets/plugins/summernote/summernote-bs4.min.js?version='.config('app.version')) }}"></script>
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCqhnKBkF0qMYmCjRM75vra4SLJK2tG-TE&libraries=places"></script>
         <script type="text/javascript">
         $(function () {
           $('[data-toggle="tooltip"]').tooltip();

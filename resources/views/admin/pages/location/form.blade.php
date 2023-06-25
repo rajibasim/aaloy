@@ -60,6 +60,13 @@
                     <div class="col-sm-4">
                       <!-- text input -->
                       <div class="form-group">
+                        <label>Address</label>
+                        <input type="text" class="form-control" placeholder="Enter location name" name="address" value="" autocomplete="on" runat="server" required="">
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <!-- text input -->
+                      <div class="form-group">
                         <label>Country</label>
                         <select class="form-control select2" name="country_id" id="country_id" required="">
                           <option value="">Select Country</option>
@@ -232,5 +239,18 @@ $(document).ready(function() {
         });
     });
 });
+
+function initialize() {
+  var input = document.getElementById('address');
+  var autocomplete = new google.maps.places.Autocomplete(input);
+    google.maps.event.addListener(autocomplete, 'place_changed', function () {
+        var place = autocomplete.getPlace();
+        console.log(place);
+        /*document.getElementById('city2').value = place.name;
+        document.getElementById('cityLat').value = place.geometry.location.lat();
+        document.getElementById('cityLng').value = place.geometry.location.lng();*/
+    });
+}
+google.maps.event.addDomListener(window, 'load', initialize);
 </script>
 @endsection
