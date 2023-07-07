@@ -12,7 +12,7 @@ class PropertyController extends Controller{
 
     public function __construct(){
         $this->CommonModel = new CommonModel();
-        $this->slug = '/property';
+        $this->slug = '/admin-property';
         $this->title = 'Property';
         $this->table = 'property';
     }
@@ -177,6 +177,9 @@ class PropertyController extends Controller{
                     'preferance' => $request->input('preferance'),
                     'location_id' => $request->input('location_id'),
                     'address' => $request->input('address'),
+                    'latitude' => $request->input('latitude'),
+                    'longitude' => $request->input('longitude'),
+                    'pin_code' => $request->input('pin_code'),
                     'floor' => $request->input('floor_id'),
                     'out_of_floor' => $request->input('out_of_floor_id'),
                     'no_of_room_id' => $request->input('no_of_room_id'),
@@ -189,11 +192,11 @@ class PropertyController extends Controller{
                     'positioning_status_id' => $request->input('positioning_status_id'),
                     'note' => $request->input('note'),
                     'description' => $request->input('description'),
+                    'avalible_beds' => $request->input('avalible_beds'),
                     'is_address_visible' => $request->input('is_address_visible'),
                     'is_phone_visible' => $request->input('is_phone_visible'),
                     'is_email_visible' => $request->input('is_email_visible'),
                     'is_admin_aproved' => $request->input('is_admin_aproved'),
-                    'property_image' => $request->input('property_image'),
                     'avalible_from' => $request->input('avalible_from'),
                     'bathroom' => $request->input('bathroom'),
                     'video_url' => $request->input('video_url'),
@@ -234,6 +237,9 @@ class PropertyController extends Controller{
                     'preferance' => $request->input('preferance'),
                     'location_id' => $request->input('location_id'),
                     'address' => $request->input('address'),
+                    'latitude' => $request->input('latitude'),
+                    'longitude' => $request->input('longitude'),
+                    'pin_code' => $request->input('pin_code'),
                     'floor' => $request->input('floor_id'),
                     'out_of_floor' => $request->input('out_of_floor_id'),
                     'no_of_room_id' => $request->input('no_of_room_id'),
@@ -246,11 +252,11 @@ class PropertyController extends Controller{
                     'positioning_status_id' => $request->input('positioning_status_id'),
                     'note' => $request->input('note'),
                     'description' => $request->input('description'),
+                    'avalible_beds' => $request->input('avalible_beds'),
                     'is_address_visible' => $request->input('is_address_visible'),
                     'is_phone_visible' => $request->input('is_phone_visible'),
                     'is_email_visible' => $request->input('is_email_visible'),
                     'is_admin_aproved' => $request->input('is_admin_aproved'),
-                    'property_image' => $request->input('property_image'),
                     'avalible_from' => $request->input('avalible_from'),
                     'bathroom' => $request->input('bathroom'),
                     'video_url' => $request->input('video_url'),

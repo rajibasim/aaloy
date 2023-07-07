@@ -164,7 +164,28 @@
                       <!-- text input -->
                       <div class="form-group">
                         <label>Address</label>
-                        <input type="text" class="form-control" placeholder="Address" name="address" value="{{ old('address', isset($details->address) && $details->address ? $details->address : '') }}" required="">
+                        <input type="text" class="form-control" placeholder="Address" name="address" id="address" value="{{ old('address', isset($details->address) && $details->address ? $details->address : '') }}" autocomplete="off" required="">
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <label>Latitude</label>
+                        <input type="text" class="form-control" placeholder="Enter latitude" id="latitude" name="latitude" value="{{ old('latitude', isset($details->latitude) && $details->latitude ? $details->latitude : '') }}" required="">
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <label>Longitude</label>
+                        <input type="text" class="form-control" placeholder="Enter longitude" id="longitude" name="longitude" value="{{ old('longitude', isset($details->longitude) && $details->longitude ? $details->longitude : '') }}" required="">
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <label>Pin Code</label>
+                        <input type="text" class="form-control" placeholder="Enter Pin Code" id="postcode" name="pin_code" value="{{ old('pin_code', isset($details->pin_code) && $details->pin_code ? $details->pin_code : '') }}" required="">
                       </div>
                     </div>
                     <div class="col-sm-4">
@@ -207,7 +228,7 @@
                           <option value="">Select One</option>
                            @if($no_of_room)
                                @foreach ($no_of_room as $val)
-                                <option value="{{ $val->id }}" {{ isset($details->no_of_room_id) && $details->no_of_room_id == $val->id ? 'selected' : '' }}>{{ $val->no_of_room }}</option>
+                                <option value="{{ $val->id }}" {{ isset($details->no_of_room_id) && $details->no_of_room_id == $val->id ? 'selected' : '' }}>{{ $val->no_of_room }}BHK</option>
                                @endforeach
                             @endif
                         </select>
@@ -244,7 +265,7 @@
                     <div class="col-sm-4">
                       <!-- text input -->
                       <div class="form-group">
-                        <label>Carpet Area</label>
+                        <label>Carpet Area(sqft)</label>
                         <input type="number" class="form-control" placeholder="Carpet Area" name="carpet_area" value="{{ old('carpet_area', isset($details->carpet_area) && $details->carpet_area ? $details->carpet_area : '') }}" required="">
                       </div>
                     </div>
@@ -354,6 +375,13 @@
                         <input type="text" class="form-control" placeholder="Description" name="description" value="{{ old('description', isset($details->description) && $details->description ? $details->description : '') }}" required="">
                       </div>
                     </div>
+                    <div class="col-sm-12">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <label>Avalible Beds</label>
+                        <input type="text" class="form-control" placeholder="Avalible Beds" name="avalible_beds" value="{{ old('avalible_beds', isset($details->avalible_beds) && $details->avalible_beds ? $details->avalible_beds : '') }}" required="">
+                      </div>
+                    </div>
                     <div class="col-sm-6">
                       <!-- text input -->
                       <div class="form-group">
@@ -445,5 +473,43 @@ $(document).ready(function() {
         });
     });
 });
+
+let autocomplete;
+let address;
+let postalField;
+
+function initAutocomplete() {
+    address = document.querySelector("#address");
+    postalField = document.querySelector("#postcode");
+    autocomplete = new google.maps.places.Autocomplete(address, {
+        componentRestrictions: {
+            country: ["in"]
+        },
+        fields: ["address_components", "geometry"],
+        types: ["address"],
+    });
+    address.focus();
+    autocomplete.addListener("place_changed", fillInAddress);
+}
+
+function fillInAddress() {
+    const place = autocomplete.getPlace();
+    for (const component of place.address_components) {
+        // @ts-ignore remove once typings fixed
+        const componentType = component.types[0];
+
+        switch (componentType) {
+            case "postal_code": {
+                document.querySelector("#postcode").value = `${component.long_name}`;
+                break;
+            }
+        }
+    }
+
+    $("#latitude").val(place.geometry.location.lat());
+    $("#longitude").val(place.geometry.location.lng());
+}
+
+window.initAutocomplete = initAutocomplete;
 </script>
 @endsection

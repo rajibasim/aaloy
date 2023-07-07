@@ -33,10 +33,15 @@ Route::group(['prefix' => 'v1'],  function(){
 });
 
 Route::group(['prefix' => 'v1','middleware' => ['auth:api']], function () {
+        //Property Related Information
     	Route::post('logout', 'App\Http\Controllers\Application\API\UserController@logout');
         Route::post('property/list', 'App\Http\Controllers\Application\API\PropertyController@list');
     	Route::post('property/add', 'App\Http\Controllers\Application\API\PropertyController@add');
     	Route::post('property/edit/{id}', 'App\Http\Controllers\Application\API\PropertyController@edit');
         Route::post('property/delete/{id}', 'App\Http\Controllers\Application\API\PropertyController@delete');
     	Route::post('property/details/{id}', 'App\Http\Controllers\Application\API\PropertyController@details');
+        Route::post('property/save/{id}', 'App\Http\Controllers\Application\API\PropertyController@save');
+        Route::post('property/my-property', 'App\Http\Controllers\Application\API\PropertyController@myProperty');
+        Route::post('property/my-saved-property', 'App\Http\Controllers\Application\API\PropertyController@mySavedProperty');
+        //User Related Information
 });

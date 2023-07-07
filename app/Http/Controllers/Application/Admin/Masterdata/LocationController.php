@@ -132,6 +132,8 @@ class LocationController extends Controller{
             'city_id' => 'required',
             'latitude' => 'required',
             'longitude' => 'required',
+            'address' => 'required',
+            'pin_code' => 'required',
             'status' => 'required', 
         ]); 
 
@@ -147,6 +149,8 @@ class LocationController extends Controller{
                     'city_id' => $request->input('city_id'),
                     'latitude' => $request->input('latitude'),
                     'longitude' => $request->input('longitude'),
+                    'address' => $request->input('address'),
+                    'pin_code' => $request->input('pin_code'),
                     'status' => $request->input('status'),
                     'slug' => Str::slug($request->input('location')),
                     'updated_at' => date('Y-m-d H:i:s'),
@@ -172,6 +176,8 @@ class LocationController extends Controller{
                     'city_id' => $request->input('city_id'),
                     'latitude' => $request->input('latitude'),
                     'longitude' => $request->input('longitude'),
+                    'address' => $request->input('address'),
+                    'pin_code' => $request->input('pin_code'),
                     'status' => $request->input('status'),
                     'slug' => Str::slug($request->input('location')),
                     'created_at' => date('Y-m-d H:i:s'),

@@ -61,7 +61,7 @@
                       <!-- text input -->
                       <div class="form-group">
                         <label>Address</label>
-                        <input type="text" class="form-control" placeholder="Enter location name" name="address" value="" autocomplete="on" runat="server" required="">
+                        <input type="text" class="form-control" placeholder="Enter address" name="address" id="address" value="{{ old('address', isset($details->address) && $details->address ? $details->address : '') }}" autocomplete="off" required="">
                       </div>
                     </div>
                     <div class="col-sm-4">
@@ -114,14 +114,21 @@
                       <!-- text input -->
                       <div class="form-group">
                         <label>Latitude</label>
-                        <input type="text" class="form-control" placeholder="Enter latitude" name="latitude" value="{{ old('latitude', isset($details->latitude) && $details->latitude ? $details->latitude : '') }}" required="">
+                        <input type="text" class="form-control" placeholder="Enter latitude" id="latitude" name="latitude" value="{{ old('latitude', isset($details->latitude) && $details->latitude ? $details->latitude : '') }}" required="">
                       </div>
                     </div>
                     <div class="col-sm-4">
                       <!-- text input -->
                       <div class="form-group">
                         <label>Longitude</label>
-                        <input type="text" class="form-control" placeholder="Enter longitude" name="longitude" value="{{ old('longitude', isset($details->longitude) && $details->longitude ? $details->longitude : '') }}" required="">
+                        <input type="text" class="form-control" placeholder="Enter longitude" id="longitude" name="longitude" value="{{ old('longitude', isset($details->longitude) && $details->longitude ? $details->longitude : '') }}" required="">
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <label>Pin Code</label>
+                        <input type="text" class="form-control" placeholder="Enter Pin Code" id="postcode" name="pin_code" value="{{ old('pin_code', isset($details->pin_code) && $details->pin_code ? $details->pin_code : '') }}" required="">
                       </div>
                     </div>
                     <div class="col-sm-4">
@@ -238,19 +245,53 @@ $(document).ready(function() {
               theme: 'bootstrap4'
         });
     });
+
+    $(document).on('change', '#address', function() {
+        var address = $(this).val();
+        if(address.length == 0){
+            $("#latitude").val('');
+            $("#longitude").val('');
+            $("#postcode").val('');
+        }
+    });
 });
 
-function initialize() {
-  var input = document.getElementById('address');
-  var autocomplete = new google.maps.places.Autocomplete(input);
-    google.maps.event.addListener(autocomplete, 'place_changed', function () {
-        var place = autocomplete.getPlace();
-        console.log(place);
-        /*document.getElementById('city2').value = place.name;
-        document.getElementById('cityLat').value = place.geometry.location.lat();
-        document.getElementById('cityLng').value = place.geometry.location.lng();*/
+let autocomplete;
+let address;
+let postalField;
+
+function initAutocomplete() {
+    address = document.querySelector("#address");
+    postalField = document.querySelector("#postcode");
+    autocomplete = new google.maps.places.Autocomplete(address, {
+        componentRestrictions: {
+            country: ["in"]
+        },
+        fields: ["address_components", "geometry"],
+        types: ["address"],
     });
+    address.focus();
+    autocomplete.addListener("place_changed", fillInAddress);
 }
-google.maps.event.addDomListener(window, 'load', initialize);
+
+function fillInAddress() {
+    const place = autocomplete.getPlace();
+    for (const component of place.address_components) {
+        // @ts-ignore remove once typings fixed
+        const componentType = component.types[0];
+
+        switch (componentType) {
+            case "postal_code": {
+                document.querySelector("#postcode").value = `${component.long_name}`;
+                break;
+            }
+        }
+    }
+
+    $("#latitude").val(place.geometry.location.lat());
+    $("#longitude").val(place.geometry.location.lng());
+}
+
+window.initAutocomplete = initAutocomplete;
 </script>
 @endsection

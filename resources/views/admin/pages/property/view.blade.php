@@ -44,7 +44,7 @@
                       <i class="fa fa-trash" aria-hidden="true"></i>
                     </a>
                     <a href="{{ url($metadata['page_form_url']) }}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="New Records">
-                      <i class="fa fa-plus" aria-hidden="true"></i>
+                      <i class="fa fa-plus" aria-hidden="true"></i> Add New Property
                     </a>
                 </div>
               </div>
