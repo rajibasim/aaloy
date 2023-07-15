@@ -368,18 +368,18 @@
                         </select>
                       </div>
                     </div>
-                    <div class="col-sm-12">
+                    <div class="col-sm-12" id="avalible_beds" style="display: none;">
                       <!-- text input -->
                       <div class="form-group">
-                        <label>Description</label>
-                        <input type="text" class="form-control" placeholder="Description" name="description" value="{{ old('description', isset($details->description) && $details->description ? $details->description : '') }}" required="">
+                        <label>Avalible Beds</label>
+                        <input type="text" class="form-control" placeholder="Avalible Beds" name="avalible_beds" value="{{ old('avalible_beds', isset($details->avalible_beds) && $details->avalible_beds ? $details->avalible_beds : '') }}" required="">
                       </div>
                     </div>
                     <div class="col-sm-12">
                       <!-- text input -->
                       <div class="form-group">
-                        <label>Avalible Beds</label>
-                        <input type="text" class="form-control" placeholder="Avalible Beds" name="avalible_beds" value="{{ old('avalible_beds', isset($details->avalible_beds) && $details->avalible_beds ? $details->avalible_beds : '') }}" required="">
+                        <label>Description</label>
+                        <input type="text" class="form-control" placeholder="Description" name="description" value="{{ old('description', isset($details->description) && $details->description ? $details->description : '') }}" required="">
                       </div>
                     </div>
                     <div class="col-sm-6">
@@ -471,6 +471,14 @@ $(document).ready(function() {
         $('#posted_by_id').select2({
               theme: 'bootstrap4'
         });
+    });
+
+    $(document).on('change', '#property_type_id', function() {
+        if($(this).val() == 3) {
+            $("#avalible_beds").show();
+        }else{
+            $("#avalible_beds").hide();
+        }
     });
 });
 

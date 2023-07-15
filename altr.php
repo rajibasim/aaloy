@@ -9,4 +9,6 @@ ALTER TABLE `location` ADD `address` VARCHAR(255) NULL AFTER `city_id`, ADD `pin
 ALTER TABLE `property` ADD `latitude` VARCHAR(255) NULL AFTER `address`, ADD `longitude` VARCHAR(255) NULL AFTER `latitude`, ADD `pin_code` INT NULL AFTER `longitude`;
 
 ALTER TABLE `property` CHANGE `note` `note` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL;
+
+ALTER TABLE `property` ADD `avalible_beds` TEXT NULL AFTER `video_url`;
 ?>

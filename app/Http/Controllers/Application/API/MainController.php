@@ -35,27 +35,42 @@ class MainController extends Controller
 	public function masterData(Request $request){
         try {
 
-            $car_parking = $this->CommonModel->get_all($table = "car_parking", $select = array('*'), $where = array(array('is_deleted', '=', 0), array('status', '=', 1)), $join = array(), $left = array(), $right = array(), $order = array(array('car_parking' => "ASC")), $group = "", $limit = array(), $raw = "", $paging = "");
+            $car_parking = $this->CommonModel->get_all($table = "car_parking", $select = array('*', 'car_parking as name'), $where = array(array('is_deleted', '=', 0), array('status', '=', 1)), $join = array(), $left = array(), $right = array(), $order = array(array('car_parking' => "ASC")), $group = "", $limit = array(), $raw = "", $paging = "");
 
             $data['car_parking'] = !empty($car_parking) ? $car_parking : [];
 
-            $category = $this->CommonModel->get_all($table = "category", $select = array('*'), $where = array(array('is_deleted', '=', 0), array('status', '=', 1)), $join = array(), $left = array(), $right = array(), $order = array(array('category' => "ASC")), $group = "", $limit = array(), $raw = "", $paging = "");
+            $category = $this->CommonModel->get_all($table = "category", $select = array('*', 'category as name'), $where = array(array('is_deleted', '=', 0), array('status', '=', 1)), $join = array(), $left = array(), $right = array(), $order = array(array('category' => "ASC")), $group = "", $limit = array(), $raw = "", $paging = "");
 
             $data['category'] = !empty($category) ? $category : [];
 
-            $furnishing_status = $this->CommonModel->get_all($table = "furnishing_status", $select = array('*'), $where = array(array('is_deleted', '=', 0), array('status', '=', 1)), $join = array(), $left = array(), $right = array(), $order = array(array('furnishing_status' => "ASC")), $group = "", $limit = array(), $raw = "", $paging = "");
+            $furnishing_status = $this->CommonModel->get_all($table = "furnishing_status", $select = array('*', 'furnishing_status as name'), $where = array(array('is_deleted', '=', 0), array('status', '=', 1)), $join = array(), $left = array(), $right = array(), $order = array(array('furnishing_status' => "ASC")), $group = "", $limit = array(), $raw = "", $paging = "");
 
             $data['furnishing_status'] = !empty($furnishing_status) ? $furnishing_status : [];
 
-            $no_of_room = $this->CommonModel->get_all($table = "no_of_room", $select = array('*'), $where = array(array('is_deleted', '=', 0), array('status', '=', 1)), $join = array(), $left = array(), $right = array(), $order = array(array('no_of_room' => "ASC")), $group = "", $limit = array(), $raw = "", $paging = "");
+            $no_of_room = $this->CommonModel->get_all($table = "no_of_room", $select = array('*'), $where = array(array('is_deleted', '=', 0), array('status', '=', 1)), $join = array(), $left = array(), $right = array(), $order = array(array('id' => "ASC")), $group = "", $limit = array(), $raw = "", $paging = "");
+            $no_of_room_arr = [];
+            if($no_of_room){
+                foreach ($no_of_room as $key => $value) {
+                    $no_of_room_arr[] = array(
+                        'id' => $value->id,
+                        'no_of_room' => $value->no_of_room,
+                        'status' => $value->status,
+                        'is_deleted' => $value->is_deleted,
+                        'created_at' => $value->created_at,
+                        'updated_at' => $value->updated_at,
+                        'name' => $value->no_of_room.' BHK',
+                    );
+                }
+            }
 
-            $data['no_of_room'] = !empty($no_of_room) ? $no_of_room : [];
 
-            $positioning_status = $this->CommonModel->get_all($table = "positioning_status", $select = array('*'), $where = array(array('is_deleted', '=', 0), array('status', '=', 1)), $join = array(), $left = array(), $right = array(), $order = array(array('positioning_status' => "ASC")), $group = "", $limit = array(), $raw = "", $paging = "");
+            $data['no_of_room'] = !empty($no_of_room_arr) ? $no_of_room_arr : [];
+
+            $positioning_status = $this->CommonModel->get_all($table = "positioning_status", $select = array('*', 'positioning_status as name'), $where = array(array('is_deleted', '=', 0), array('status', '=', 1)), $join = array(), $left = array(), $right = array(), $order = array(array('positioning_status' => "ASC")), $group = "", $limit = array(), $raw = "", $paging = "");
 
             $data['positioning_status'] = !empty($positioning_status) ? $positioning_status : [];
 
-            $property_type = $this->CommonModel->get_all($table = "property_type", $select = array('*'), $where = array(array('is_deleted', '=', 0), array('status', '=', 1)), $join = array(), $left = array(), $right = array(), $order = array(array('property_type' => "ASC")), $group = "", $limit = array(), $raw = "", $paging = "");
+            $property_type = $this->CommonModel->get_all($table = "property_type", $select = array('*', 'property_type as name'), $where = array(array('is_deleted', '=', 0), array('status', '=', 1)), $join = array(), $left = array(), $right = array(), $order = array(array('property_type' => "ASC")), $group = "", $limit = array(), $raw = "", $paging = "");
 
             $data['property_type'] = !empty($property_type) ? $property_type : [];
 

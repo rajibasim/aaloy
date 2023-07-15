@@ -12,7 +12,7 @@ class PropertyController extends Controller{
 
     public function __construct(){
         $this->CommonModel = new CommonModel();
-        $this->slug = '/admin-property';
+        $this->slug = '/property';
         $this->title = 'Property';
         $this->table = 'property';
     }
