@@ -40,8 +40,8 @@ Route::group(['prefix' => 'v1','middleware' => ['auth:api']], function () {
     	Route::post('property/edit/{id}', 'App\Http\Controllers\Application\API\PropertyController@edit');
         Route::post('property/delete/{id}', 'App\Http\Controllers\Application\API\PropertyController@delete');
     	Route::post('property/details/{id}', 'App\Http\Controllers\Application\API\PropertyController@details');
-        Route::post('property/save/{id}', 'App\Http\Controllers\Application\API\PropertyController@save');
+        Route::post('property/favorite/{id}', 'App\Http\Controllers\Application\API\PropertyController@favorite');
         Route::post('property/my-property', 'App\Http\Controllers\Application\API\PropertyController@myProperty');
-        Route::post('property/my-saved-property', 'App\Http\Controllers\Application\API\PropertyController@mySavedProperty');
+        Route::post('property/my-favorite-property', 'App\Http\Controllers\Application\API\PropertyController@myFavoriteProperty');
         //User Related Information
 });
