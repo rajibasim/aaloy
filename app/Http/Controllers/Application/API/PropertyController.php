@@ -274,8 +274,13 @@ class PropertyController extends Controller
                 $property_images = $this->CommonModel->get_all($table = 'property_image', $select = array('*'), $where = array(array('is_deleted', '=', 0), array('property_id', '=', $value->id)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
                 $value->property_images = !empty($property_images) ? $property_images : [];
 
-                
                 $listArray[] = $value;
+                if(isset($value->video_url)){
+                   $value->property_images[] = array(
+                        'thamble' => '',
+                        'url' => $value->video_url,
+                    );
+                }
             }
 
             return response()->json([
@@ -307,7 +312,13 @@ class PropertyController extends Controller
             $data['details'] = $details[0];  
             $property_images = $this->CommonModel->get_all($table = 'property_image', $select = array('*'), $where = array(array('is_deleted', '=', 0), array('property_id', '=', $id)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
             $data['property_images'] = $property_images ? $property_images : [];
-
+            if(isset($data['details']->video_url)){
+               $data['property_images']['youtube'] = array(
+                    'thamble' => '',
+                    'url' => $data['details']->video_url,
+                );
+            }
+           
             $food_data = $this->CommonModel->get_all($table = 'property_food', $select = array('*'), $where = array(array('is_deleted', '=', 0), array('location_id', '=', $data['details']->location_id)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
             $data['food_data'] = $food_data ? $food_data : [];
 
