@@ -1,0 +1,30 @@
+.sec-homeService {
+    .bxPropertyServices {
+        ul{
+            display: flex;
+            text-decoration: none;
+            list-style: none;
+            flex-wrap: wrap;
+            justify-content:space-between;
+            padding: 0;
+            li {
+                width: 21.5%;
+                border: 1px solid #ccc;
+                padding: 38px 14px;
+                text-align: center;
+                border-radius: 5px;
+                margin: 10px 0;
+                .icon{
+                    margin-bottom: 14px;
+                    svg{
+                        font-size: 18px;
+                    }
+                }
+                .SweetHome {
+                    font-weight: bold;
+                    font-size: 22px;
+                }
+            }
+        }
+    }
+}

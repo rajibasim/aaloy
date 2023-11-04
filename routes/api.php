@@ -35,6 +35,7 @@ Route::group(['prefix' => 'v1'],  function(){
 Route::group(['prefix' => 'v1','middleware' => ['auth:api']], function () {
         //Property Related Information
     	Route::post('logout', 'App\Http\Controllers\Application\API\UserController@logout');
+        Route::post('updateProfile', 'App\Http\Controllers\Application\API\UserController@updateProfile');
         Route::post('property/list', 'App\Http\Controllers\Application\API\PropertyController@list');
     	Route::post('property/add', 'App\Http\Controllers\Application\API\PropertyController@add');
     	Route::post('property/edit/{id}', 'App\Http\Controllers\Application\API\PropertyController@edit');

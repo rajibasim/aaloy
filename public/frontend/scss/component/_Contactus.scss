@@ -1,0 +1,139 @@
+.sec-contactus {
+    margin-top: 0px;
+    .asi-gmap {
+        width: 100%;
+        iframe {
+            width: 100%;
+            height: 300px;
+            border: 0;
+        }
+    }
+    .title-contact {
+        text-align: center;
+        margin-bottom: 56px;
+        margin-top: 56px;
+        h4 {
+            font-size: 24px;
+            border-bottom: 1px solid #ccc;
+            display: inline-block;
+            padding-bottom: 12px;
+        }
+    }
+    .asi-contactbx {
+        margin-bottom: 56px;
+        .form {
+            height: 35%;
+            border: 5px solid #BED8D4;
+            border-radius: 20%;
+            margin-top: 1em;
+            text-align: center;
+            justify-content: center;
+            flex-direction: column;
+            background-color: #F7F9F9;
+            display: flex;
+            padding: 45px;
+        }  
+        .inputcontainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }  
+        input, textarea {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 5px 0;
+        }  
+        button {
+            justify-content: center;
+            align-items: center;
+            margin: 2em 0;
+        }
+    }
+    .bx-contact-leftright {
+        margin-top: 24px;
+    }
+    .content-contact {
+        ul {
+            li {
+                width: 100%;
+                display: flex;
+                gap: 12px;
+                margin-bottom: 24px;
+            }
+        }
+    }
+    .photo-contact {
+        width: 100%;
+        img {
+            max-width: 100%;
+        }
+    }
+    .bx-contact-leftright {
+        display: flex;
+        justify-content: space-between;
+        gap: 24px;
+        .left-contactbx {
+            width: 48%;
+        }
+        .right-contactbx {
+            width: 48%;
+            form {
+                width: 480px;
+                margin: 0 auto;
+                input, button, textarea {
+                    width: 100%;
+                    padding: 22px 12px;
+                    margin-bottom: 18px;
+                    border: 0;
+                    background-color: #ededed;
+                    color: #727272;
+                    border-radius: 5px;
+                    &::placeholder {
+                        color: #727272;
+                    }
+                    &:focus-visible {
+                        outline: -webkit-focus-ring-color auto 0px;
+                    }
+                }
+                input[type=submit] {
+                    background: #f39a2c;
+                    color: #fff;
+                    font-size: 20px;
+                    border-radius: 33px;
+                    padding: 16px 12px;
+                }
+            }
+            .submit {
+                a {
+                    background: #f39a2c;
+                    color: #fff;
+                    font-size: 20px;
+                    border-radius: 33px;
+                    padding: 16px 12px;
+                    display: block;
+                    width:100%;
+                    text-align: center;
+                }
+            }
+        }
+    }
+}
+
+// Responsive ====
+@media (max-width: 768px){
+    .sec-contactus{ 
+        .bx-contact-leftright {
+            flex-wrap: wrap;
+            .left-contactbx, .right-contactbx {
+                width: 100%;
+            }     
+            .right-contactbx form {
+                width: 100%;
+                margin: 0 auto;
+            }
+        }   
+    }
+}
+// End Responsive ===

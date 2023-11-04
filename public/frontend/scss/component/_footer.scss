@@ -1,0 +1,164 @@
+footer {
+    background-color: #ededed;
+    padding-top: 60px;
+    margin-top: 12px;
+    border-top: 1px solid #e3e3e3;
+    .footer-about-propertieslink {
+        display: flex;
+        .aboutcontent {
+            width: 50%;
+            padding-right: 24px;  
+            p {
+                color: #4a4a4a;
+            }          
+        }
+        .propertieslink {
+            width: 50%;
+            padding-left: 24px;
+        }
+        h4{
+            margin-bottom: 12px;
+            font-weight: 400;
+            color: #404040;
+            font-size: 20px;
+        }
+        .content-projects-india {
+            margin-bottom: 24px;
+            div {
+                a {
+                    font-weight: 400;
+                    color: #4a4a4a;
+                    font-size: 15px;
+                    padding-right: 9px;
+                    margin-right: 9px;
+                    position: relative;
+                    &::after {
+                        content: '';
+                        content: "";
+                        position: absolute;
+                        right: -1px;
+                        top: 6px;
+                        width: 1px;
+                        height: 14px;
+                        background-color: #8d8d8d;
+                    }
+                }
+            }
+        }
+    }
+    .asi-social-download-app {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 32px;
+        .btns-download-app {
+            ul {
+                display: flex;
+                gap: 12px;
+                li {
+                    a {
+                        background: #000;
+                        display: block;
+                        border-radius: 21px;
+                        overflow: hidden;
+                        padding: 0 10px;                        
+                        img {
+                            width: 100%;
+                            max-width: 100px;
+                        }
+                    }
+                }
+            }
+        }
+        .social-btns {
+            display: flex;
+            align-items: center;
+            ul {
+                display: flex;
+                gap: 10px;
+                li {
+                    a {
+                        width: 38px;
+                        height: 38px;
+                        display: block;
+                        justify-content: center;
+                        align-items: center;
+                        display: flex;
+                        border-radius: 50%;
+                        background: #ccc;
+                        img {
+                            width: 100%;
+                            max-width: 100%;
+                        }           
+                        &:hover {
+                            color: #e9a209;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .sec-footer-links {
+        margin-top: 34px;
+        padding: 14px 0;
+        margin-bottom: 15px;
+        background: #d9d9d9;
+        ul{
+            display: flex;
+            justify-content: space-between;
+            li{
+                a{
+                    color: #4a4a4a;           
+                    &:hover {
+                        color: #e9a209;
+                    }
+                }
+            }
+        }
+    }
+    .sec-desclaimer {
+        padding: 12px 0;
+        p{
+            color: #4a4a4a;
+        }
+    }
+    .sec-copyright {
+        margin-top: 15px;
+        background: #646464;
+        padding: 12px 0;
+        color: #fff;
+        p {
+            color: #ccc;
+            a{
+                color: #ccc;           
+                &:hover {
+                    color: #e9a209;
+                }
+            }
+        }
+    }
+}
+
+// Responsive ====
+@media (max-width:768px){
+    footer{
+        padding-top: 32px;
+        .asi-social-download-app {
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .sec-footer-links {
+            margin-top: 4px;
+        }
+        .footer-about-propertieslink .content-projects-india div a {
+            display: block;
+            margin-bottom: 4px;            
+            &:hover {
+                color: #e9a209;
+            }
+            &::after {
+                display: none;
+            }
+        }
+    }
+}

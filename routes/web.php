@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('/', 'App\Http\Controllers\Application\Web\HomeController@home');
 /*
 |-------------------------------------------------------------------------
 |App Admin Route

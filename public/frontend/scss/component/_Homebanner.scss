@@ -1,0 +1,49 @@
+.secHomeBanner {
+    position: relative;
+    .slick-initialized .slick-slide {
+        display: block;
+        background: #e7e7e7;
+        min-height: 250px;
+        img {
+            max-width: 100%;
+        }
+    }
+}
+.bxHomeBanner {
+    position: relative;
+    .opacityHomeBanner {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background-color: #000000b5;
+        z-index: 9;
+    }
+    .slick-prev {
+        left: 2%;
+        z-index: 999999;
+    }
+    .slick-next {
+        right: 2%;
+        z-index: 999999;
+    }
+    .slick-dots {
+        bottom: 26px;
+        z-index: 999999;
+    }
+    .slick-dots li.slick-active button:before {
+        opacity: 1;
+        color: #f00;
+    }
+    .slick-dots li button:before {
+        opacity: 1;
+        color: #fff;
+    }
+}
+.desktop-slide-img {
+    display: block;
+}
+.mobile-slide-img {
+    display: none;
+}

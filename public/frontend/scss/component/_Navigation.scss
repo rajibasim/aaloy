@@ -1,0 +1,38 @@
+.secNavigation {
+    padding: 10px 0;
+    .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }    
+    .logo {
+        img {
+            width: 64px;
+        }
+    }
+    .navbar-header {
+        flex: auto;
+        width: 120px;
+    }
+    .navbar-inverse {
+        background: none;
+        border: 0px;
+        margin-bottom: 0;
+    }
+    .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover {
+        color: #000;
+        background:none;
+    }
+    .navbar-brand {
+        height: auto;
+        padding: 0;
+        margin-left: 0;
+    }
+    .navbar-inverse .navbar-nav>li>a:focus, .navbar-inverse .navbar-nav>li>a:hover {
+        color: #000;
+    }
+    .navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:focus, .navbar-inverse .navbar-nav>.open>a:hover {
+        color: #000;
+        background: none;
+    }
+}

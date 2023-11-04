@@ -242,7 +242,7 @@ class PropertyController extends Controller
                 throw new \Exception('This field required');
             }
 
-            $sql = "SELECT property.id, property.title, property.description, property.avalible_beds, property.property_for, IF(property.property_for = '1', 'Rent', 'Sell') AS property_for_text, property.posted_by, IF(property.posted_by = '1', 'Broker', 'Owner') AS posted_by_txt, property.posted_by_id, users.name as posted_by_name, property.property_type_id, property_type.property_type, property.location_id, location.location, property.address, property.is_address_visible, property.furnishing_status_id, furnishing_status.furnishing_status, property.positioning_status_id, positioning_status.positioning_status, property.car_parking_id, car_parking.car_parking, property.preferance, property.carpet_area, property.floor, property.out_of_floor, property.bathroom, property.no_of_room_id, no_of_room.no_of_room, property.price, property.booking_price, property.maintenance, IF(property.gender = '1', 'Male', IF(property.gender = '2', 'Female', IF(property.gender = '3', 'Transgender', 'No Choice'))) AS gender, property.note, property.is_phone_visible, property.is_email_visible, property.property_image, property.avalible_from, property.is_admin_aproved, property.status, property.video_url, property.created_at, property.updated_at FROM `property` LEFT JOIN users ON property.posted_by_id = users.id LEFT JOIN property_type ON property.property_type_id = property_type.id LEFT JOIN location ON property.location_id = location.id LEFT JOIN furnishing_status ON property.furnishing_status_id = furnishing_status.id LEFT JOIN positioning_status ON property.positioning_status_id = positioning_status.id LEFT JOIN car_parking ON property.car_parking_id = car_parking.id LEFT JOIN no_of_room ON property.no_of_room_id = no_of_room.id WHERE property.status = '1'"; 
+            $sql = "SELECT property.id, property.title, property.description, property.avalible_beds, property.property_for, IF(property.property_for = '1', 'Rent', 'Sell') AS property_for_text, property.posted_by, IF(property.posted_by = '1', 'Broker', 'Owner') AS posted_by_txt, property.posted_by_id, users.name as posted_by_name, property.property_type_id, property_type.property_type, property.location_id, location.location, property.address, property.is_address_visible, property.furnishing_status_id, furnishing_status.furnishing_status, property.positioning_status_id, positioning_status.positioning_status, property.car_parking_id, car_parking.car_parking, property.preferance, property.carpet_area, property.floor, property.out_of_floor, property.bathroom, property.no_of_room_id, no_of_room.no_of_room, property.price, property.booking_price, property.maintenance, IF(property.gender = '1', 'Male', IF(property.gender = '2', 'Female', IF(property.gender = '3', 'Transgender', 'No Choice'))) AS gender, property.note, property.is_phone_visible, property.is_email_visible, property.property_image, property.avalible_from, property.is_admin_aproved, property.status, property.video_url, property.created_at, property.updated_at FROM `property` LEFT JOIN users ON property.posted_by_id = users.id LEFT JOIN property_type ON property.property_type_id = property_type.id LEFT JOIN location ON property.location_id = location.id LEFT JOIN furnishing_status ON property.furnishing_status_id = furnishing_status.id LEFT JOIN positioning_status ON property.positioning_status_id = positioning_status.id LEFT JOIN car_parking ON property.car_parking_id = car_parking.id LEFT JOIN no_of_room ON property.no_of_room_id = no_of_room.id WHERE property.status = '1' AND property.posted_by_id <> '".$user_data->id."'"; 
 
             $page_no = 1;
             if($request->page_no){
@@ -275,12 +275,6 @@ class PropertyController extends Controller
                 $value->property_images = !empty($property_images) ? $property_images : [];
 
                 $listArray[] = $value;
-                if(isset($value->video_url)){
-                   $value->property_images[] = array(
-                        'thamble' => '',
-                        'url' => $value->video_url,
-                    );
-                }
             }
 
             return response()->json([
@@ -302,6 +296,8 @@ class PropertyController extends Controller
     ### Details
     public function details(Request $request, $id){
         try {
+            $user_data = Auth::user();
+
             $id = $id;
             $sql = "SELECT property.id, property.title, property.description, property.avalible_beds, property.property_for, IF(property.property_for = '1', 'Rent', 'Sell') AS property_for_text, property.posted_by, IF(property.posted_by = '1', 'Broker', 'Owner') AS posted_by_txt, property.posted_by_id, users.name as posted_by_name, property.property_type_id, property_type.property_type, property.location_id, location.location, property.address, property.is_address_visible, property.furnishing_status_id, furnishing_status.furnishing_status, property.positioning_status_id, positioning_status.positioning_status, property.car_parking_id, car_parking.car_parking, property.preferance, property.carpet_area, property.floor, property.out_of_floor, property.bathroom, property.no_of_room_id, no_of_room.no_of_room, property.price, property.booking_price, property.maintenance, IF(property.gender = '1', 'Male', IF(property.gender = '2', 'Female', IF(property.gender = '3', 'Transgender', 'No Choice'))) AS gender, property.note, property.is_phone_visible, property.is_email_visible, property.property_image, property.avalible_from, property.is_admin_aproved, property.status, property.video_url, property.created_at, property.updated_at FROM `property` LEFT JOIN users ON property.posted_by_id = users.id LEFT JOIN property_type ON property.property_type_id = property_type.id LEFT JOIN location ON property.location_id = location.id LEFT JOIN furnishing_status ON property.furnishing_status_id = furnishing_status.id LEFT JOIN positioning_status ON property.positioning_status_id = positioning_status.id LEFT JOIN car_parking ON property.car_parking_id = car_parking.id LEFT JOIN no_of_room ON property.no_of_room_id = no_of_room.id WHERE property.id = '".$id."'"; 
 
@@ -312,15 +308,44 @@ class PropertyController extends Controller
             $data['details'] = $details[0];  
             $property_images = $this->CommonModel->get_all($table = 'property_image', $select = array('*'), $where = array(array('is_deleted', '=', 0), array('property_id', '=', $id)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
             $data['property_images'] = $property_images ? $property_images : [];
-            if(isset($data['details']->video_url)){
-               $data['property_images']['youtube'] = array(
-                    'thamble' => '',
+            if(isset($data['details']->video_url) && $data['details']->video_url){
+                $thumble = '';
+                $parts = parse_url($data['details']->video_url);
+                if(isset($parts['query']) && $parts['query']){
+                    parse_str($parts['query'], $query);
+                    if(isset($query['v']) && $query['v']){
+                        $thumble = "http://img.youtube.com/vi/".$query['v']."/maxresdefault.jpg";
+                    }else{
+                       $thumble = ''; 
+                    }
+                }
+                $data['property_images']['youtube'] = array(
+                    'thamble' => $thumble,
                     'url' => $data['details']->video_url,
                 );
             }
            
             $food_data = $this->CommonModel->get_all($table = 'property_food', $select = array('*'), $where = array(array('is_deleted', '=', 0), array('location_id', '=', $data['details']->location_id)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
             $data['food_data'] = $food_data ? $food_data : [];
+
+            //related property
+            $rel_sql = "SELECT property.id, property.title, property.description, property.avalible_beds, property.property_for, IF(property.property_for = '1', 'Rent', 'Sell') AS property_for_text, property.posted_by, IF(property.posted_by = '1', 'Broker', 'Owner') AS posted_by_txt, property.posted_by_id, users.name as posted_by_name, property.property_type_id, property_type.property_type, property.location_id, location.location, property.address, property.is_address_visible, property.furnishing_status_id, furnishing_status.furnishing_status, property.positioning_status_id, positioning_status.positioning_status, property.car_parking_id, car_parking.car_parking, property.preferance, property.carpet_area, property.floor, property.out_of_floor, property.bathroom, property.no_of_room_id, no_of_room.no_of_room, property.price, property.booking_price, property.maintenance, IF(property.gender = '1', 'Male', IF(property.gender = '2', 'Female', IF(property.gender = '3', 'Transgender', 'No Choice'))) AS gender, property.note, property.is_phone_visible, property.is_email_visible, property.property_image, property.avalible_from, property.is_admin_aproved, property.status, property.video_url, property.created_at, property.updated_at FROM `property` LEFT JOIN users ON property.posted_by_id = users.id LEFT JOIN property_type ON property.property_type_id = property_type.id LEFT JOIN location ON property.location_id = location.id LEFT JOIN furnishing_status ON property.furnishing_status_id = furnishing_status.id LEFT JOIN positioning_status ON property.positioning_status_id = positioning_status.id LEFT JOIN car_parking ON property.car_parking_id = car_parking.id LEFT JOIN no_of_room ON property.no_of_room_id = no_of_room.id WHERE property.status = '1' AND property.property_for = '".$details[0]->property_for."' AND property.posted_by_id <> '".$user_data->id."' LIMIT 0, 20"; 
+
+            $list = DB::select($rel_sql);
+            $listArray = [];
+            if($list && count($list) > 0){
+                foreach ($list as $key => $value) {
+                    $is_saved = $this->CommonModel->get_all($table = 'users_saved_property', $select = array('id'), $where = array(array('is_deleted', '=', 0), array('property_id', '=', $value->id), array('user_id', '=', $user_data->id)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
+                    $value->is_saved = !empty($is_saved) ? 1 : 0;
+
+                    $property_images = $this->CommonModel->get_all($table = 'property_image', $select = array('*'), $where = array(array('is_deleted', '=', 0), array('property_id', '=', $value->id)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
+                    $value->property_images = !empty($property_images) ? $property_images : [];
+
+                    $listArray[] = $value;
+                }
+            }
+
+            $data['related_property'] = $listArray;
 
             return response()->json([
                 'result' => true,
@@ -617,8 +642,8 @@ class PropertyController extends Controller
                 $delete = $this->CommonModel->delete_data('users_saved_property', array(array('user_id', '=', $user_data->id), array('property_id', '=', $id)));
                 $message = "Successfully removed from favorite list.";
             }else{
-                $count = $this->CommonModel->get_all($table = "users_saved_property", $select = array('id'), $where = array(array('user_id', '=', $user_data->id), array('is_deleted', '=', 0)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
-                if(count($count) < 100){
+                $count = $this->CommonModel->get_all($table = "users_saved_property", $select = array('*'), $where = array(array('user_id', '=', $user_data->id), array('is_deleted', '=', 0)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
+                if(empty($count) || count($count) < 3){
                     $post_data = array(
                         'user_id' => $user_data->id,
                         'property_id' => $id,

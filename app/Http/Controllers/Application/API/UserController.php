@@ -48,6 +48,60 @@ class UserController extends Controller
         }
     }
 
+    ### Update Profile
+    public function updateProfile(Request $request){
+        $user_data = Auth::user();
+        try {
+            $post_data = [];
+            if ($request->name) {
+                $post_data['name'] = $request->name;
+            }
+
+            if ($request->address) {
+                $post_data['address'] = $request->address;
+            }
+
+            if ($request->hasFile('profile_image')){
+                $file = $request->file('profile_image');
+                $image = time().$file->getClientOriginalName();
+                $image = str_replace(' ', '', $image);
+                $destinationPath = public_path() . '/uploads/profile_image/';
+                $file->move($destinationPath, $image);  
+                $post_data['profile_image'] = 'public/uploads/property_image/'.$image; 
+            }
+
+            $post_data['updated_at'] = date('Y-m-d H:i:s');
+            $update = $this->CommonModel->update_data($table = "users", array(array('id', '=', $user_data->id)), $data = $post_data);
+
+            //dd($update);
+
+            $user_details = User::where('id','=',$user_data->id)->first();
+            $token = JWTAuth::fromUser($user_details);
+
+            $message = "";
+            $result_data = array(
+                'id' => $user_data->id,
+                'access_token' => $token,
+                'token_type' => 'bearer',
+                'expires_in' => auth()->factory()->getTTL() * 604800,
+                'user_data' => $user_details,
+            );
+
+            return response()->json([
+                'result' => true,
+                'message' => $message,
+                'data' => $result_data,
+            ]);
+            
+        } catch (\Exception $e) {
+            return response()->json([
+                'result' => false,
+                'message' => $e->getMessage(),
+                'data' => array(),
+            ]);
+        }
+    }
+
 
 }
 

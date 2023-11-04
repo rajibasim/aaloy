@@ -1,0 +1,85 @@
+
+.sec-HomePWProperties {
+    padding: 50px 0;
+    .bannerItemPWProperties {
+        border: 1px solid #cdcdcd;
+        margin-right: 10px;
+        border-radius: 5px 0 5px 5px;
+        position: relative;
+        min-height: 101px;
+    }
+    .slick-slide{ 
+        .bxImgPWD{ 
+            position: relative;
+            .likeImgPWD {
+                position: absolute;
+                top: 5px;
+                left: 9px;
+                color: #e9a209;
+            }
+            .newImgPWD {
+                position: absolute;
+                top: 0;
+                right: 0;
+                background-color: red;
+            }
+            .NOImgPWD {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                background-color: #00000075;
+                padding: 4px 10px;
+                border-radius: 0 4px 0 0;
+                color: #a7a7a7;
+            }
+            img {
+                display: block;
+                width: 100%;
+            }
+        }
+    }
+    .bxBtnsContentPWP {
+        display: flex;
+        justify-content: space-between;
+        a {
+            text-decoration: none;
+            padding: 6px 10px 8px;
+            border: 1px solid rgb(233 194 155);
+            border-radius: 4px;
+            font-size: 13px;
+            display: block;
+            color: rgb(218, 126, 34);
+            &:hover, &.active {
+                background-color: rgb(239 146 50);
+                color: #fff;
+            }
+        }
+    }
+    .PVContentPWP, .BNContentPWP, .PBContentPWP {
+        margin-top: 0px;
+    }
+    .titleContentPWP, .bxBtnsContentPWP {
+        margin-top: 12px;
+    }
+    .PTContentPWP {
+        margin-top: 6px;
+    }
+    .bxContentPWProperties {
+        padding: 10px;
+    }
+    .location-rank {
+        position: absolute;
+        right: 0;
+        top: 0;
+        color: #fff;
+        font-weight: bold;
+        background-image: url("./images/rate.png");
+        background-repeat: no-repeat;
+        background-size: 100%;
+        width: 53px;
+        height: 34px;
+        text-align: center;
+        padding-top: 4px;
+        padding-left: 10px;
+    }
+} 

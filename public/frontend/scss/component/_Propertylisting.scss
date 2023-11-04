@@ -1,0 +1,214 @@
+.asi-property-listing {
+    margin: 56px 0;
+}
+.title-page {
+    margin-bottom: 56px;
+    padding-bottom: 11px;
+    border-bottom: 1px solid #e1e1e1;
+    h3 {
+        font-size: 26px;
+        font-weight: 600;
+    }
+}
+.bx-property-listing {
+    ul {
+        display: flex;
+        gap: 22px;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        li{
+            width: 31%;
+        }
+    }
+}
+.bx-property-list {
+    border: 1px solid #e9e9e9;
+    border-radius: 2px;
+    overflow: hidden;
+}
+.photo-property {
+    width: 100%;
+    img {
+        width: 100%;
+    }
+}
+.cl-1{ 
+    margin-bottom: 8px; 
+    font-weight: bold;
+}
+.cl-2{ 
+    margin-bottom: 8px;
+    color: #7e7e7e;
+    font-size: 15px; 
+}
+.cl-3{ 
+    margin-bottom: 8px; 
+    font-weight: bold;
+}
+.cl-4{ 
+    margin-bottom: 8px; 
+    font-weight: bold;
+}
+.cl-5{ 
+    margin-bottom: 8px;
+    color: #919191;
+    text-transform: capitalize;
+    font-size: 14px;
+}
+            
+.cl-6 {
+    margin-top: 32px;
+    margin-bottom: 8px;
+    ul {
+        gap: 8px;
+        li {
+            width: auto;
+            a {
+                border: 1px solid #f17e1b;
+                padding: 7px 6px;
+                font-size: 12px;
+                border-radius: 3px;
+                color: #f17e1b;
+                font-weight: 600;
+                display: block;
+                &.active, &:hover {
+                    border: 1px solid #f17e1b;
+                    color: #fff;
+                    background: #f17e1b;
+                }
+            }
+        }
+    }
+}
+.content-listing {
+    padding: 16px;
+}
+// === My property ===
+// .asi-myproperty {
+    .bx-property-listing{ 
+        ul {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            ul li a {
+                min-width: 100px;
+            }
+            li .cl-6{ 
+                margin-top: 22px;
+                ul li a {
+                    text-align: center;
+                    background: #525252;
+                    border: 1px solid #525252;
+                    color: #fff;
+                    &.active {
+                        border: 1px solid #f17e1b;
+                        background: #f17e1b;
+                        color: #fff;
+                    }
+                }
+            }
+        }
+    }
+// }
+.bx-property-list .photo-property {
+    position: relative;
+}
+.bxicon-camera-no {
+    display: flex;
+    position: absolute;
+    left: 0;
+    bottom: 15px;
+    background: #00000075;
+    padding: 11px 10px 6px;
+    color: #fff;
+    gap: 10px;
+    border-radius: 0 5px 5px 0;
+}
+.bx-waiting-forapproval {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+}
+.waiting-forapproval {
+    background: rgb(211 120 0 / 73%);
+    padding: 15px 10px 21px;
+    color: #fff;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    width: 100%;
+}
+//=== Property details ===
+.bx-property-details {
+    display: flex;
+    justify-content: space-between;
+}
+.left-propertyDetails {
+    width: 46%;
+}
+.right-propertyDetails {
+    width: 50%;
+    h3 {
+        font-size: 28px;
+        margin-bottom: 18px;
+        margin-top: 0;
+    }
+    .content-listing {
+        ul {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            li {
+                width: 48%;
+            }
+        }
+    }
+}
+
+// Responsive ===
+@media (max-width:768px){
+    .bx-property-listing ul {
+        flex-wrap: wrap;
+        li {
+            width: 100%;
+        }
+    }
+    .bx-property-details {
+        flex-wrap: wrap;
+        .left-propertyDetails {
+            width: 100%;
+        }
+        .right-propertyDetails {
+            width: 100%;
+            .content-listing ul {
+                flex-wrap: wrap;
+                li {
+                    width: 100%;
+                }
+            }
+        }
+    }
+    .title-page {
+        margin-bottom: 24px;
+    }
+    .asi-property-listing {
+        margin: 28px 0;
+    }
+    .waiting-forapproval {
+        font-size: 16px;
+        font-weight: normal;
+    }
+    .right-propertyDetails{ 
+        margin-top: 28px;
+        h3 {
+            font-size: 23px;
+        }
+    }
+}
+// === Responsive ==== ///

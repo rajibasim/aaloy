@@ -1,0 +1,100 @@
+.bxSearchBanner {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    z-index: 99;
+    text-align: center;
+    color: #fff;
+    .listHoemBanner {
+        margin-bottom: 50px;
+        ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            gap: 20px;
+            li{
+                font-size: 19px;
+            }
+        }
+    }
+}
+.secHomebannercontents {
+    margin-top: 67px;
+}
+.searchboxHoemBanner {
+    display: flex;
+    background: #fff;
+    width: 900px;
+    margin: 0 auto;
+    padding: 10px 10px 10px 22px;
+    border-radius: 31px;
+}
+.titleHoemBanner {
+    font-size: 38px;
+    margin-bottom: 45px;
+} 
+.searchFormAddress {
+    width: 35%;
+    padding-left: 10px;
+}
+.searchFormItem {
+    width: 25%;
+    padding-left: 20px;
+}
+.searchFormBudget {
+    width: 25%;
+    padding-left: 20px;
+}
+.searchFormButton {
+    width: 12%;
+    margin-left: 20px;
+}
+.searchFormAddress, .searchFormItem, .searchFormBudget { 
+    display: flex;
+    gap: 0px;
+    align-items: center;
+    border-right: 1px solid #e1e1e1;
+    span{
+        height: 26px;
+    }
+    svg{
+        color: #f00;
+    }
+ }
+.searchFormAddress input, .searchFormItem input, .searchFormBudget select {
+    padding: 10px;
+    border: 0;
+    font-size: 14px;
+    color: #000;
+}
+.searchFormAddress input:focus-visible, .searchFormItem input:focus-visible, .searchFormBudget select:focus-visible {
+    outline: -webkit-focus-ring-color auto 0px;
+}
+.searchFormButton {
+    background-color: #f00;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    border-radius: 21px;
+    padding: 10px;
+    button {
+        background-color: #f00;
+        border: 0px;
+        font-size: 14px;
+        color: #fff;
+    }
+    svg {
+        color: #fff;
+    }
+}
+// Responsive //
+@media (max-width: 768px){
+    .searchFormBudget, .searchFormItem {
+        display: none;
+    }    
+    .bxSearchBanner .listHoemBanner {
+        margin-bottom: 14px;
+    }
+}
+// End Responsive //

@@ -1,0 +1,161 @@
+.sec-dashboard-body .container {
+  display: flex;
+  gap: 20px;
+}
+.sec-dashboard-body .container .content-dash {
+  background-color: #f3f3f3;
+  margin-top: 33px;
+  flex: 1;
+  padding: 16px;
+}
+.sec-dashboard-body .container .content-dash .title-page {
+  margin-bottom: 22px;
+}
+.sec-dashboard-body .container .content-dash .title-page h3 {
+  font-size: 21px;
+}
+.sec-dashboard-body .container .asi-property-listing {
+  margin: 18px 0 0;
+}
+.sec-dashboard-body .container .bx-property-listing ul {
+  gap: 27px;
+  justify-content: center;
+}
+.sec-dashboard-body .container .bx-property-listing ul li {
+  background: #fff;
+  width: 47%;
+}
+.sec-dashboard-body .container .cl-6 .bx-property-listing ul {
+  display: block;
+}
+.sec-dashboard-body .container .cl-6 .bx-property-listing ul li {
+  margin-bottom: 12px;
+  width: 100%;
+}
+.sec-dashboard-body .container .cl-6 .bx-property-listing ul li a {
+  width: 100%;
+}
+
+.left-list-dash {
+  width: 270px;
+  background: #f3f3f3;
+  padding: 12px;
+  margin-top: 33px;
+}
+.left-list-dash .profile-details {
+  text-align: center;
+  margin-top: 36px;
+}
+.left-list-dash .profile-details h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 16px;
+  margin-bottom: 4px;
+}
+.left-list-dash .profile-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #e4e4e4;
+  margin: 0 auto;
+  border: 1px solid #ccc;
+}
+.left-list-dash .left-list-item {
+  margin-top: 32px;
+}
+.left-list-dash .left-list-item ul li a {
+  padding: 12px 0;
+  border-top: 1px solid #ccc;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.left-list-dash .left-list-item ul li a span img {
+  width: 12px;
+}
+.left-list-dash .left-list-item ul li a.active {
+  color: #e9a209;
+}
+
+.bx-content-dash ul li {
+  display: flex;
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 10px 10px 0px 10px;
+  margin-bottom: 12px;
+  position: relative;
+}
+.bx-content-dash ul li .bx-image-dash-content {
+  width: 120px;
+}
+.bx-content-dash ul li .cl-1 {
+  margin-bottom: 0px;
+}
+.bx-content-dash ul li .cl-2 {
+  margin-bottom: 0px;
+}
+.bx-content-dash ul li .cl-3 {
+  margin-bottom: 0px;
+}
+.bx-content-dash ul li .cl-4 {
+  margin-bottom: 0px;
+}
+.bx-content-dash ul li .content-listing {
+  padding-top: 0;
+}
+.bx-content-dash ul li .bx-buttons-dash {
+  text-align: center;
+  margin-top: 12px;
+  margin-left: 43px;
+}
+.bx-content-dash ul li .bx-buttons-dash ul {
+  display: flex;
+  gap: 12px;
+}
+.bx-content-dash ul li .bx-buttons-dash ul li {
+  background: unset;
+  border: 0px solid #ccc;
+  padding: 0px 0px 0px 0px;
+}
+.bx-content-dash ul li .bx-buttons-dash ul li a {
+  color: #fff;
+  padding: 5px 10px;
+}
+.bx-content-dash ul li .bx-buttons-dash ul li:first-child a {
+  background: #000;
+}
+.bx-content-dash ul li .bx-buttons-dash ul li:nth-child(2) a {
+  background: #0083db;
+}
+.bx-content-dash ul li .bx-buttons-dash ul li:last-child a {
+  background: #db8f00;
+}
+.bx-content-dash ul li .bx-buttons-dash p {
+  margin-top: 8px;
+}
+
+.bx-content-dash-profile ul li {
+  justify-content: space-between;
+  align-items: center;
+}
+.bx-content-dash-profile ul li .cl-1 {
+  margin-bottom: 8px;
+  color: #d46c00;
+  font-size: 14px;
+}
+.bx-content-dash-profile .dash-amount {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.d-profile-amount {
+  padding-right: 24px;
+}
+.d-profile-amount p {
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #4c4c4c;
+  font-size: 13px;
+}

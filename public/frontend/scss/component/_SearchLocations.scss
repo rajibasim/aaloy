@@ -1,0 +1,76 @@
+.sec-searchlocations {
+    padding: 50px 0; 
+}
+.titleSearchBylocations {
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 28px;
+}
+.bannerItemLocations {
+    border: 1px solid #cdcdcd;
+    padding: 10px;
+    margin-right: 10px;
+    border-radius: 5px 0 5px 5px;
+    position: relative;
+    min-height: 132px;
+}
+.location-name {
+    .location-big-text {
+        font-size: 24px;
+        font-weight: 500;
+        margin-bottom: 5px;
+    }
+    .location-small-text {
+        font-size: 13px;
+    }
+} 
+.location-rank {
+    position: absolute;
+    right: 0;
+    top: 0;
+    color: #fff;
+    font-weight: bold;
+    background-image: url("./images/rate.png");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    width: 53px;
+    height: 34px;
+    text-align: center;
+    padding-top: 4px;
+    padding-left: 10px;
+}
+.location-more {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    color: #f00;
+    text-transform: capitalize;
+    font-weight: bold;
+    padding: 6px 10px;
+    span {
+        font-size: 11px;
+        padding-left: 6px;
+    }
+}
+.location-distance {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: #f00;
+    color: #fff;
+    padding: 7px 10px;
+    border-radius: 0 4px 0 4px;
+}
+
+// Responsive ===
+@media (max-width: 768px){
+    .titleSearchBylocations {
+        font-size: 24px;
+        margin-bottom: 18px;
+    }    
+  .location-name {
+        .location-big-text {
+            font-size: 22px;
+        }
+    }
+}
