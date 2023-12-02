@@ -138,7 +138,7 @@ class PropertyController extends Controller
                 throw new \Exception('This field required');
             } 
 
-            $request->status = 2; 
+            $request->status = 1; 
 
             $post_data = array(
                 'title' => $request->title,

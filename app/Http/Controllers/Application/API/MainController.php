@@ -556,10 +556,54 @@ class MainController extends Controller
     public function sendOtp($phone, $msgType){
         if($phone){
             $verification_code = rand(1000,9999);
-            //TO DO : Send it through sms later
+            $curl = curl_init();
+                curl_setopt_array($curl, array(
+                  CURLOPT_URL => 'https://www.smsgateway.center/SMSApi/rest/send',
+                  CURLOPT_RETURNTRANSFER => true,
+                  CURLOPT_ENCODING => '',
+                  CURLOPT_MAXREDIRS => 10,
+                  CURLOPT_TIMEOUT => 0,
+                  CURLOPT_FOLLOWLOCATION => true,
+                  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                  CURLOPT_CUSTOMREQUEST => 'POST',
+                  CURLOPT_POSTFIELDS => 'userId=aaloy&password=Aaloyforyou23%40&senderId=aaloyk&sendMethod=simpleMsg&msgType=text&mobile='.$phone.'&msg=OTP%20for%20login%20on%20AALOY%20is%20'.$verification_code.'%20and%20valid%20for%202%20minutes.%20Do%20not%20share%20this%20OTP%20with%20anyone%20for%20security%20reasons.&dltEntityId=1101523850000071749&duplicateCheck=true&format=json',
+                  CURLOPT_HTTPHEADER => array(
+                    'Content-Type: application/x-www-form-urlencoded'
+                  ),
+                ));
+
+                $response = curl_exec($curl);
+
+                curl_close($curl);
+                return "success";
         }
 
         return $verification_code;
+    }
+
+    ### Blog
+    public function blog(Request $request, $id){
+        try {
+            if($id){
+                $blog = $this->CommonModel->get_all($table = "blog", $select = array('*'), $where = array(array('is_deleted', '=', 0), array('status', '=', 1), array('id', '=', $id)), $join = array(), $left = array(), $right = array(), $order = array(array('id' => "ASC")), $group = "", $limit = array(), $raw = "", $paging = "");
+                $blog = $blog[0];
+            }else{
+                $blog = $this->CommonModel->get_all($table = "blog", $select = array('*'), $where = array(array('is_deleted', '=', 0), array('status', '=', 1)), $join = array(), $left = array(), $right = array(), $order = array(array('id' => "ASC")), $group = "", $limit = array(), $raw = "", $paging = "");
+            }
+            return response()->json([
+                'result' => true,
+                'message' => '',
+                'data' => !empty($blog) ? $blog : [],
+            ],200,[],JSON_NUMERIC_CHECK);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'result' => false,
+                'message' => $e->getMessage(),
+                'data' => array(),
+            ],200,[],JSON_NUMERIC_CHECK);
+
+        }
     }
 }
 

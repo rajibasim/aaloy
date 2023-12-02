@@ -23,13 +23,14 @@ Route::group(['prefix' => 'v1'],  function(){
 	Route::get('banner', 'App\Http\Controllers\Application\API\MainController@banner');
     Route::get('accessory', 'App\Http\Controllers\Application\API\MainController@accessory');
     Route::get('location', 'App\Http\Controllers\Application\API\MainController@location');
+    Route::get('blog', 'App\Http\Controllers\Application\API\MainController@blog');
+    Route::get('blog/{id?}', 'App\Http\Controllers\Application\API\MainController@blog');
     Route::post('signup', 'App\Http\Controllers\Application\API\MainController@signup');
     Route::post('signin', 'App\Http\Controllers\Application\API\MainController@signin');
     Route::post('resend', 'App\Http\Controllers\Application\API\MainController@resend');
     Route::post('verify', 'App\Http\Controllers\Application\API\MainController@verify');
     Route::post('forgot-password', 'App\Http\Controllers\Application\API\MainController@forgotPassword');
     Route::post('reset-password', 'App\Http\Controllers\Application\API\MainController@resetPassword');
-
 });
 
 Route::group(['prefix' => 'v1','middleware' => ['auth:api']], function () {

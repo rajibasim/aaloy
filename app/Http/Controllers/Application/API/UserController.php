@@ -67,7 +67,7 @@ class UserController extends Controller
                 $image = str_replace(' ', '', $image);
                 $destinationPath = public_path() . '/uploads/profile_image/';
                 $file->move($destinationPath, $image);  
-                $post_data['profile_image'] = 'public/uploads/property_image/'.$image; 
+                $post_data['profile_image'] = 'public/uploads/profile_image/'.$image; 
             }
 
             $post_data['updated_at'] = date('Y-m-d H:i:s');
