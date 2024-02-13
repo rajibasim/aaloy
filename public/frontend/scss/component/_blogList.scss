@@ -1,0 +1,110 @@
+.sec-bloglist {
+    background-color: #f1f3f8;
+    padding: 40px 0 60px 0;
+    .title-blog {
+        margin-top: 0;
+        margin-bottom: 30px;
+        text-transform: uppercase;
+        border-bottom: 1px solid #cfe0e9;
+        color: #030b12;
+        position: relative;
+        font-family: Poppins;
+        font-weight: 600;
+        font-size: 31px;
+        padding-bottom: 4px;
+        &:after {
+            position: absolute;
+            display: block;
+            width: 32px;
+            padding-top: -3px;
+            border-bottom: 4px solid #2c40ff;
+            content: '';
+            height: 5px;
+        }
+    }
+    ul {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 20px;
+        li {
+            width: 32%;
+            figure {
+                width: 100%;
+                height: 240px;
+                border-radius: 4px;
+                overflow: hidden;
+                img {
+                    width: 100%;
+                }
+            }
+        }
+    }
+    .topic {
+        text-transform: uppercase;
+        font-size: 11px;
+        font-weight: bold;
+        color: #333;
+        margin-top: 6px;
+    }
+    .blogtitle {
+        font-family: Poppins;
+        font-weight: 600;
+        font-size: 22px;
+        margin-top: 6px;
+        margin-bottom: 6px;
+        word-break: break-word;
+    }
+}
+// ===Blog details === //
+.sec-banner-details {
+    background: #1c3142;
+    padding: 32px 0;
+} 
+.detailsp {
+    margin-top: 32px;
+    p{
+        font-size: 16px;
+    }
+}
+.sec-blog-details {
+    .container {
+        display: flex;
+        gap: 32px;
+        .asi-details-right {
+            flex: none;
+            width: 320px;
+        }
+    }
+    &.sec-bloglist {        
+        .title-blog {
+            font-size: 21px;
+        }
+        ul li {
+            width: 100%;
+            figure {
+                height: auto;
+                width: 100px;
+            }
+            a {
+                display: flex;
+                width: 100%;
+                justify-content: space-between;
+                gap: 12px;
+            }
+            .blogtitle {
+                font-size: 14px;
+                margin-top: 5px;
+                margin-bottom: 1px;
+                line-height: 17px;
+            }
+            .topic {
+                margin-top: 0;
+            }
+            .wirter-date-comments {
+                font-size: 12px;
+                color: #7a7a7a;
+            }
+        }
+    }
+}

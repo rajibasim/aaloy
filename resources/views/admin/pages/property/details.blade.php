@@ -405,6 +405,100 @@
         <!-- /.row -->
       </div><!-- /.container-fluid -->
     </section>
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Request For Call Back</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Phone</th>
+                      <th>Create Date & Time</th>
+                      <th>Update Date & Time</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  @if(isset($call_back) && $call_back)
+                    @foreach ( $call_back as $key => $res )
+                    <tr> 
+                      <td>{{ $res->name }}</td>
+                      <td>{{ $res->phone }}</td>
+                      <td>{{ date('d/m/Y h:i A', strtotime($res->created_at)) }}</td>
+                      <td>{{ date('d/m/Y h:i A', strtotime($res->updated_at)) }}</td>
+                    </tr>
+                    @endforeach
+                  @else
+                    <tr> 
+                      <td colspan="4">No record found.</td>
+                    </tr>
+                  @endif
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+        <!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Request For Visit</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Phone</th>
+                      <th>Create Date & Time</th>
+                      <th>Update Date & Time</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  @if(isset($request_visit) && $request_visit)
+                    @foreach ( $request_visit as $key => $res )
+                    <tr> 
+                      <td>{{ $res->name }}</td>
+                      <td>{{ $res->phone }}</td>
+                      <td>{{ date('d/m/Y h:i A', strtotime($res->created_at)) }}</td>
+                      <td>{{ date('d/m/Y h:i A', strtotime($res->updated_at)) }}</td>
+                    </tr>
+                    @endforeach
+                  @else
+                    <tr> 
+                      <td colspan="4">No record found.</td>
+                    </tr>
+                  @endif
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+        <!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
 @endsection

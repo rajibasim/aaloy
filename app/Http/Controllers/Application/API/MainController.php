@@ -575,14 +575,14 @@ class MainController extends Controller
                 $response = curl_exec($curl);
 
                 curl_close($curl);
-                return "success";
+                return $verification_code;
         }
 
         return $verification_code;
     }
 
     ### Blog
-    public function blog(Request $request, $id){
+    public function blog(Request $request, $id = ''){
         try {
             if($id){
                 $blog = $this->CommonModel->get_all($table = "blog", $select = array('*'), $where = array(array('is_deleted', '=', 0), array('status', '=', 1), array('id', '=', $id)), $join = array(), $left = array(), $right = array(), $order = array(array('id' => "ASC")), $group = "", $limit = array(), $raw = "", $paging = "");

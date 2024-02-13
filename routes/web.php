@@ -11,6 +11,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('/', 'App\Http\Controllers\Application\Web\HomeController@home');
+Route::get('/process-login', 'App\Http\Controllers\Application\Web\HomeController@processLogin');
+Route::group(['middleware' => ['checkSessionWeb']], function() {
+    Route::get('/blogs/{slug?}', 'App\Http\Controllers\Application\Web\HomeController@blogs');
+    Route::get('/page/{page_slug}', 'App\Http\Controllers\Application\Web\HomeController@cmsPage');
+});
 /*
 |-------------------------------------------------------------------------
 |App Admin Route
@@ -68,6 +73,12 @@ Route::group(['middleware' => ['checkAdminLogin']], function() {
     Route::post('/accessory/save', [App\Http\Controllers\Application\Admin\AccessoryController::class, 'save'])->name('save');
     Route::get('/accessory/delete/{id}', [App\Http\Controllers\Application\Admin\AccessoryController::class, 'delete'])->name('delete');
     /* accessory End */
+    /* cms Start */
+    Route::get('/cms', [App\Http\Controllers\Application\Admin\CmsController::class, 'index'])->name('cms');
+    Route::get('/cms/form/{id?}', [App\Http\Controllers\Application\Admin\CmsController::class, 'form'])->name('form');
+    Route::post('/cms/save', [App\Http\Controllers\Application\Admin\CmsController::class, 'save'])->name('save');
+    Route::get('/cms/delete/{id}', [App\Http\Controllers\Application\Admin\CmsController::class, 'delete'])->name('delete');
+    /* cms End */
     /* banner Start */
     Route::get('/banner', [App\Http\Controllers\Application\Admin\BannerController::class, 'index'])->name('banner');
     Route::get('/banner/form/{id?}', [App\Http\Controllers\Application\Admin\BannerController::class, 'form'])->name('form');
@@ -98,41 +109,6 @@ Route::group(['middleware' => ['checkAdminLogin']], function() {
     Route::get('/property/delete_food/{id?}', [App\Http\Controllers\Application\Admin\PropertyController::class, 'delete_food'])->name('delete_food');
     /* property End */
 
-    /*master data start*/
-    Route::group(['prefix' => '/users'], function () {
-        /* location Start */
-        Route::get('/location', [App\Http\Controllers\Application\Admin\users\LocationController::class, 'index'])->name('admin-district');
-        Route::get('/location/form/{id?}', [App\Http\Controllers\Application\Admin\users\LocationController::class, 'form'])->name('form');
-        Route::post('/location/save', [App\Http\Controllers\Application\Admin\users\LocationController::class, 'save'])->name('save');
-        Route::get('/location/delete/{id}', [App\Http\Controllers\Application\Admin\users\LocationController::class, 'delete'])->name('delete');
-        /* location End */
-        /* country Start */
-        Route::get('/country', [App\Http\Controllers\Application\Admin\users\CountryController::class, 'index'])->name('country');
-        Route::get('/country/form/{id?}', [App\Http\Controllers\Application\Admin\users\CountryController::class, 'form'])->name('form');
-        Route::post('/country/save', [App\Http\Controllers\Application\Admin\users\CountryController::class, 'save'])->name('save');
-        Route::get('/country/delete/{id}', [App\Http\Controllers\Application\Admin\users\CountryController::class, 'delete'])->name('delete');
-        /* country End */
-        /* state Start */
-        Route::get('/state', [App\Http\Controllers\Application\Admin\users\StateController::class, 'index'])->name('state');
-        Route::get('/state/form/{id?}', [App\Http\Controllers\Application\Admin\users\StateController::class, 'form'])->name('form');
-        Route::post('/state/save', [App\Http\Controllers\Application\Admin\users\StateController::class, 'save'])->name('save');
-        Route::get('/state/delete/{id}', [App\Http\Controllers\Application\Admin\users\StateController::class, 'delete'])->name('delete');
-        /* state End */
-        /* city Start */
-        Route::get('/city', [App\Http\Controllers\Application\Admin\users\CityController::class, 'index'])->name('city');
-        Route::get('/city/form/{id?}', [App\Http\Controllers\Application\Admin\users\CityController::class, 'form'])->name('form');
-        Route::post('/city/save', [App\Http\Controllers\Application\Admin\users\CityController::class, 'save'])->name('save');
-        Route::get('/city/delete/{id}', [App\Http\Controllers\Application\Admin\users\CityController::class, 'delete'])->name('delete');
-        /* city End */        
-        /* category Start */
-        Route::get('/category', [App\Http\Controllers\Application\Admin\users\CategoryController::class, 'index'])->name('category');
-        Route::get('/category/form/{id?}', [App\Http\Controllers\Application\Admin\users\CategoryController::class, 'form'])->name('form');
-        Route::post('/category/save', [App\Http\Controllers\Application\Admin\users\CategoryController::class, 'save'])->name('save');
-        Route::get('/category/delete/{id}', [App\Http\Controllers\Application\Admin\users\CategoryController::class, 'delete'])->name('delete');
-        /* category End */    
-    });
-    /*master data end*/
-
     /*User data start*/
     Route::group(['prefix' => '/users'], function () {
         /* agent Start */
@@ -148,7 +124,25 @@ Route::group(['middleware' => ['checkAdminLogin']], function() {
         Route::post('/user/save', [App\Http\Controllers\Application\Admin\Users\UserController::class, 'save'])->name('save');
         Route::get('/user/delete/{id}', [App\Http\Controllers\Application\Admin\Users\UserController::class, 'delete'])->name('delete');
         /* user End */
-    });    
+    }); 
+
+     /* Visit request */
+    Route::get('/visit-request', [App\Http\Controllers\Application\Admin\VisitController::class, 'index'])->name('visit-request');
+    Route::get('/visit-request/change-status', [App\Http\Controllers\Application\Admin\VisitController::class, 'changeStatus'])->name('change-status');
+
+     /* Call Back */
+    Route::get('/call-back-request', [App\Http\Controllers\Application\Admin\CallController::class, 'index'])->name('call-back-request');
+    Route::get('/call-back-request/change-status', [App\Http\Controllers\Application\Admin\CallController::class, 'changeStatus'])->name('change-status');
+    
+    /*Route::get('/property/form/{id?}', [App\Http\Controllers\Application\Admin\PropertyController::class, 'form'])->name('form');
+    Route::post('/property/save', [App\Http\Controllers\Application\Admin\PropertyController::class, 'save'])->name('save');
+    Route::get('/property/delete/{id}', [App\Http\Controllers\Application\Admin\PropertyController::class, 'delete'])->name('delete');
+    Route::get('/property/details/{id?}', [App\Http\Controllers\Application\Admin\PropertyController::class, 'details'])->name('details');
+    Route::post('/property/save_image', [App\Http\Controllers\Application\Admin\PropertyController::class, 'save_image'])->name('save_image');
+    Route::post('/property/save_food', [App\Http\Controllers\Application\Admin\PropertyController::class, 'save_food'])->name('save_food');
+    Route::get('/property/delete_image/{id?}', [App\Http\Controllers\Application\Admin\PropertyController::class, 'delete_image'])->name('delete_image');
+    Route::get('/property/delete_food/{id?}', [App\Http\Controllers\Application\Admin\PropertyController::class, 'delete_food'])->name('delete_food');*/
+    /* property End */   
     
 });
 

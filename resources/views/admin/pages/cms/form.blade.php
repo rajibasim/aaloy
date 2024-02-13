@@ -50,49 +50,14 @@
                 <input type="hidden" name="id" value="{{ isset($details->id) && $details->id ? $details->id : '' }}">
                 <div class="card-body">
                   <div class="row">
-                    <div class="col-sm-4">
-                      <!-- text input -->
-                      <div class="form-group">
-                        <label>Select Image</label>
-                        <input type="file" class="form-control" placeholder="Select Image" name="blog_image" value="" accept="image/png, image/gif, image/jpeg">
-                      </div>
-                    </div>
-                    <div class="col-sm-4">
-                      <!-- text input -->
-                      <div class="form-group">
-                        <label>Category</label>
-                        <select class="form-control select2" name="category_id" id="category_id" required="">
-                          <option value="">Select Category</option>
-                           @if($category)
-                               @foreach ($category as $val)
-                                <option value="{{ $val->id }}" {{ isset($details->category_id) && $details->category_id == $val->id ? 'selected' : '' }}>{{ $val->category }}</option>
-                               @endforeach
-                            @endif
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-sm-4">
-                      <!-- text input -->
-                      <div class="form-group">
-                        <label>Author</label>
-                        <input type="text" class="form-control" placeholder="Author" name="author" value="{{ old('author', isset($details->author) && $details->author ? $details->author : '') }}" required="">
-                      </div>
-                    </div>
-                    <div class="col-sm-12">
+                    <div class="col-sm-6">
                       <!-- text input -->
                       <div class="form-group">
                         <label>Title</label>
                         <input type="text" class="form-control" placeholder="Title" name="title" value="{{ old('title', isset($details->title) && $details->title ? $details->title : '') }}" required="">
                       </div>
                     </div>
-                    <div class="col-sm-9">
-                      <!-- text input -->
-                      <div class="form-group">
-                        <label>Tags</label>
-                        <input type="text" class="form-control" placeholder="Tags" name="tags" value="{{ old('tags', isset($details->tags) && $details->tags ? $details->tags : '') }}" required="">
-                      </div>
-                    </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-6">
                       <!-- select -->
                       <div class="form-group">
                         <label>Select</label>

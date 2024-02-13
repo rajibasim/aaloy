@@ -52,6 +52,10 @@
             font-weight: 600;
             margin-top: 16px;
             margin-bottom: 4px;
+            cursor: pointer;
+            &:hover {
+                color: #db8f00 ;
+            }
         }
     }
     .profile-icon {
@@ -64,7 +68,7 @@
         border: 1px solid #ccc;
     }
     .left-list-item {
-        margin-top: 32px;
+        margin-top: 32px; 
         ul {
             li {
                 a {
@@ -97,6 +101,19 @@
             position: relative;
             .bx-image-dash-content {
                 width: 120px;
+                position: relative;
+                .bx-waiting-forapproval {
+                    align-items:start;
+                }
+                .waiting-forapproval {
+                    padding: 0;
+                    font-size: 12px;
+                    font-weight: normal;
+                    height: 82px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
             }
             .cl-1 {
                 margin-bottom: 0px;
@@ -172,5 +189,18 @@
         margin-bottom: 8px;
         color: #4c4c4c;
         font-size: 13px;
+    }
+}
+
+.bx-content-dash {
+    .sec-propertyadd {
+        padding: 24px 0 0;
+        ul li {
+            padding: 10px 10px 10px 10px;
+        }
+    }
+    .bx-user_details ul {
+        width: 100%;
+        gap: 16px;
     }
 }

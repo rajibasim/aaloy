@@ -306,8 +306,19 @@ class PropertyController extends Controller
                 throw new \Exception('Invalid request.');
             }
             $data['details'] = $details[0];  
+
+            $is_visist = $this->CommonModel->get_all($table = "users_requet_for_visit", $select = array('id'), $where = array(array('user_id', '=', $user_data->id), array('property_id', '=', $data['details']->id), array('is_deleted', '=', 0)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
+            $data['is_visist'] = $is_visist ? 1 : 0;
+
+            $is_call_back = $this->CommonModel->get_all($table = "users_requet_for_call_back", $select = array('id'), $where = array(array('user_id', '=', $user_data->id), array('property_id', '=', $data['details']->id), array('is_deleted', '=', 0)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
+            $data['is_call_back'] = $is_call_back ? 1 : 0;
+
             $property_images = $this->CommonModel->get_all($table = 'property_image', $select = array('*'), $where = array(array('is_deleted', '=', 0), array('property_id', '=', $id)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
-            $data['property_images'] = $property_images ? $property_images : [];
+            $property_images = $property_images && count($property_images) > 0 ? json_encode($property_images) : [];
+            if($property_images){
+            	$property_images = json_decode($property_images, true);
+            }
+            
             if(isset($data['details']->video_url) && $data['details']->video_url){
                 $thumble = '';
                 $parts = parse_url($data['details']->video_url);
@@ -319,11 +330,14 @@ class PropertyController extends Controller
                        $thumble = ''; 
                     }
                 }
-                $data['property_images']['youtube'] = array(
-                    'thamble' => $thumble,
-                    'url' => $data['details']->video_url,
+
+                $property_images[] = array(
+				    "property_image" => $thumble,
+				    'url' => $data['details']->video_url,
                 );
             }
+
+            $data['property_images'] = $property_images;
            
             $food_data = $this->CommonModel->get_all($table = 'property_food', $select = array('*'), $where = array(array('is_deleted', '=', 0), array('location_id', '=', $data['details']->location_id)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
             $data['food_data'] = $food_data ? $food_data : [];
@@ -711,5 +725,156 @@ class PropertyController extends Controller
             ]);
         }
     }
+
+    ### Request for visit
+    public function visit(Request $request, $id){
+
+        try {
+            $user_data = Auth::user();
+
+            $check_exist = $this->CommonModel->get_all($table = "users_requet_for_visit", $select = array('*'), $where = array(array('user_id', '=', $user_data->id), array('property_id', '=', $id), array('is_deleted', '=', 0)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
+            if($check_exist){
+                $message = "Already we have received your visit request.";
+            }else{
+                $post_data = array(
+                    'user_id' => $user_data->id,
+                    'property_id' => $id,
+                    'updated_at' => date('Y-m-d H:i:s'),
+                    'created_at' => date('Y-m-d H:i:s'),
+                );
+
+                $result = $this->CommonModel->insert_data_get_id('users_requet_for_visit', $post_data);
+                $message = "We have received your visit request.";
+            }
+
+            return response()->json([
+                'result' => true,
+                'message' => $message,
+                'data' => [],
+            ]);           
+        } catch (\Exception $e) {
+            return response()->json([
+                'result' => false,
+                'message' => $e->getMessage(),
+                'data' => array(),
+            ]);
+        }
+    }
+
+    ### Request for Call Back
+    public function callBack(Request $request, $id){
+
+        try {
+            $user_data = Auth::user();
+
+            $check_exist = $this->CommonModel->get_all($table = "users_requet_for_call_back", $select = array('*'), $where = array(array('user_id', '=', $user_data->id), array('property_id', '=', $id), array('is_deleted', '=', 0)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
+            if($check_exist){
+                $message = "Already we have received your call back request.";
+            }else{
+                $post_data = array(
+                    'user_id' => $user_data->id,
+                    'property_id' => $id,
+                    'updated_at' => date('Y-m-d H:i:s'),
+                    'created_at' => date('Y-m-d H:i:s'),
+                );
+
+                $result = $this->CommonModel->insert_data_get_id('users_requet_for_call_back', $post_data);
+                $message = "We have received your call back request.";
+            }
+
+            return response()->json([
+                'result' => true,
+                'message' => $message,
+                'data' => [],
+            ]);           
+        } catch (\Exception $e) {
+            return response()->json([
+                'result' => false,
+                'message' => $e->getMessage(),
+                'data' => array(),
+            ]);
+        }
+    }
+
+    ### Request for Call Back
+    public function calculate(Request $request){
+
+        try {
+
+            if (!$request->property_id) {
+                throw new \Exception('Property id is required');
+            }
+
+            $user_data = Auth::user();
+            $accessory = json_decode($request->accessories, true);
+            $accessoryArray = [];
+            $totalAmount = 0;
+            if(isset($accessory) && !empty($accessory)){
+                foreach ($accessory as $key => $value) {
+                    if($value['sell_qty'] > 0){
+                        $sub_total = $value['sell_price'] * $value['sell_qty'];
+                        $accessoryArray[] = array(
+                            'id' => $value['id'],
+                            'title' => $value['title'],
+                            'description' => $value['description'],
+                            'price' => $value['sell_price'],
+                            'qty' => $value['sell_qty'],
+                            'sub_total' => $sub_total,
+                            'type' => 'buy',
+                        );
+
+                        $totalAmount = $totalAmount + $sub_total; 
+                    }
+
+                    if($value['rent_qty'] > 0){
+                        $sub_total = $value['rent_price'] * $value['rent_qty'];
+                        $accessoryArray[] = array(
+                            'id' => $value['id'],
+                            'title' => $value['title'],
+                            'description' => $value['description'],
+                            'price' => $value['rent_price'],
+                            'qty' => $value['rent_qty'],
+                            'sub_total' => $sub_total,
+                            'type' => 'rent',
+                        );
+
+                        $totalAmount = $totalAmount + $sub_total; 
+                    }
+                }
+            }
+
+            //property data
+            $property_id = $request->property_id;
+            $sql = "SELECT property.id, property.title, property.description, property.avalible_beds, property.property_for, IF(property.property_for = '1', 'Rent', 'Sell') AS property_for_text, property.posted_by, IF(property.posted_by = '1', 'Broker', 'Owner') AS posted_by_txt, property.posted_by_id, users.name as posted_by_name, property.property_type_id, property_type.property_type, property.location_id, location.location, property.address, property.is_address_visible, property.furnishing_status_id, furnishing_status.furnishing_status, property.positioning_status_id, positioning_status.positioning_status, property.car_parking_id, car_parking.car_parking, property.preferance, property.carpet_area, property.floor, property.out_of_floor, property.bathroom, property.no_of_room_id, no_of_room.no_of_room, property.price, property.booking_price, property.maintenance, IF(property.gender = '1', 'Male', IF(property.gender = '2', 'Female', IF(property.gender = '3', 'Transgender', 'No Choice'))) AS gender, property.note, property.is_phone_visible, property.is_email_visible, property.property_image, property.avalible_from, property.is_admin_aproved, property.status, property.video_url, property.created_at, property.updated_at FROM `property` LEFT JOIN users ON property.posted_by_id = users.id LEFT JOIN property_type ON property.property_type_id = property_type.id LEFT JOIN location ON property.location_id = location.id LEFT JOIN furnishing_status ON property.furnishing_status_id = furnishing_status.id LEFT JOIN positioning_status ON property.positioning_status_id = positioning_status.id LEFT JOIN car_parking ON property.car_parking_id = car_parking.id LEFT JOIN no_of_room ON property.no_of_room_id = no_of_room.id WHERE property.id = '".$property_id."'"; 
+
+            $details = DB::select($sql); 
+            if (empty($details)) {
+                throw new \Exception('Invalid request.');
+            }
+            $details = $details[0]; 
+            $totalAmount = $totalAmount + $details->booking_price;
+
+            $responce = array(
+                'accessories' => $accessoryArray,
+                'property_details' => $details,
+                'total_checkout_price' => $totalAmount,
+            );
+
+            return response()->json([
+                'result' => true,
+                'message' => '',
+                'data' => $responce,
+            ]);           
+        } catch (\Exception $e) {
+            return response()->json([
+                'result' => false,
+                'message' => $e->getMessage(),
+                'data' => array(),
+            ]);
+        }
+    }
+
+
+
 }
 

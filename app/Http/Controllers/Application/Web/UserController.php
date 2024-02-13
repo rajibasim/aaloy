@@ -5,13 +5,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use App\Models\CommonModel;
-use App\Models\User;
-use JWTAuth;
-use JWTAuthException;
 use Validator;
 use DB;
 
-class HomeController extends Controller{
+class UserController extends Controller{
 
     public function __construct(){
         $this->CommonModel = new CommonModel();
@@ -26,28 +23,6 @@ class HomeController extends Controller{
         );
 
         return view('web.pages.home.home', $data);
-    }
-
-    public function processLogin(Request $request){
-        $user_data = auth()->user();  
-        Session::put('id', null);
-        Session::put('type', null);
-        Session::put('name', null);
-        Session::put('email', null);
-        Session::put('phone', null);      
-        if($user_data){
-            Session::put('id', $user_data->id);
-            Session::put('type', $user_data->type);
-            Session::put('name', $user_data->name);
-            Session::put('email', $user_data->email);
-            Session::put('phone', $user_data->phone);
-        }
-        
-        $reff = request()->headers->get('referer');
-        if($reff){
-            return redirect($reff);
-        }
-        return redirect($this->slug);
     }
 
     //CMS Page
@@ -103,4 +78,14 @@ class HomeController extends Controller{
 
         return view('web.pages.blog.'.$page, $data);
     }
+
+
+    public function processLogin(Request $request){
+        $token = $request->token;
+        $user = JWTAuth::toUser($token);
+        //$user = JWTAuth::getPayload($token)->toArray();
+        dd($user);
+
+       
+     }
 }

@@ -189,6 +189,14 @@
                                     </p>
                                 </a>
                             </li>
+                            <li class="nav-item <?=strpos(Request::segment(1), 'cms') !== false ? 'menu-open' : ''?>">
+                                <a href="{{ url('cms') }}" class="nav-link <?=strpos(Request::segment(1), 'cms') !== false ? 'active' : ''?>">
+                                    <i class="nav-icon fa fa-list-ul"></i>
+                                    <p>
+                                        Manage CMS
+                                    </p>
+                                </a>
+                            </li>
                             <li class="nav-item <?=strpos(Request::segment(1), 'accessory') !== false ? 'menu-open' : ''?>">
                                 <a href="{{ url('accessory') }}" class="nav-link <?=strpos(Request::segment(1), 'accessory') !== false ? 'active' : ''?>">
                                     <i class="nav-icon fa fa-list-ul"></i>
@@ -245,6 +253,30 @@
                                         </a>
                                     </li>
                                 </ul>
+                            </li>
+                            <li class="nav-item <?=strpos(Request::segment(1), 'visit-request') !== false ? 'menu-open' : ''?>">
+                                <a href="{{ url('visit-request') }}" class="nav-link <?=strpos(Request::segment(1), 'visit-request') !== false ? 'active' : ''?>">
+                                    <i class="nav-icon fa fa-list-ul"></i>
+                                    <p>
+                                        Visit Request
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item <?=strpos(Request::segment(1), 'call-back-request') !== false ? 'menu-open' : ''?>">
+                                <a href="{{ url('call-back-request') }}" class="nav-link <?=strpos(Request::segment(1), 'call-back-request') !== false ? 'active' : ''?>">
+                                    <i class="nav-icon fa fa-list-ul"></i>
+                                    <p>
+                                        Request For Call Back
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item <?=strpos(Request::segment(1), 'booking-history') !== false ? 'menu-open' : ''?>">
+                                <a href="{{ url('booking-history') }}" class="nav-link <?=strpos(Request::segment(1), 'booking-history') !== false ? 'active' : ''?>">
+                                    <i class="nav-icon fa fa-list-ul"></i>
+                                    <p>
+                                        Booking History
+                                    </p>
+                                </a>
                             </li>
                         </ul>
                     </nav>

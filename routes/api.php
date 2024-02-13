@@ -23,7 +23,6 @@ Route::group(['prefix' => 'v1'],  function(){
 	Route::get('banner', 'App\Http\Controllers\Application\API\MainController@banner');
     Route::get('accessory', 'App\Http\Controllers\Application\API\MainController@accessory');
     Route::get('location', 'App\Http\Controllers\Application\API\MainController@location');
-    Route::get('blog', 'App\Http\Controllers\Application\API\MainController@blog');
     Route::get('blog/{id?}', 'App\Http\Controllers\Application\API\MainController@blog');
     Route::post('signup', 'App\Http\Controllers\Application\API\MainController@signup');
     Route::post('signin', 'App\Http\Controllers\Application\API\MainController@signin');
@@ -35,7 +34,7 @@ Route::group(['prefix' => 'v1'],  function(){
 
 Route::group(['prefix' => 'v1','middleware' => ['auth:api']], function () {
         //Property Related Information
-    	Route::post('logout', 'App\Http\Controllers\Application\API\UserController@logout');
+    	Route::any('logout', 'App\Http\Controllers\Application\API\UserController@logout');
         Route::post('updateProfile', 'App\Http\Controllers\Application\API\UserController@updateProfile');
         Route::post('property/list', 'App\Http\Controllers\Application\API\PropertyController@list');
     	Route::post('property/add', 'App\Http\Controllers\Application\API\PropertyController@add');
@@ -45,5 +44,9 @@ Route::group(['prefix' => 'v1','middleware' => ['auth:api']], function () {
         Route::post('property/favorite/{id}', 'App\Http\Controllers\Application\API\PropertyController@favorite');
         Route::post('property/my-property', 'App\Http\Controllers\Application\API\PropertyController@myProperty');
         Route::post('property/my-favorite-property', 'App\Http\Controllers\Application\API\PropertyController@myFavoriteProperty');
+        Route::post('property/visit/{id}', 'App\Http\Controllers\Application\API\PropertyController@visit');
+        Route::post('property/callBack/{id}', 'App\Http\Controllers\Application\API\PropertyController@callBack');
+        Route::post('property/calculate', 'App\Http\Controllers\Application\API\PropertyController@calculate');
+        Route::post('/process-login', 'App\Http\Controllers\Application\Web\UserController@processLogin');
         //User Related Information
 });

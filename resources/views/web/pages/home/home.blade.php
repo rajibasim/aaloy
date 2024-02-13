@@ -416,37 +416,29 @@
             <div class="titleHomePage">Property Services</div>
             <div class="bxPropertyServices">
                 <ul>
-                    <li>
-                        <div class="icon"><i class="fa fa-home" aria-hidden="true"></i></div>
-                        <div class="SweetHome">Sweet Home</div>
+                   <li> 
+                        <a href="{{ url('page/sweet-home') }}">
+                            <div class="icon"><i class="fa fa-home" aria-hidden="true"></i></div>
+                            <div class="SweetHome">Sweet Home</div>
+                        </a>
                     </li>
                     <li>
-                        <div class="icon"><i class="fa fa-cube" aria-hidden="true"></i></div>
-                        <div class="SweetHome">Best Service</div>
+                        <a href="{{ url('page/best-service') }}">
+                            <div class="icon"><i class="fa fa-cube" aria-hidden="true"></i></div>
+                            <div class="SweetHome">Best Service</div>
+                        </a>
                     </li>
                     <li>
-                        <div class="icon"><i class="fa fa-credit-card" aria-hidden="true"></i></div>
-                        <div class="SweetHome">Secure Payment</div>
+                        <a href="{{ url('page/secure-payment') }}">
+                            <div class="icon"><i class="fa fa-credit-card" aria-hidden="true"></i></div>
+                            <div class="SweetHome">Secure Payment</div>
+                        </a>
                     </li>
                     <li>
-                        <div class="icon"><i class="fa fa-dot-circle-o" aria-hidden="true"></i></div>
-                        <div class="SweetHome">Why we best</div>
-                    </li>
-                    <li>
-                        <div class="icon"><i class="fa fa-home" aria-hidden="true"></i></div>
-                        <div class="SweetHome">Sweet Home</div>
-                    </li>
-                    <li>
-                        <div class="icon"><i class="fa fa-dot-circle-o" aria-hidden="true"></i></div>
-                        <div class="SweetHome">Best Service</div>
-                    </li>
-                    <li>
-                        <div class="icon"><i class="fa fa-home" aria-hidden="true"></i></div>
-                        <div class="SweetHome">Secure Payment</div>
-                    </li>
-                    <li>
-                        <div class="icon"><i class="fa fa-dot-circle-o" aria-hidden="true"></i></div>
-                        <div class="SweetHome">Why we best</div>
+                        <a href="{{ url('page/why-we-best') }}">
+                            <div class="icon"><i class="fa fa-dot-circle-o" aria-hidden="true"></i></div>
+                            <div class="SweetHome">Why we best</div>
+                        </a>
                     </li>
                 </ul>
             </div>

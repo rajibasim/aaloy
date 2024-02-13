@@ -100,6 +100,13 @@ jQuery('.slider-BestPropertiesCarousel').slick({
 const openLogin =()=>{
     $("#secLoginpopup").fadeIn(500);
     $("#secRegister").fadeOut(500);
+    $("#secResetPassword").fadeOut(500);
+}
+const openPromoPopup =()=>{
+    $("#secPromoPopup").fadeIn(500);
+}
+const closePromoPopup =()=>{
+    $("#secPromoPopup").fadeOut(500);
 }
 const closeLoginPopup = ()=>{
     $("#secLoginpopup").fadeOut(500);
@@ -113,4 +120,19 @@ const closeRegisterPopup = ()=>{
 }
 const mobileOpenNavBar = () =>{
   $("#mobile_menu").removeClass("show");
+}
+// ======
+const show_cahnge_Pass_2 = () => {
+  let reg_password_inputType = $('#change_pass_2').attr('type');
+  console.log("inputType: " + reg_password_inputType);
+  if(reg_password_inputType == "password"){
+      $("#change_pass_2").attr('type', 'text'); 
+      $("#urm-cng2_pass-hide").fadeIn(1500);
+      $("#urm-cng2_pass-show").hide();
+  }
+  else {
+      $("#change_pass_2").attr('type', 'password'); 
+      $("#urm-cng2_pass-show").fadeIn(1500);
+      $("#urm-cng2_pass-hide").hide();
+  }
 }

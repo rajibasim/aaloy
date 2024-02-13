@@ -162,29 +162,34 @@ class CommonModel extends Model {
         return $new_str->format( $format);
     }
 
-    public function imageUpload($image,$img_config)
-    {
-        if($img_config['resize'])
-        {
-           foreach ($img_config['size'] as $key => $value) 
-           {
-                $destinationPath = $img_config['base_path'].$value;
-                $dimension = explode('X', $value);
-                $img = Image::make($img_config['realpath']);
-                $img->resize($dimension[0], $dimension[1], function ($constraint) {
-                    $constraint->aspectRatio();
-                })->save($destinationPath.'/'.$img_config['imagename']);
-            }
-        }
+    /* CURl */
+    function curl_request($token, $post_data, $request_url){
+        $token = $token; 
+        $post_data = $post_data;
+        $request_url = $request_url;
 
-        //Original image upload
-        $image->move($img_config['base_path'], $img_config['imagename']);
-        return $img_config['imagename'];
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL,$request_url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS,$post_data);  //Post Fields
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        if($token){
+            $headers = [
+                'token: '.$token,
+            ];
+        }else{
+            $headers = [];
+        }
+        
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        $result = curl_exec ($ch);
+        curl_close ($ch);
+        return json_decode($result);
     }
 
     /* Push notification send */
-    public function sendPushAndroid($deviceToken, $message, $title, $tag, $post_data = array())
-    {
+    public function sendPushAndroid($deviceToken, $message, $title, $tag, $post_data = array()){
         $API_ACCESS_KEY = env('API_ACCESS_KEY');
         $registrationIds = $deviceToken;
         #prep the bundle

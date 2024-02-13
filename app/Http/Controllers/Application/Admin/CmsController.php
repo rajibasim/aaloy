@@ -7,39 +7,26 @@ use Illuminate\Support\Str;
 use App\Models\CommonModel;
 use Validator;
 
-class BlogController extends Controller{
+class CmsController extends Controller{
 
     public function __construct(){
         $this->CommonModel = new CommonModel();
-        $this->slug = '/blog';
-        $this->title = 'Blog';
-        $this->table = 'blog';
+        $this->slug = '/cms';
+        $this->title = 'CMS';
+        $this->table = 'cms';
     }
 
     /* List view */    
     public function index(Request $request){
         $serach_data = array();
         $title = $request->title;
-        $author = $request->title;
+        $location_id = $request->location_id;
         $status = $request->status;
         $where = array();
         $where = array(
             array('is_deleted', '=', 0)
         );
-        if($title){
-            array_push($where, array('title', 'like', "%{$title}%"));
-            $serach_data['title'] = $title;
-        }
-
-        if($author){
-            array_push($where, array('author', 'like', "%{$author}%"));
-            $serach_data['author'] = $author;
-        }
-
-        if($status){
-            array_push($where, array('status', '=', $status));
-            $serach_data['status'] = $status;
-        }
+        
 
         $data['metadata'] = array(
             'page_title' => $this->title,
@@ -60,8 +47,9 @@ class BlogController extends Controller{
             ),
         );
 
-        $data['rows'] = $this->CommonModel->get_all($table = $this->table, $select = array('*'), $where, $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "20");        
-        return view('admin.pages.blog.view', $data);
+        $data['rows'] = $this->CommonModel->get_all($table = $this->table, $select = array('*'), $where, $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "20");  
+    
+        return view('admin.pages.cms.view', $data);
     }
 
     /* add & edit form */
@@ -95,19 +83,14 @@ class BlogController extends Controller{
             $data['details'] = !empty($details) ? $details[0] : [];
         }
 
-        $data['category'] = $this->CommonModel->get_all($table = 'category', $select = array('*'), $where = array(array('is_deleted', '=', 0)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
-
-        return view('admin.pages.blog.form', $data);
+        return view('admin.pages.cms.form', $data);
     }
 
     /* store & update data */
     public function save(Request $request){
         $id = $request->input('id');
         $validator = Validator::make($request->all(), [ 
-            'title' => 'required|unique:blog,title,' . $id,
-            'category_id' => 'required',
-            'author' => 'required',
-            'tags' => 'required',
+            'title' => 'required|unique:cms,title,' . $id,
             'description' => 'required',
             'status' => 'required', 
         ]); 
@@ -119,25 +102,13 @@ class BlogController extends Controller{
             if($id){
                 $post_data = array(
                     'title' => $request->input('title'),
-                    'category_id' => $request->input('category_id'),
-                    'author' => $request->input('author'),
-                    'tags' => $request->input('tags'),
                     'description' => $request->input('description'),
-                    'status' => $request->input('status'),
                     'slug' => Str::slug($request->input('title')),
                     'seo_description' => $request->input('seo_description'),
                     'seo_keyword' => $request->input('seo_keyword'),
-                    'updated_at' => date('Y-m-d H:i:s'),
+                    'created_at' => date('Y-m-d H:i:s'),
                 );
-                $destinationPath = 'public/uploads/blog_image/';
-                if (!empty($_FILES)) {
-                    if ($_FILES['blog_image'] && $_FILES['blog_image']['name'] != "") {
-                        $profile_image_new_name = str_replace(" ", "_", time() . $_FILES['blog_image']['name']);
-                        if (move_uploaded_file($_FILES['blog_image']['tmp_name'], $destinationPath . $profile_image_new_name)) {
-                            $post_data['blog_image'] = $destinationPath . $profile_image_new_name;
-                        }
-                    }
-                }
+
                 $result = $this->CommonModel->update_data($this->table, array(array('id', '=', $id)), $post_data);
                 if($result == true){
                     $flash_data = array(
@@ -154,26 +125,12 @@ class BlogController extends Controller{
 
                 $post_data = array(
                     'title' => $request->input('title'),
-                    'category_id' => $request->input('category_id'),
-                    'author' => $request->input('author'),
-                    'tags' => $request->input('tags'),
                     'description' => $request->input('description'),
-                    'status' => $request->input('status'),
                     'slug' => Str::slug($request->input('title')),
                     'seo_description' => $request->input('seo_description'),
                     'seo_keyword' => $request->input('seo_keyword'),
                     'created_at' => date('Y-m-d H:i:s'),
                 );
-
-                $destinationPath = 'public/uploads/blog_image/';
-                if (!empty($_FILES)) {
-                    if ($_FILES['blog_image'] && $_FILES['blog_image']['name'] != "") {
-                        $profile_image_new_name = str_replace(" ", "_", time() . $_FILES['blog_image']['name']);
-                        if (move_uploaded_file($_FILES['blog_image']['tmp_name'], $destinationPath . $profile_image_new_name)) {
-                            $post_data['blog_image'] = $destinationPath . $profile_image_new_name;
-                        }
-                    }
-                }
 
                 $result = $this->CommonModel->insert_data_get_id($this->table, $post_data);
                 if($result == true){

@@ -28,6 +28,7 @@ class PropertyController extends Controller{
         $property_type_id = $request->property_type_id;
         $preferance = $request->preferance;
         $status = $request->status;
+        $is_admin_aproved = $request->is_admin_aproved;
         $where = array();
         $where = array(
             array('property.is_deleted', '=', 0)
@@ -70,6 +71,16 @@ class PropertyController extends Controller{
         if($status){
             array_push($where, array('property.status', '=', $status));
             $serach_data['status'] = $status;
+        }
+
+        if($is_admin_aproved){
+            if($is_admin_aproved == 1){
+                $is_admin_aproved = 1;
+            }else{
+                $is_admin_aproved = 0;
+            }
+            array_push($where, array('property.is_admin_aproved', '=', $is_admin_aproved));
+            $serach_data['is_admin_aproved'] = $is_admin_aproved;
         }
 
         //dd($serach_data);
@@ -202,6 +213,8 @@ class PropertyController extends Controller{
                     'video_url' => $request->input('video_url'),
                     'status' => $request->input('status'),
                     'slug' => Str::slug($request->input('title')),
+                    'seo_description' => $request->input('seo_description'),
+                    'seo_keyword' => $request->input('seo_keyword'),
                     'updated_at' => date('Y-m-d H:i:s'),
                 );
                 $destinationPath = 'public/uploads/property_image/';
@@ -262,6 +275,8 @@ class PropertyController extends Controller{
                     'video_url' => $request->input('video_url'),
                     'status' => $request->input('status'),
                     'slug' => Str::slug($request->input('title')),
+                    'seo_description' => $request->input('seo_description'),
+                    'seo_keyword' => $request->input('seo_keyword'),
                     'updated_at' => date('Y-m-d H:i:s'),
                     'created_at' => date('Y-m-d H:i:s'),
                 );
@@ -360,7 +375,11 @@ class PropertyController extends Controller{
         $data['property_images'] = $this->CommonModel->get_all($table = 'property_image', $select = array('*'), $where = array(array('is_deleted', '=', 0), array('property_id', '=', $id)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
 
         $data['food_data'] = $this->CommonModel->get_all($table = 'property_food', $select = array('*'), $where = array(array('is_deleted', '=', 0), array('location_id', '=', $data['details']->location_id)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
-        //dd($details); 
+
+        $data['call_back'] = $this->CommonModel->get_all($table = "users_requet_for_visit", $select = array('users_requet_for_visit.*', 'users.name', 'users.phone'), $where = array(array('users_requet_for_visit.property_id', '=', $id), array('users_requet_for_visit.is_deleted', '=', 0)), $join = array(), $left = array(array('users', 'users.id', '=', 'users_requet_for_visit.user_id')), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
+
+        $data['request_visit'] = $this->CommonModel->get_all($table = "users_requet_for_call_back", $select = array('users_requet_for_call_back.*', 'users.name', 'users.phone'), $where = array(array('users_requet_for_call_back.property_id', '=', $id), array('users_requet_for_call_back.is_deleted', '=', 0)), $join = array(), $left = array(array('users', 'users.id', '=', 'users_requet_for_call_back.user_id')), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
+        
         return view('admin.pages.property.details', $data);
     }
 

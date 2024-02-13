@@ -395,6 +395,24 @@
                         <label>Video URL</label>
                         <input type="text" class="form-control" placeholder="Video URL" name="video_url" value="{{ old('video_url', isset($details->video_url) && $details->video_url ? $details->video_url : '') }}" >
                       </div>
+                    </div>
+                    <div class="col-sm-12">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <label>SEO Description</label>
+                        <textarea class="form-control" id="" name="seo_description">
+                          {{ old('seo_description', isset($details->seo_description) && $details->seo_description ? $details->seo_description : '') }}
+                        </textarea>
+                      </div>
+                    </div>
+                    <div class="col-sm-12">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <label>SEO Keywords</label>
+                        <textarea class="form-control" id="" name="seo_keyword">
+                          {{ old('seo_keyword', isset($details->seo_keyword) && $details->seo_keyword ? $details->seo_keyword : '') }}
+                        </textarea>
+                      </div>
                     </div>                 
                   </div>
                 </div>

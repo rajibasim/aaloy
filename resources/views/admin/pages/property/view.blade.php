@@ -159,6 +159,13 @@
                         <option value="2" {{ isset($serach_data['status']) && $serach_data['status'] == 2 ? 'selected' : '' }}>In-Active</option>
                       </select>
                     </div>
+                    <div class="col-4">
+                      <select class="form-control" name="is_admin_aproved">
+                        <option value="">Admin aprove</option>
+                        <option value="1" {{ isset($serach_data['is_admin_aproved']) && $serach_data['is_admin_aproved'] == 1 ? 'selected' : '' }}>Yes</option>
+                        <option value="2" {{ isset($serach_data['is_admin_aproved']) && $serach_data['is_admin_aproved'] == 0 ? 'selected' : '' }}>No</option>
+                      </select>
+                    </div>
                     <div class="col-1">
                       <button type="submit" class="btn btn-block btn-primary">Search</button>
                     </div>
@@ -210,7 +217,7 @@
                       <td>{{ $res->property_type }}</td>
                       <td>{{ $res->property_for == 1 ? 'Rent' : 'Sell' }}</td>
                       <td>{{ $res->posted_by == 1 ? 'Broker' : 'Owner' }}</td>
-                      <td>{{ $res->status == 1 ? 'Yes' : 'No' }}</td>
+                      <td>{{ $res->is_admin_aproved == 1 ? 'Yes' : 'No' }}</td>
                       <!-- <td>{{ $res->created_at }}</td> -->
                       <td>{{ $res->status == 1 ? 'Active' : 'In-Active' }}</td>
                       <td style="width: 130px;">

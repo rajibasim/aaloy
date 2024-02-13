@@ -4,7 +4,7 @@
 @import "./component/Contactus";
 @import "./component/HomeServices";
 @import "./component/HomeWatchVideo";
-@import "./component/Propertyadd";
+@import "./component/Propertyadd"; 
 @import "./component/Propertylisting";
 @import "./component/SearchHomebanner";
 @import "./component/SearchLocations";
@@ -201,6 +201,18 @@ a {
 }
 .mobile-slide-img {
     display: none;
+}
+.success-text {
+    color: green;
+    text-align: left;
+    font-weight: 500;
+    font-size: 14px;
+}
+.error-text {
+    color: red;
+    text-align: left;
+    font-weight: 500;
+    font-size: 14px;
 }
 // === Responsive === //
 @media (max-width: 768px){   
