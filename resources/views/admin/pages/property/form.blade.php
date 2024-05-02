@@ -72,13 +72,14 @@
                           <option value="1" {{ isset($details->property_for) && $details->property_for == 1 ? 'selected' : '' }}>Rent</option>
                           <option value="2" {{ isset($details->property_for) && $details->property_for == 2 ? 'selected' : '' }}>Sell</option>
                         </select>
+                        <input type="hidden" name="search_keyword[]" id="property_for_text" value="">
                       </div>
                     </div>
                     <div class="col-sm-4">
                       <!-- text input -->
                       <div class="form-group">
                         <label>Posted By</label>
-                        <select class="form-control select2" name="posted_by" id="posted_by" required="">
+                        <select class="form-control select2 seo" name="posted_by" id="posted_by" required="">
                           <option value="">Select One</option>
                           <option value="1" {{ isset($details->posted_by) && $details->posted_by == 1 ? 'selected' : '' }}>Broker</option>
                           <option value="2" {{ isset($details->posted_by) && $details->posted_by == 2 ? 'selected' : '' }}>User</option>
@@ -119,6 +120,7 @@
                                @endforeach
                             @endif
                         </select>
+                        <input type="hidden" name="search_keyword[]" id="property_type_id_text" value="">
                       </div>
                     </div>
                     <div class="col-sm-4">
@@ -131,6 +133,7 @@
                           <option value="2" {{ isset($details->preferance) && $details->preferance == 2 ? 'selected' : '' }}>Family</option>
                           <option value="3" {{ isset($details->preferance) && $details->preferance == 3 ? 'selected' : '' }}>No Preferance</option>
                         </select>
+                        <input type="hidden" name="search_keyword[]" id="preferance_text" value="">
                       </div>
                     </div>
                     <div class="col-sm-4">
@@ -158,6 +161,7 @@
                                @endforeach
                             @endif
                         </select>
+                        <input type="hidden" name="search_keyword[]" id="location_id_text" value="">
                       </div>
                     </div>
                     <div class="col-sm-4">
@@ -232,6 +236,7 @@
                                @endforeach
                             @endif
                         </select>
+                        <input type="hidden" name="search_keyword[]" id="no_of_room_id_text" value="">
                       </div>
                     </div>
                     <div class="col-sm-4">
@@ -295,6 +300,7 @@
                                @endforeach
                             @endif
                         </select>
+                        <input type="hidden" name="search_keyword[]" id="furnishing_status_id_text" value="">
                       </div>
                     </div>
                     <div class="col-sm-4">
@@ -400,20 +406,22 @@
                       <!-- text input -->
                       <div class="form-group">
                         <label>SEO Description</label>
-                        <textarea class="form-control" id="" name="seo_description">
-                          {{ old('seo_description', isset($details->seo_description) && $details->seo_description ? $details->seo_description : '') }}
-                        </textarea>
+                        <textarea class="form-control" name="seo_description">{{ old('seo_description', isset($details->seo_description) && $details->seo_description ? $details->seo_description : '') }}</textarea>
                       </div>
                     </div>
                     <div class="col-sm-12">
                       <!-- text input -->
                       <div class="form-group">
                         <label>SEO Keywords</label>
-                        <textarea class="form-control" id="" name="seo_keyword">
-                          {{ old('seo_keyword', isset($details->seo_keyword) && $details->seo_keyword ? $details->seo_keyword : '') }}
-                        </textarea>
+                        <textarea class="form-control" id="" name="seo_keyword">{{ old('seo_keyword', isset($details->seo_keyword) && $details->seo_keyword ? $details->seo_keyword : '') }}</textarea>
                       </div>
-                    </div>                 
+                    </div> 
+                    <!-- <div class="col-sm-12">
+                      <div class="form-group">
+                        <label>Search Keywords</label>
+                        <textarea class="form-control" name="search_keyword">{{ old('search_keyword', isset($details->search_keyword) && $details->search_keyword ? $details->search_keyword : '') }}</textarea>
+                      </div>
+                    </div> -->                 
                   </div>
                 </div>
                 <!-- /.card-body -->
@@ -472,6 +480,10 @@ $(document).ready(function() {
         }
     });
 
+     <?php 
+
+     ?>
+
     $(document).on('change', '#posted_by', function() {
         var posted_by = $(this).val();
         var users = '<?php echo json_encode($users)?>';
@@ -498,6 +510,37 @@ $(document).ready(function() {
             $("#avalible_beds").hide();
         }
     });
+
+    $("#property_for").change(function() {
+        var text = $("#property_for option:selected").text();
+        $("#property_for_text").val(text);
+    }).change();
+
+    $("#property_type_id").change(function() {
+        var text = $("#property_type_id option:selected").text();
+        $("#property_type_id_text").val(text);
+    }).change();
+
+    $("#preferance").change(function() {
+        var text = $("#preferance option:selected").text();
+        $("#preferance_text").val(text);
+    }).change();
+
+    $("#location_id").change(function() {
+        var text = $("#location_id option:selected").text();
+        $("#location_id_text").val(text);
+    }).change();
+
+    $("#no_of_room_id").change(function() {
+        var text = $("#no_of_room_id option:selected").text();
+        $("#no_of_room_id_text").val(text);
+    }).change();
+
+    $("#furnishing_status_id").change(function() {
+        var text = $("#furnishing_status_id option:selected").text();
+        $("#furnishing_status_id_text").val(text);
+    }).change();
+
 });
 
 let autocomplete;

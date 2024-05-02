@@ -43,10 +43,12 @@ Route::group(['prefix' => 'v1','middleware' => ['auth:api']], function () {
     	Route::post('property/details/{id}', 'App\Http\Controllers\Application\API\PropertyController@details');
         Route::post('property/favorite/{id}', 'App\Http\Controllers\Application\API\PropertyController@favorite');
         Route::post('property/my-property', 'App\Http\Controllers\Application\API\PropertyController@myProperty');
+        Route::post('property/my-earning', 'App\Http\Controllers\Application\API\PropertyController@myEarning');
         Route::post('property/my-favorite-property', 'App\Http\Controllers\Application\API\PropertyController@myFavoriteProperty');
         Route::post('property/visit/{id}', 'App\Http\Controllers\Application\API\PropertyController@visit');
         Route::post('property/callBack/{id}', 'App\Http\Controllers\Application\API\PropertyController@callBack');
         Route::post('property/calculate', 'App\Http\Controllers\Application\API\PropertyController@calculate');
+        Route::post('property/payment', 'App\Http\Controllers\Application\API\PropertyController@payment');
         Route::post('/process-login', 'App\Http\Controllers\Application\Web\UserController@processLogin');
         //User Related Information
 });

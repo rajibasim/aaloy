@@ -242,7 +242,25 @@ class PropertyController extends Controller
                 throw new \Exception('This field required');
             }
 
-            $sql = "SELECT property.id, property.title, property.description, property.avalible_beds, property.property_for, IF(property.property_for = '1', 'Rent', 'Sell') AS property_for_text, property.posted_by, IF(property.posted_by = '1', 'Broker', 'Owner') AS posted_by_txt, property.posted_by_id, users.name as posted_by_name, property.property_type_id, property_type.property_type, property.location_id, location.location, property.address, property.is_address_visible, property.furnishing_status_id, furnishing_status.furnishing_status, property.positioning_status_id, positioning_status.positioning_status, property.car_parking_id, car_parking.car_parking, property.preferance, property.carpet_area, property.floor, property.out_of_floor, property.bathroom, property.no_of_room_id, no_of_room.no_of_room, property.price, property.booking_price, property.maintenance, IF(property.gender = '1', 'Male', IF(property.gender = '2', 'Female', IF(property.gender = '3', 'Transgender', 'No Choice'))) AS gender, property.note, property.is_phone_visible, property.is_email_visible, property.property_image, property.avalible_from, property.is_admin_aproved, property.status, property.video_url, property.created_at, property.updated_at FROM `property` LEFT JOIN users ON property.posted_by_id = users.id LEFT JOIN property_type ON property.property_type_id = property_type.id LEFT JOIN location ON property.location_id = location.id LEFT JOIN furnishing_status ON property.furnishing_status_id = furnishing_status.id LEFT JOIN positioning_status ON property.positioning_status_id = positioning_status.id LEFT JOIN car_parking ON property.car_parking_id = car_parking.id LEFT JOIN no_of_room ON property.no_of_room_id = no_of_room.id WHERE property.status = '1' AND property.posted_by_id <> '".$user_data->id."'"; 
+            $search_string = '';
+            if($request->searchKey){
+                $searchKey = explode(" ", $request->searchKey);
+                foreach ($searchKey as $key => $value) {
+                   if($key == 0){
+                        $search_string.= metaphone($value)."%'";
+                   }else{
+                        $search_string.= " OR property.search_keyword LIKE "."'%".metaphone($value)."%'";
+                   }
+                }
+            }
+
+            //dd($search_string);
+
+            $sql = "SELECT property.id, property.title, property.description, property.avalible_beds, property.property_for, IF(property.property_for = '1', 'Rent', 'Sell') AS property_for_text, property.posted_by, IF(property.posted_by = '1', 'Broker', 'Owner') AS posted_by_txt, property.posted_by_id, users.name as posted_by_name, property.property_type_id, property_type.property_type, property.location_id, location.location, property.address, property.is_address_visible, property.furnishing_status_id, furnishing_status.furnishing_status, property.positioning_status_id, positioning_status.positioning_status, property.car_parking_id, car_parking.car_parking, property.preferance, property.carpet_area, property.floor, property.out_of_floor, property.bathroom, property.no_of_room_id, no_of_room.no_of_room, property.price, property.booking_price, property.maintenance, IF(property.gender = '1', 'Male', IF(property.gender = '2', 'Female', IF(property.gender = '3', 'Transgender', 'No Choice'))) AS gender, property.note, property.is_phone_visible, property.is_email_visible, property.property_image, property.avalible_from, property.is_admin_aproved, property.status, property.video_url, property.created_at, property.search_keyword, property.is_booked, property.updated_at FROM `property` LEFT JOIN users ON property.posted_by_id = users.id LEFT JOIN property_type ON property.property_type_id = property_type.id LEFT JOIN location ON property.location_id = location.id LEFT JOIN furnishing_status ON property.furnishing_status_id = furnishing_status.id LEFT JOIN positioning_status ON property.positioning_status_id = positioning_status.id LEFT JOIN car_parking ON property.car_parking_id = car_parking.id LEFT JOIN no_of_room ON property.no_of_room_id = no_of_room.id WHERE property.status = '1' AND property.is_booked = '0' AND property.posted_by_id <> '".$user_data->id."'";
+
+            if($search_string){
+                $sql = $sql." AND (property.search_keyword LIKE "."'%".$search_string.")";
+            } 
 
             $page_no = 1;
             if($request->page_no){
@@ -615,7 +633,7 @@ class PropertyController extends Controller
 
             $user_data = Auth::user();
             
-            $sql = "SELECT property.id, property.title, property.description, property.avalible_beds, property.property_for, IF(property.property_for = '1', 'Rent', 'Sell') AS property_for_text, property.posted_by, IF(property.posted_by = '1', 'Broker', 'Owner') AS posted_by_txt, property.posted_by_id, users.name as posted_by_name, property.property_type_id, property_type.property_type, property.location_id, location.location, property.address, property.is_address_visible, property.furnishing_status_id, furnishing_status.furnishing_status, property.positioning_status_id, positioning_status.positioning_status, property.car_parking_id, car_parking.car_parking, property.preferance, property.carpet_area, property.floor, property.out_of_floor, property.bathroom, property.no_of_room_id, no_of_room.no_of_room, property.price, property.booking_price, property.maintenance, IF(property.gender = '1', 'Male', IF(property.gender = '2', 'Female', IF(property.gender = '3', 'Transgender', 'No Choice'))) AS gender, property.note, property.is_phone_visible, property.is_email_visible, property.property_image, property.avalible_from, property.is_admin_aproved, property.status, property.video_url, property.created_at, property.updated_at FROM `property` LEFT JOIN users ON property.posted_by_id = users.id LEFT JOIN property_type ON property.property_type_id = property_type.id LEFT JOIN location ON property.location_id = location.id LEFT JOIN furnishing_status ON property.furnishing_status_id = furnishing_status.id LEFT JOIN positioning_status ON property.positioning_status_id = positioning_status.id LEFT JOIN car_parking ON property.car_parking_id = car_parking.id LEFT JOIN no_of_room ON property.no_of_room_id = no_of_room.id WHERE property.status = '1' AND property.posted_by_id = '".$user_data->id."'"; 
+            $sql = "SELECT property.id, property.title, property.description, property.avalible_beds, property.property_for, IF(property.property_for = '1', 'Rent', 'Sell') AS property_for_text, property.posted_by, IF(property.posted_by = '1', 'Broker', 'Owner') AS posted_by_txt, property.posted_by_id, users.name as posted_by_name, property.property_type_id, property_type.property_type, property.location_id, location.location, property.address, property.is_address_visible, property.furnishing_status_id, furnishing_status.furnishing_status, property.positioning_status_id, positioning_status.positioning_status, property.car_parking_id, car_parking.car_parking, property.preferance, property.carpet_area, property.floor, property.out_of_floor, property.bathroom, property.no_of_room_id, no_of_room.no_of_room, property.price, property.booking_price, property.maintenance, IF(property.gender = '1', 'Male', IF(property.gender = '2', 'Female', IF(property.gender = '3', 'Transgender', 'No Choice'))) AS gender, property.note, property.is_phone_visible, property.is_email_visible, property.property_image, property.avalible_from, property.is_admin_aproved, property.status, property.video_url, property.created_at, property.is_booked, property.updated_at FROM `property` LEFT JOIN users ON property.posted_by_id = users.id LEFT JOIN property_type ON property.property_type_id = property_type.id LEFT JOIN location ON property.location_id = location.id LEFT JOIN furnishing_status ON property.furnishing_status_id = furnishing_status.id LEFT JOIN positioning_status ON property.positioning_status_id = positioning_status.id LEFT JOIN car_parking ON property.car_parking_id = car_parking.id LEFT JOIN no_of_room ON property.no_of_room_id = no_of_room.id WHERE property.status = '1' AND property.posted_by_id = '".$user_data->id."'"; 
 
             $list = DB::select($sql);
             if (empty($list)) {
@@ -657,7 +675,7 @@ class PropertyController extends Controller
                 $message = "Successfully removed from favorite list.";
             }else{
                 $count = $this->CommonModel->get_all($table = "users_saved_property", $select = array('*'), $where = array(array('user_id', '=', $user_data->id), array('is_deleted', '=', 0)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
-                if(empty($count) || count($count) < 3){
+                if(empty($count) || count($count) < config('config.set_favorite_limit')){
                     $post_data = array(
                         'user_id' => $user_data->id,
                         'property_id' => $id,
@@ -796,7 +814,7 @@ class PropertyController extends Controller
         }
     }
 
-    ### Request for Call Back
+    ### Cart Calculation
     public function calculate(Request $request){
 
         try {
@@ -851,13 +869,23 @@ class PropertyController extends Controller
             if (empty($details)) {
                 throw new \Exception('Invalid request.');
             }
-            $details = $details[0]; 
-            $totalAmount = $totalAmount + $details->booking_price;
+            $details = $details[0];
+            $discount_amount = 0; 
+
+            if($request->apply_promo_code){
+                if($user_data->is_promo_code_use){
+                    $discount_amount = $discount_amount;
+                }else{
+                    $discount_amount = ($details->booking_price * config('config.discount_percent')) / 100;
+                }
+            }
+            $totalAmount = ($totalAmount + $details->booking_price) - $discount_amount;
 
             $responce = array(
                 'accessories' => $accessoryArray,
                 'property_details' => $details,
                 'total_checkout_price' => $totalAmount,
+                'discount_amount' => $discount_amount,
             );
 
             return response()->json([
@@ -865,6 +893,157 @@ class PropertyController extends Controller
                 'message' => '',
                 'data' => $responce,
             ]);           
+        } catch (\Exception $e) {
+            return response()->json([
+                'result' => false,
+                'message' => $e->getMessage(),
+                'data' => array(),
+            ]);
+        }
+    }
+
+    ### Payment Info
+    public function payment(Request $request){
+
+        try {
+
+            $user_data = Auth::user();
+
+            if (!$request->property_id) {
+                throw new \Exception('Property id is required');
+            }
+
+            if (!$request->amount_paid) {
+                throw new \Exception('This is required');
+            }
+
+            if (!$request->txn_id) {
+                throw new \Exception('This is required');
+            }
+
+            if (!$request->payment_status) {
+                throw new \Exception('This is required');
+            }
+
+            /*if (!$request->payment_hash) {
+                throw new \Exception('This is required');
+            }*/
+
+            if (!$request->payment_time) {
+                throw new \Exception('This is required');
+            }
+
+            $accessory = $request->accessories;
+            $is_promo_code_use = $request->is_promo_code_use;
+            $discount_percent = $request->discount_percent;
+            $promo_code = $request->promo_code;
+
+            $property_id = $request->property_id;
+            $sql = "SELECT property.id, property.title, property.description, property.avalible_beds, property.property_for, IF(property.property_for = '1', 'Rent', 'Sell') AS property_for_text, property.posted_by, IF(property.posted_by = '1', 'Broker', 'Owner') AS posted_by_txt, property.posted_by_id, users.name as posted_by_name, property.property_type_id, property_type.property_type, property.location_id, location.location, property.address, property.is_address_visible, property.furnishing_status_id, furnishing_status.furnishing_status, property.positioning_status_id, positioning_status.positioning_status, property.car_parking_id, car_parking.car_parking, property.preferance, property.carpet_area, property.floor, property.out_of_floor, property.bathroom, property.no_of_room_id, no_of_room.no_of_room, property.price, property.booking_price, property.maintenance, IF(property.gender = '1', 'Male', IF(property.gender = '2', 'Female', IF(property.gender = '3', 'Transgender', 'No Choice'))) AS gender, property.note, property.is_phone_visible, property.is_email_visible, property.property_image, property.avalible_from, property.is_admin_aproved, property.status, property.video_url, property.created_at, property.updated_at FROM `property` LEFT JOIN users ON property.posted_by_id = users.id LEFT JOIN property_type ON property.property_type_id = property_type.id LEFT JOIN location ON property.location_id = location.id LEFT JOIN furnishing_status ON property.furnishing_status_id = furnishing_status.id LEFT JOIN positioning_status ON property.positioning_status_id = positioning_status.id LEFT JOIN car_parking ON property.car_parking_id = car_parking.id LEFT JOIN no_of_room ON property.no_of_room_id = no_of_room.id WHERE property.id = '".$property_id."'"; 
+
+            $details = DB::select($sql); 
+            if (empty($details)) {
+                throw new \Exception('Invalid request.');
+            }
+            $details = $details[0];
+            $propert_details = json_encode($details);
+
+            $payment_data = array(
+                'property_id' => $request->property_id,
+                'user_id' => $user_data->id,
+                'amount_paid' => $request->amount_paid,
+                'txn_id' => $request->txn_id,
+                'payment_status' => $request->payment_status,
+                'payment_hash' => $request->payment_hash,
+                'payment_time' => $request->payment_time,
+                'accessory' => $request->accessory,
+                'is_promo_code_use' => $request->is_promo_code_use,
+                'discount_percent' => $request->discount_percent,
+                'promo_code' => $request->promo_code,
+                'propert_details' => $propert_details,
+                'updated_at' => date('Y-m-d H:i:s'),
+                'created_at' => date('Y-m-d H:i:s'),
+            );
+
+            $payment = $this->CommonModel->insert_data_get_id('users_booked_property', $payment_data); 
+            if($payment){
+                //update user
+                if($request->is_promo_code_use == 1){
+                    $post_data = array(
+                        'is_promo_code_use' => 1,
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    );
+                    $update = $this->CommonModel->update_data($table = "users", array(array('id', '=', $user_data->id)), $data = $post_data);
+                }
+
+                //update property
+                $property_data = array(
+                    'is_booked' => 1,
+                    'updated_at' => date('Y-m-d H:i:s'),
+                );
+
+                $prop_update = $this->CommonModel->update_data($table = "property", array(array('id', '=', $request->property_id)), $data = $property_data);
+
+                $user_details = User::where('id','=',$user_data->id)->first();
+                $user_details->discount_percent = config('config.discount_percent');
+                $token = JWTAuth::fromUser($user_details);
+                $result_data = array(
+                    'id' => $user_data->id,
+                    'access_token' => $token,
+                    'token_type' => 'bearer',
+                    'expires_in' => auth()->factory()->getTTL() * 604800,
+                    'user_data' => $user_details,
+                );
+
+                return response()->json([
+                    'result' => true,
+                    'message' => 'Payment successfully completed.',
+                    'data' => $result_data,
+                ]);
+            }else{
+                return response()->json([
+                    'result' => false,
+                    'message' => 'Something went wrong try again later.',
+                    'data' => [],
+                ]);
+            }         
+        } catch (\Exception $e) {
+            return response()->json([
+                'result' => false,
+                'message' => $e->getMessage(),
+                'data' => array(),
+            ]);
+        }
+    }
+
+
+    ### My Property
+    public function myEarning(Request $request){
+        try {
+
+            $user_data = Auth::user();            
+            $sql = "SELECT users_booked_property.id, users_booked_property.created_at as booked_at, property.title, property.address, property.price, property.booking_price FROM `users_booked_property` LEFT JOIN property ON users_booked_property.property_id = property.id WHERE property.is_booked = '1' AND property.posted_by_id = '".$user_data->id."'";
+
+            $list = DB::select($sql);
+            $total_booking_price = 0;
+            if($list){
+            	foreach ($list as $key => $value) {
+                    $total_booking_price = $total_booking_price + $value->booking_price;
+	            }
+            }
+
+            $data = array(
+            	'list' => empty($list) ? [] : $list,
+            	'total_booking_price' => $total_booking_price,
+            );
+            
+
+            return response()->json([
+                'result' => true,
+                'message' => '',
+                'data' => $data,
+            ],200,[],JSON_NUMERIC_CHECK);
+               
         } catch (\Exception $e) {
             return response()->json([
                 'result' => false,

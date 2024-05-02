@@ -133,6 +133,8 @@ Route::group(['middleware' => ['checkAdminLogin']], function() {
      /* Call Back */
     Route::get('/call-back-request', [App\Http\Controllers\Application\Admin\CallController::class, 'index'])->name('call-back-request');
     Route::get('/call-back-request/change-status', [App\Http\Controllers\Application\Admin\CallController::class, 'changeStatus'])->name('change-status');
+
+    Route::get('/booking-history', [App\Http\Controllers\Application\Admin\BookingController::class, 'index'])->name('booking-history');
     
     /*Route::get('/property/form/{id?}', [App\Http\Controllers\Application\Admin\PropertyController::class, 'form'])->name('form');
     Route::post('/property/save', [App\Http\Controllers\Application\Admin\PropertyController::class, 'save'])->name('save');

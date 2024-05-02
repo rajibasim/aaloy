@@ -177,6 +177,43 @@ class PropertyController extends Controller{
             return redirect()->back()->withInput()->withErrors($validator); 
         }else{
             $flash_data  = '';
+            $search_keyword = '';
+            if($request->input('search_keyword')){
+                $searchKey = $request->input('search_keyword');
+                foreach ($searchKey as $key => $value) {
+                   $search_keyword.= metaphone($value)." ";
+                }
+            }
+
+            if($request->input('title')){
+                $searchKey = explode(" ", $request->input('title'));
+                foreach ($searchKey as $key => $value) {
+                   $search_keyword.= metaphone($value)." ";
+                }
+            }
+
+            if($request->input('description')){
+                $searchKey = explode(" ", $request->input('description'));
+                foreach ($searchKey as $key => $value) {
+                   $search_keyword.= metaphone($value)." ";
+                }
+            }
+
+            if($request->input('address')){
+                $searchKey = explode(",", $request->input('address'));
+                foreach ($searchKey as $key => $value) {
+                   $search_keyword.= metaphone($value)." ";
+                }
+            }
+
+            if($request->input('posted_by')){
+                if($request->input('posted_by') == 1){
+                    $search_keyword.= metaphone('Broker')." ";
+                }else{
+                    $search_keyword.= metaphone('Owner')." ";
+                }
+            }
+
             if($id){
                 $post_data = array(
                     'title' => $request->input('title'),
@@ -215,6 +252,7 @@ class PropertyController extends Controller{
                     'slug' => Str::slug($request->input('title')),
                     'seo_description' => $request->input('seo_description'),
                     'seo_keyword' => $request->input('seo_keyword'),
+                    'search_keyword' => $search_keyword,
                     'updated_at' => date('Y-m-d H:i:s'),
                 );
                 $destinationPath = 'public/uploads/property_image/';
@@ -239,7 +277,6 @@ class PropertyController extends Controller{
                     );
                 }
             }else{
-
                 $post_data = array(
                     'title' => $request->input('title'),
                     'gender' => $request->input('gender'),
@@ -277,6 +314,7 @@ class PropertyController extends Controller{
                     'slug' => Str::slug($request->input('title')),
                     'seo_description' => $request->input('seo_description'),
                     'seo_keyword' => $request->input('seo_keyword'),
+                    'search_keyword' => $search_keyword,
                     'updated_at' => date('Y-m-d H:i:s'),
                     'created_at' => date('Y-m-d H:i:s'),
                 );

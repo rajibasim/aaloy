@@ -189,6 +189,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
         LaravelCaptcha\Providers\LaravelCaptchaServiceProvider::class,
+        //App\Providers\FortifyServiceProvider::class,
 
     ],
 

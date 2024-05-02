@@ -13,4 +13,7 @@ return [
             "seo_keyword" => "Blog SEO Key",
         ],
     ],
+    'discount_percent' => 10,
+    'broker_commision' => 10,
+    'set_favorite_limit' => 3,
 ];

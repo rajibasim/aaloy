@@ -224,12 +224,15 @@
                         <a href="{{ url($metadata['page_details'].'/'.encrypt($res->id)) }}" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Details">
                           <i class="fas fa-eye" aria-hidden="true"></i>
                         </a>
-                        <a href="{{ url($metadata['page_form_url'].'/'.encrypt($res->id)) }}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Edit">
-                          <i class="fas fa-edit" aria-hidden="true"></i>
-                        </a>
-                        <a href="{{ url($metadata['page_delete_url'].'/'.$res->id) }}" class="btn btn-danger btn-sm single" data-toggle="tooltip" data-placement="top" title="Delete">
-                          <i class="fa fa-trash" aria-hidden="true"></i>
-                        </a>
+                        @if($res->is_booked == '0')
+                          <a href="{{ url($metadata['page_form_url'].'/'.encrypt($res->id)) }}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Edit">
+                            <i class="fas fa-edit" aria-hidden="true"></i>
+                          </a>
+
+                          <a href="{{ url($metadata['page_delete_url'].'/'.$res->id) }}" class="btn btn-danger btn-sm single" data-toggle="tooltip" data-placement="top" title="Delete">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                          </a>
+                        @endif
                       </td>
                     </tr>
                     @endforeach

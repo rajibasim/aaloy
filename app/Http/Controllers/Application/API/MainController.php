@@ -271,6 +271,7 @@ class MainController extends Controller
             }
 
             $user_data = $check_user[0];
+            $user_data->discount_percent = config('config.discount_percent');
 
             if(!Hash::check($request->password, $user_data->password)) {
                 throw new \Exception("Invalid login credentials.");

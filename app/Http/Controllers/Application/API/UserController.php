@@ -76,6 +76,7 @@ class UserController extends Controller
             //dd($update);
 
             $user_details = User::where('id','=',$user_data->id)->first();
+            $user_details->discount_percent = config('config.discount_percent');
             $token = JWTAuth::fromUser($user_details);
 
             $message = "";
