@@ -35,12 +35,10 @@
                 <!-- small box -->
                 <div class="small-box bg-success">
                   <div class="inner">
-                    <h3>00</h3>
-                    <p>Property</p>
+                    <h3>{{ $booked_amount[0]->total }}</h3>
+                    <p>Booked Amount</p>
                   </div>
-                  <div class="icon">
-                    <i class="ion ion-bag"></i>
-                  </div>
+                  <a href="{{ url('booking-history') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
               </div>
               <!-- ./col -->
@@ -48,12 +46,10 @@
                 <!-- small box -->
                 <div class="small-box bg-info">
                   <div class="inner">
-                    <h3>00</h3>
-                    <p>User</p>
+                    <h3>{{ $property[0]->total }}</h3>
+                    <p>Property</p>
                   </div>
-                  <div class="icon">
-                    <i class="ion ion-ios-people"></i>
-                  </div>
+                  <a href="{{ url('property') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
               </div>
               <!-- ./col -->
@@ -61,12 +57,10 @@
                 <!-- small box -->
                 <div class="small-box bg-secondary">
                   <div class="inner">
-                    <h3>00</h3>
-                    <p>Owner</p>
+                    <h3>{{ $aproved_property[0]->total }}</h3>
+                    <p>Aproved Property</p>
                   </div>
-                  <div class="icon">
-                    <i class="ion ion-ios-people"></i>
-                  </div>
+                  <a href="{{ url('property?is_admin_aproved=1') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
               </div>
               <!-- ./col -->
@@ -74,12 +68,57 @@
                 <!-- small box -->
                 <div class="small-box bg-warning">
                   <div class="inner">
-                    <h3>00</h3>
-                    <p>Agent</p>
+                    <h3>{{ $non_aproved_property[0]->total }}</h3>
+                    <p>Request For Aprove</p>
                   </div>
-                  <div class="icon">
-                    <i class="ion ion-ios-people"></i>
+                  <a href="{{ url('property?is_admin_aproved=2') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 col-sm-12">
+            <div class="row">
+              <div class="col-md-3 col-sm-12">
+                <!-- small box -->
+                <div class="small-box bg-primary">
+                  <div class="inner">
+                    <h3>{{ $visit_request[0]->total }}</h3>
+                    <p>Request For Visit</p>
                   </div>
+                  <a href="{{ url('visit-request') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+              </div>
+              <!-- ./col -->
+              <div class="col-md-3 col-sm-12">
+                <!-- small box -->
+                <div class="small-box bg-danger">
+                  <div class="inner">
+                    <h3>{{ $call_request[0]->total }}</h3>
+                    <p>Request For Call Back</p>
+                  </div>
+                  <a href="{{ url('call-back-request') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+              </div>
+              <!-- ./col -->
+              <div class="col-md-3 col-sm-12">
+                <!-- small box -->
+                <div class="small-box bg-dark">
+                  <div class="inner">
+                    <h3>{{ $user[0]->total }}</h3>
+                    <p>Total User</p>
+                  </div>
+                  <a href="{{ url('users/user') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+              </div>
+              <!-- ./col -->
+              <div class="col-md-3 col-sm-12">
+                <!-- small box -->
+                <div class="small-box bg-success">
+                  <div class="inner">
+                    <h3>{{ $booked_property[0]->total }}</h3>
+                    <p>Total Booked</p>
+                  </div>
+                  <a href="{{ url('property') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
               </div>
             </div>

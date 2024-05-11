@@ -59,12 +59,7 @@
                       <input type="text" class="form-control datepicker3" placeholder="End Date" name="end_date" value="{{ isset($serach_data['end_date']) && $serach_data['end_date'] ? $serach_data['end_date'] : '' }}">
                     </div>
                     <div class="col-3">
-                      <select class="form-control" name="call_status">
-                        <option value="">Select Status</option>
-                        <option value="1" {{ isset($serach_data['call_status']) && $serach_data['call_status'] == 1 ? 'selected=""' : '' }}>Called</option>
-                        <option value="2" {{ isset($serach_data['call_status']) && $serach_data['call_status'] == 2 ? 'selected=""' : '' }}>Cancelled</option>
-                        <option value="3" {{ isset($serach_data['call_status']) && $serach_data['call_status'] == 3 ? 'selected=""' : '' }}>No Responce</option>
-                      </select>
+                      <input type="text" class="form-control" placeholder="TXN ID" name="txn_id" value="{{ isset($serach_data['txn_id']) && $serach_data['txn_id'] ? $serach_data['txn_id'] : '' }}">
                     </div>
                     <div class="col-1">
                       <button type="submit" class="btn btn-block btn-primary">Search</button>
@@ -100,11 +95,13 @@
                       <th>Name</th>
                       <th>Phone</th>
                       <th>Property</th>
-                      <th>Posted By</th>
-                      <th>Property For</th>
+                      <!-- <th>Posted By</th>
+                      <th>Property For</th> -->
+                      <th>Amount Paid</th>
+                      <th>TXN ID</th>
                       <th>Date & Time</th>
                       <th>View</th>
-                      <th>Action</th>
+                      <th>Status</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -114,8 +111,10 @@
                       <td>{{ $res->name }}</td>
                       <td>{{ $res->phone }}</td>
                       <td>{{ $res->title }}</td>
-                      <td>{{ $res->posted_by_name }}</td>
-                      <td>{{ $res->property_for == 1 ? 'Rent' : 'Sell' }}</td>
+                      <!-- <td>{{ $res->posted_by_name }}</td>
+                      <td>{{ $res->property_for == 1 ? 'Rent' : 'Sell' }}</td> -->
+                      <td>{{ $res->amount_paid }}</td>
+                      <td>{{ $res->txn_id }}</td>
                       <td>{{ date('d/m/Y h:i A', strtotime($res->created_at)) }}</td>
                       <td style="width: 20px;">
                         <a href="{{ 'property/details/'.encrypt($res->property_id) }}" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Details">
@@ -129,7 +128,7 @@
                     @endforeach
                   @else
                     <tr> 
-                      <td colspan="3">No record found.</td>
+                      <td colspan="8">No record found.</td>
                     </tr>
                   @endif
                   </tbody>

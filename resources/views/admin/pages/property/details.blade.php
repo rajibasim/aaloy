@@ -32,6 +32,7 @@
         </div>
         <!-- /.container-fluid -->
     </div>
+    @if($details->is_booked == 0)
     <section class="content">
       <div class="container-fluid">
         <div class="row">
@@ -73,6 +74,7 @@
         <!-- ./row -->
       </div><!-- /.container-fluid -->
     </section>
+    @endif
     <!-- /.content-header -->
     <section class="content">
       <div class="container-fluid">
@@ -344,7 +346,9 @@
                         <a href="{{ url($value->property_image) }}" data-toggle="lightbox" data-title="{{ $value->image_title }}" data-gallery="gallery">
                           <img src="{{ url($value->property_image) }}" class="img-fluid mb-2" alt="{{ $value->image_title }}"/>
                         </a>
+                        @if($details->is_booked == 0)
                         <a href="{{ url($metadata['delete_image'].'/'.$value->id) }}" class="btn btn-danger btn-sm delete" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                        @endif
                       </div>
                      <?php
                      }

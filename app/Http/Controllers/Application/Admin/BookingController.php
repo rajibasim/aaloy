@@ -21,7 +21,7 @@ class BookingController extends Controller{
         $serach_data = array();
         $start_date = $request->start_date;
         $end_date = $request->end_date;
-        $call_status = $request->call_status;
+        $txn_id = $request->txn_id;
         $where = array();
         $where = array(
             array('users_booked_property.is_deleted', '=', 0)
@@ -36,9 +36,9 @@ class BookingController extends Controller{
             $serach_data['end_date'] = $end_date;
         }
 
-        if($call_status){
-            array_push($where, array('users_booked_property.call_status', '=', $call_status));
-            $serach_data['call_status'] = $call_status;
+        if($txn_id){
+            array_push($where, array('users_booked_property.txn_id', 'like', "%{$txn_id}%"));
+            $serach_data['txn_id'] = $txn_id;
         }
 
         $data['metadata'] = array(
