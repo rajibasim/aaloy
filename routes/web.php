@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Route;
 */
 Route::get('/', 'App\Http\Controllers\Application\Web\HomeController@home');
 Route::get('/process-login', 'App\Http\Controllers\Application\Web\HomeController@processLogin');
+Route::get('/app-blogs/{slug?}', 'App\Http\Controllers\Application\Web\AppCmsController@appBlogs');
+Route::get('/app-page/{page_slug}', 'App\Http\Controllers\Application\Web\AppCmsController@appCmsPage');
 Route::group(['middleware' => ['checkSessionWeb']], function() {
     Route::get('/blogs/{slug?}', 'App\Http\Controllers\Application\Web\HomeController@blogs');
     Route::get('/page/{page_slug}', 'App\Http\Controllers\Application\Web\HomeController@cmsPage');
@@ -27,7 +29,6 @@ Route::post('admin-post-login', 'App\Http\Controllers\Application\Auth\AdminAuth
 Route::get('admin-logout', 'App\Http\Controllers\Application\Auth\AdminAuthController@admin_logout');
 Route::any('reset-password', 'App\Http\Controllers\Application\admin\AdminController@reset_password');
 Route::any('process-reset-password', 'App\Http\Controllers\Application\admin\AdminController@process_reset_password');
-
 
 Route::group(['middleware' => ['checkAdminLogin']], function() {
     Route::get('admin-dashboard', 'App\Http\Controllers\Application\Admin\DashboardController@get_admin_dashboard');

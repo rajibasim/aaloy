@@ -262,6 +262,30 @@ class PropertyController extends Controller
                 $sql = $sql." AND (property.search_keyword LIKE "."'%".$search_string.")";
             } 
 
+            if ($request->no_of_room_id) {
+                $sql = $sql." AND property.no_of_room_id = ".$request->no_of_room_id;
+            }
+
+            if ($request->location_id) {
+                $sql = $sql." AND property.location_id IN (".$request->location_id.")";
+            }
+
+            if ($request->property_for) {
+                $sql = $sql." AND property.property_for = ".$request->property_for;
+            }
+
+            if ($request->property_type_id) {
+                $sql = $sql." AND property.property_type_id = ".$request->property_type_id;
+            }
+
+            if ($request->min_price) {
+                $sql = $sql." AND property.price >= ".$request->min_price;
+            }
+
+            if ($request->max_price) {
+                $sql = $sql." AND property.price <= ".$request->max_price;
+            }
+
             $page_no = 1;
             if($request->page_no){
                 $page_no = $request->page_no;
@@ -1052,6 +1076,44 @@ class PropertyController extends Controller
             ]);
         }
     }
+
+
+    ### My Booked Property
+    public function myBookedProperty(Request $request){
+        try {
+
+            $user_data = Auth::user();
+            
+            $sql = "SELECT property.id, property.title, property.description, property.avalible_beds, property.property_for, IF(property.property_for = '1', 'Rent', 'Sell') AS property_for_text, property.posted_by, IF(property.posted_by = '1', 'Broker', 'Owner') AS posted_by_txt, property.posted_by_id, users.name as posted_by_name, property.property_type_id, property_type.property_type, property.location_id, location.location, property.address, property.is_address_visible, property.furnishing_status_id, furnishing_status.furnishing_status, property.positioning_status_id, positioning_status.positioning_status, property.car_parking_id, car_parking.car_parking, property.preferance, property.carpet_area, property.floor, property.out_of_floor, property.bathroom, property.no_of_room_id, no_of_room.no_of_room, property.price, property.booking_price, property.maintenance, IF(property.gender = '1', 'Male', IF(property.gender = '2', 'Female', IF(property.gender = '3', 'Transgender', 'No Choice'))) AS gender, property.note, property.is_phone_visible, property.is_email_visible, property.property_image, property.avalible_from, property.is_admin_aproved, property.status, property.video_url, property.created_at, property.is_booked, property.updated_at FROM `property` LEFT JOIN users ON property.posted_by_id = users.id LEFT JOIN property_type ON property.property_type_id = property_type.id LEFT JOIN location ON property.location_id = location.id LEFT JOIN furnishing_status ON property.furnishing_status_id = furnishing_status.id LEFT JOIN positioning_status ON property.positioning_status_id = positioning_status.id LEFT JOIN car_parking ON property.car_parking_id = car_parking.id LEFT JOIN no_of_room ON property.no_of_room_id = no_of_room.id LEFT JOIN users_booked_property ON property.id = users_booked_property.property_id WHERE property.status = '1' AND property.is_booked = '1' AND users_booked_property.user_id = '".$user_data->id."'"; 
+
+            $list = DB::select($sql);
+            if (empty($list)) {
+                throw new \Exception('No records found.');
+            }
+
+            $listArray = [];
+            foreach ($list as $key => $value) {
+                $property_images = $this->CommonModel->get_all($table = 'property_image', $select = array('*'), $where = array(array('is_deleted', '=', 0), array('property_id', '=', $value->id)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
+                $value->property_images = !empty($property_images) ? $property_images : [];
+
+                $listArray[] = $value;
+            }
+
+            return response()->json([
+                'result' => true,
+                'message' => '',
+                'data' => $listArray,
+            ],200,[],JSON_NUMERIC_CHECK);
+               
+        } catch (\Exception $e) {
+            return response()->json([
+                'result' => false,
+                'message' => $e->getMessage(),
+                'data' => array(),
+            ]);
+        }
+    }
+
 
 
 
