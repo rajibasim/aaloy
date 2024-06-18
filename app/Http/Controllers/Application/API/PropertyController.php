@@ -1000,13 +1000,15 @@ class PropertyController extends Controller
                     $update = $this->CommonModel->update_data($table = "users", array(array('id', '=', $user_data->id)), $data = $post_data);
                 }
 
-                //update property
-                $property_data = array(
-                    'is_booked' => 1,
-                    'updated_at' => date('Y-m-d H:i:s'),
-                );
+                if($details->property_type_id != 3){
+                    //update property
+                    $property_data = array(
+                        'is_booked' => 1,
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    );
 
-                $prop_update = $this->CommonModel->update_data($table = "property", array(array('id', '=', $request->property_id)), $data = $property_data);
+                    $prop_update = $this->CommonModel->update_data($table = "property", array(array('id', '=', $request->property_id)), $data = $property_data);
+                }
 
                 $user_details = User::where('id','=',$user_data->id)->first();
                 $user_details->discount_percent = config('config.discount_percent');
@@ -1083,20 +1085,22 @@ class PropertyController extends Controller
         try {
 
             $user_data = Auth::user();
-            
-            $sql = "SELECT property.id, property.title, property.description, property.avalible_beds, property.property_for, IF(property.property_for = '1', 'Rent', 'Sell') AS property_for_text, property.posted_by, IF(property.posted_by = '1', 'Broker', 'Owner') AS posted_by_txt, property.posted_by_id, users.name as posted_by_name, property.property_type_id, property_type.property_type, property.location_id, location.location, property.address, property.is_address_visible, property.furnishing_status_id, furnishing_status.furnishing_status, property.positioning_status_id, positioning_status.positioning_status, property.car_parking_id, car_parking.car_parking, property.preferance, property.carpet_area, property.floor, property.out_of_floor, property.bathroom, property.no_of_room_id, no_of_room.no_of_room, property.price, property.booking_price, property.maintenance, IF(property.gender = '1', 'Male', IF(property.gender = '2', 'Female', IF(property.gender = '3', 'Transgender', 'No Choice'))) AS gender, property.note, property.is_phone_visible, property.is_email_visible, property.property_image, property.avalible_from, property.is_admin_aproved, property.status, property.video_url, property.created_at, property.is_booked, property.updated_at FROM `property` LEFT JOIN users ON property.posted_by_id = users.id LEFT JOIN property_type ON property.property_type_id = property_type.id LEFT JOIN location ON property.location_id = location.id LEFT JOIN furnishing_status ON property.furnishing_status_id = furnishing_status.id LEFT JOIN positioning_status ON property.positioning_status_id = positioning_status.id LEFT JOIN car_parking ON property.car_parking_id = car_parking.id LEFT JOIN no_of_room ON property.no_of_room_id = no_of_room.id LEFT JOIN users_booked_property ON property.id = users_booked_property.property_id WHERE property.status = '1' AND property.is_booked = '1' AND users_booked_property.user_id = '".$user_data->id."'"; 
 
-            $list = DB::select($sql);
+            $list = $this->CommonModel->get_all($table = "users_booked_property", $select = array('*'), $where = array(array('is_deleted', '=', 0), array('status', '=', 1), array('user_id', '=', $user_data->id)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
+                        
+            //$sql = "SELECT property.id, property.title, property.description, property.avalible_beds, property.property_for, IF(property.property_for = '1', 'Rent', 'Sell') AS property_for_text, property.posted_by, IF(property.posted_by = '1', 'Broker', 'Owner') AS posted_by_txt, property.posted_by_id, users.name as posted_by_name, property.property_type_id, property_type.property_type, property.location_id, location.location, property.address, property.is_address_visible, property.furnishing_status_id, furnishing_status.furnishing_status, property.positioning_status_id, positioning_status.positioning_status, property.car_parking_id, car_parking.car_parking, property.preferance, property.carpet_area, property.floor, property.out_of_floor, property.bathroom, property.no_of_room_id, no_of_room.no_of_room, property.price, property.booking_price, property.maintenance, IF(property.gender = '1', 'Male', IF(property.gender = '2', 'Female', IF(property.gender = '3', 'Transgender', 'No Choice'))) AS gender, property.note, property.is_phone_visible, property.is_email_visible, property.property_image, property.avalible_from, property.is_admin_aproved, property.status, property.video_url, property.created_at, property.is_booked, property.updated_at FROM `property` LEFT JOIN users ON property.posted_by_id = users.id LEFT JOIN property_type ON property.property_type_id = property_type.id LEFT JOIN location ON property.location_id = location.id LEFT JOIN furnishing_status ON property.furnishing_status_id = furnishing_status.id LEFT JOIN positioning_status ON property.positioning_status_id = positioning_status.id LEFT JOIN car_parking ON property.car_parking_id = car_parking.id LEFT JOIN no_of_room ON property.no_of_room_id = no_of_room.id LEFT JOIN users_booked_property ON property.id = users_booked_property.property_id WHERE property.status = '1' AND property.is_booked = '1' AND users_booked_property.user_id = '".$user_data->id."'"; 
+
+            //$list = DB::select($sql);
             if (empty($list)) {
                 throw new \Exception('No records found.');
             }
 
             $listArray = [];
             foreach ($list as $key => $value) {
-                $property_images = $this->CommonModel->get_all($table = 'property_image', $select = array('*'), $where = array(array('is_deleted', '=', 0), array('property_id', '=', $value->id)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
-                $value->property_images = !empty($property_images) ? $property_images : [];
-
-                $listArray[] = $value;
+                $property = json_decode($value->propert_details, true); 
+                $property_images = $this->CommonModel->get_all($table = 'property_image', $select = array('*'), $where = array(array('is_deleted', '=', 0), array('property_id', '=', $value->property_id)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
+                $property['property_images'] = !empty($property_images) ? $property_images : [];
+                $listArray[] = $property;
             }
 
             return response()->json([
@@ -1114,8 +1118,153 @@ class PropertyController extends Controller
         }
     }
 
+    ### Re Post
+    public function re_post(Request $request, $id = null){
+        try {
 
+            $details = $this->CommonModel->get_all($table = 'property', $select = array('*'), $where = array(array('id', '=', $id)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
 
+            if (empty($details)) {
+                throw new \Exception('No propery found.');
+            }
 
+            $details = $details[0];
+            $property_image = $details->property_image;
+            $image_name = explode('/', $property_image);
+            $image_name = '1_'.$image_name[count($image_name) - 1];
+            $property_image_new = 'public/uploads/property_image/'.$image_name;
+            if(file_exists($property_image)){
+                copy($property_image, $property_image_new);
+            }else{
+                $property_image_new = '';
+            }
+
+            $post_data = array(
+                'title' => $details->title,
+                'gender' => $details->gender,
+                'property_for' => $details->property_for,
+                'posted_by' => $details->posted_by,
+                'posted_by_id' => $details->posted_by_id,
+                'property_type_id' => $details->property_type_id,
+                'preferance' => $details->preferance,
+                'location_id' => $details->location_id,
+                'address' => $details->address,
+                'latitude' => $details->latitude,
+                'longitude' => $details->longitude,
+                'pin_code' => $details->pin_code,
+                'floor' => $details->floor,
+                'out_of_floor' => $details->out_of_floor,
+                'no_of_room_id' => $details->no_of_room_id,
+                'price' => $details->price,
+                'booking_price' => $details->booking_price,
+                'maintenance' => $details->maintenance,
+                'carpet_area' => $details->carpet_area,
+                'car_parking_id' => $details->car_parking_id,
+                'furnishing_status_id' => $details->furnishing_status_id,
+                'positioning_status_id' => $details->positioning_status_id,
+                'note' => $details->note,
+                'description' => $details->description,
+                'avalible_beds' => $details->avalible_beds,
+                'is_address_visible' => $details->is_address_visible,
+                'is_phone_visible' => $details->is_phone_visible,
+                'is_email_visible' => $details->is_email_visible,
+                'is_admin_aproved' => 0,
+                'avalible_from' => $details->avalible_from,
+                'bathroom' => $details->bathroom,
+                'video_url' => $details->video_url,
+                'status' => 2,
+                'slug' => Str::slug($details->title),
+                'seo_description' => $details->seo_description,
+                'seo_keyword' => $details->seo_keyword,
+                'search_keyword' => $details->search_keyword,
+                'property_image' => $property_image_new,
+                'updated_at' => date('Y-m-d H:i:s'),
+                'created_at' => date('Y-m-d H:i:s'),
+            );
+
+            $result = $this->CommonModel->insert_data_get_id('property', $post_data);
+            if($result){
+                $property_images = $this->CommonModel->get_all($table = 'property_image', $select = array('*'), $where = array(array('is_deleted', '=', 0), array('property_id', '=', $id)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
+                if(!empty($property_images)){
+                    foreach ($property_images as $key => $value) {
+                        $property_image = $value->property_image;
+                        $image_name = explode('/', $property_image);
+                        $image_name = $key.'_'.$image_name[count($image_name) - 1];
+                        $property_image_new = 'public/uploads/property_image/'.$image_name;
+                        if(file_exists($property_image)){
+                            copy($property_image, $property_image_new);
+                        }else{
+                            $property_image_new = '';
+                        }
+
+                        $post_data = array(
+                            'property_id' => $result,
+                            'image_title' => $value->image_title,
+                            'property_image' => $property_image_new,
+                            'created_at' => date('Y-m-d H:i:s'),
+                        );
+
+                        $upload_iamge = $this->CommonModel->insert_data_get_id('property_image', $post_data);
+                    }
+                }
+
+                return response()->json([
+                    'result' => true,
+                    'message' => 'Property re-post successfully.',
+                    'data' => '',
+                ],200,[],JSON_NUMERIC_CHECK);
+            }else{
+                return response()->json([
+                    'result' => true,
+                    'message' => 'Something went wrong tay again later..',
+                    'data' => $listArray,
+                ],200,[],JSON_NUMERIC_CHECK);
+            }               
+        } catch (\Exception $e) {
+            return response()->json([
+                'result' => false,
+                'message' => $e->getMessage(),
+                'data' => array(),
+            ]);
+        }
+    }
+
+    ### Edit
+    public function change_status(Request $request, $id){
+        try {
+
+            $user_data = Auth::user();
+
+            if (!$request->status) {
+                throw new \Exception('Status is required');
+            }
+
+            $post_data = array(
+                'status' => $request->status,
+                'updated_at' => date('Y-m-d H:i:s'),
+            );
+
+            $result = $this->CommonModel->update_data('property', array(array('id', '=', $id)), $post_data); 
+            if($id && $result){                
+                return response()->json([
+                    'result' => true,
+                    'message' => "Property status updated Successfully.",
+                    'data' => [],
+                ]);
+            }else{
+                return response()->json([
+                    'result' => false,
+                    'message' => "Something wrong, try again later.",
+                    'data' => [],
+                ]);
+            }                   
+        } catch (\Exception $e) {
+            return response()->json([
+                'result' => false,
+                'message' => $e->getMessage(),
+                'data' => array(),
+            ]);
+        }
+    }
 }
 

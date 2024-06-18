@@ -198,13 +198,11 @@
                         <label>Floor</label>
                         <select class="form-control select2" name="floor_id" id="floor_id" required="">
                           <option value="">Select Floor</option>
-                          <?php
-                          for ($i=1; $i < 11 ; $i++) { 
-                          ?>
-                            <option value="{{  $i }}" {{ isset($details->floor) && $details->floor ==  $i ? 'selected' : '' }}>{{  $i }}</option>
-                          <?php
-                          }
-                          ?>
+                          @if($total_floor)
+                            @foreach ($total_floor as $val)
+                            <option value="{{ $val->floor }}" {{ isset($details->floor) && $details->floor == $val->floor ? 'selected' : '' }}>{{ $val->floor }}</option>
+                            @endforeach
+                          @endif
                         </select>
                       </div>
                     </div>
@@ -214,6 +212,11 @@
                         <label>Out Of Floor</label>
                         <select class="form-control select2" name="out_of_floor_id" id="out_of_floor_id" required="">
                           <option value="">Select Floor</option>
+                          @if($total_floor)
+                            @foreach ($total_floor as $val)
+                            <option value="{{ $val->floor }}" {{ isset($details->out_of_floor) && $details->out_of_floor == $val->floor ? 'selected' : '' }}>{{ $val->floor }}</option>
+                            @endforeach
+                          @endif
                            <?php
                             for ($i=1; $i < 11 ; $i++) { 
                             ?>

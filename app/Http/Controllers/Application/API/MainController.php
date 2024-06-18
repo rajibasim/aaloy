@@ -74,6 +74,36 @@ class MainController extends Controller
 
             $data['property_type'] = !empty($property_type) ? $property_type : [];
 
+            $floor = $this->CommonModel->get_all($table = "total_floor", $select = array('*'), $where = array(array('is_deleted', '=', 0), array('status', '=', 1)), $join = array(), $left = array(), $right = array(), $order = array(array('id' => "ASC")), $group = "", $limit = array(), $raw = "", $paging = "");
+
+            $floor_arr = [];
+            $out_of_floor_arr = [];
+            if($floor){
+                foreach ($floor as $key => $value) {
+                    $floor_arr[] = array(
+                        'id' => $value->floor,
+                        'name' => $value->floor,
+                        'status' => $value->status,
+                        'is_deleted' => $value->is_deleted,
+                        'created_at' => $value->created_at,
+                        'updated_at' => $value->updated_at,
+                    );
+
+                    $out_of_floor_arr[] = array(
+                        'id' => $value->floor,
+                        'name' => $value->floor,
+                        'status' => $value->status,
+                        'is_deleted' => $value->is_deleted,
+                        'created_at' => $value->created_at,
+                        'updated_at' => $value->updated_at,
+                    );
+                }
+            }
+
+            $data['floor'] = $floor_arr;
+            $data['out_of_floor'] = $out_of_floor_arr;
+
+
             return response()->json([
                 'result' => true,
                 'message' => '',

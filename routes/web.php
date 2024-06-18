@@ -108,6 +108,7 @@ Route::group(['middleware' => ['checkAdminLogin']], function() {
     Route::post('/property/save_food', [App\Http\Controllers\Application\Admin\PropertyController::class, 'save_food'])->name('save_food');
     Route::get('/property/delete_image/{id?}', [App\Http\Controllers\Application\Admin\PropertyController::class, 'delete_image'])->name('delete_image');
     Route::get('/property/delete_food/{id?}', [App\Http\Controllers\Application\Admin\PropertyController::class, 'delete_food'])->name('delete_food');
+    Route::any('/property/re-post/{id?}', [App\Http\Controllers\Application\Admin\PropertyController::class, 're_post'])->name('re_post');
     /* property End */
 
     /*User data start*/

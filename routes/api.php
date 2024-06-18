@@ -51,5 +51,8 @@ Route::group(['prefix' => 'v1','middleware' => ['auth:api']], function () {
         Route::post('property/calculate', 'App\Http\Controllers\Application\API\PropertyController@calculate');
         Route::post('property/payment', 'App\Http\Controllers\Application\API\PropertyController@payment');
         Route::post('/process-login', 'App\Http\Controllers\Application\Web\UserController@processLogin');
+        Route::post('/property/re-post/{id}', 'App\Http\Controllers\Application\API\PropertyController@re_post');
+        Route::post('property/change-status/{id}', 'App\Http\Controllers\Application\API\PropertyController@change_status');
+
         //User Related Information
 });

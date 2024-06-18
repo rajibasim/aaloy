@@ -160,6 +160,8 @@ class PropertyController extends Controller{
 
         $data['property_type'] = $this->CommonModel->get_all($table = 'property_type', $select = array('*'), $where = array(array('is_deleted', '=', 0)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
 
+        $data['total_floor'] = $this->CommonModel->get_all($table = 'total_floor', $select = array('*'), $where = array(array('is_deleted', '=', 0)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
+
         $data['users'] = $this->CommonModel->get_all($table = 'users', $select = array('*'), $where = array(array('is_deleted', '=', 0)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
 
         return view('admin.pages.property.form', $data);
@@ -568,6 +570,121 @@ class PropertyController extends Controller{
 
         Session::put('flash_data', $flash_data); 
         return redirect($this->slug.'/details/'.encrypt($getOldData->property_id));
+    }
+
+    /* re post */
+    public function re_post(Request $request, $id = null){
+        if($id){
+            $details = $this->CommonModel->get_all($table = $this->table, $select = array('*'), $where = array(array('id', '=', $id)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
+
+            if($details){
+                $details = $details[0];
+                $property_image = $details->property_image;
+                $image_name = explode('/', $property_image);
+                $image_name = '1_'.$image_name[count($image_name) - 1];
+                $property_image_new = 'public/uploads/property_image/'.$image_name;
+                if(file_exists($property_image)){
+                    copy($property_image, $property_image_new);
+                }else{
+                    $property_image_new = '';
+                }
+
+                $post_data = array(
+                    'title' => $details->title,
+                    'gender' => $details->gender,
+                    'property_for' => $details->property_for,
+                    'posted_by' => $details->posted_by,
+                    'posted_by_id' => $details->posted_by_id,
+                    'property_type_id' => $details->property_type_id,
+                    'preferance' => $details->preferance,
+                    'location_id' => $details->location_id,
+                    'address' => $details->address,
+                    'latitude' => $details->latitude,
+                    'longitude' => $details->longitude,
+                    'pin_code' => $details->pin_code,
+                    'floor' => $details->floor,
+                    'out_of_floor' => $details->out_of_floor,
+                    'no_of_room_id' => $details->no_of_room_id,
+                    'price' => $details->price,
+                    'booking_price' => $details->booking_price,
+                    'maintenance' => $details->maintenance,
+                    'carpet_area' => $details->carpet_area,
+                    'car_parking_id' => $details->car_parking_id,
+                    'furnishing_status_id' => $details->furnishing_status_id,
+                    'positioning_status_id' => $details->positioning_status_id,
+                    'note' => $details->note,
+                    'description' => $details->description,
+                    'avalible_beds' => $details->avalible_beds,
+                    'is_address_visible' => $details->is_address_visible,
+                    'is_phone_visible' => $details->is_phone_visible,
+                    'is_email_visible' => $details->is_email_visible,
+                    'is_admin_aproved' => 0,
+                    'avalible_from' => $details->avalible_from,
+                    'bathroom' => $details->bathroom,
+                    'video_url' => $details->video_url,
+                    'status' => 2,
+                    'slug' => Str::slug($details->title),
+                    'seo_description' => $details->seo_description,
+                    'seo_keyword' => $details->seo_keyword,
+                    'search_keyword' => $details->search_keyword,
+                    'property_image' => $property_image_new,
+                    'updated_at' => date('Y-m-d H:i:s'),
+                    'created_at' => date('Y-m-d H:i:s'),
+                );
+
+                $result = $this->CommonModel->insert_data_get_id($this->table, $post_data);
+                if($result){
+                    $property_images = $this->CommonModel->get_all($table = 'property_image', $select = array('*'), $where = array(array('is_deleted', '=', 0), array('property_id', '=', $id)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
+                    if(!empty($property_images)){
+                        foreach ($property_images as $key => $value) {
+                            $property_image = $value->property_image;
+                            $image_name = explode('/', $property_image);
+                            $image_name = $key.'_'.$image_name[count($image_name) - 1];
+                            $property_image_new = 'public/uploads/property_image/'.$image_name;
+                            if(file_exists($property_image)){
+                                copy($property_image, $property_image_new);
+                            }else{
+                                $property_image_new = '';
+                            }
+
+                            $post_data = array(
+                                'property_id' => $result,
+                                'image_title' => $value->image_title,
+                                'property_image' => $property_image_new,
+                                'created_at' => date('Y-m-d H:i:s'),
+                            );
+
+                            $upload_iamge = $this->CommonModel->insert_data_get_id('property_image', $post_data);
+                        }
+                    }
+
+
+                    $flash_data = array(
+                        'status' => 'success',
+                        'message' => $this->title.' re-post successfully.',
+                    );
+
+                }else{
+                    $flash_data = array(
+                        'status' => 'danger',
+                        'message' => 'Something went wrong try again later.',
+                    );
+                }
+            }else{
+                $flash_data = array(
+                    'status' => 'danger',
+                    'message' => 'Something went wrong try again later.',
+                );
+            }
+        }else{
+            $flash_data = array(
+                'status' => 'danger',
+                'message' => 'Something went wrong try again later.',
+            );
+        }
+
+        Session::put('flash_data', $flash_data); 
+        return redirect($this->slug.'/details/'.encrypt($id));
     }
 
 }

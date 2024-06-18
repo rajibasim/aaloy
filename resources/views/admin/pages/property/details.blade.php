@@ -74,6 +74,38 @@
         <!-- ./row -->
       </div><!-- /.container-fluid -->
     </section>
+    @else
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card card-primary card-outline">
+              <div class="card-header">
+                <h3 class="card-title">Re-Post</h3>
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-10">
+                    &nbsp;
+                  </div>
+                  <div class="col-2">
+                    <a href="{{ url('/property/re-post/'.$details->id) }}" class="btn btn-block btn-danger">Re-Post</a>
+                  </div>
+                </div>
+              </div>
+              <!-- /.card-body -->
+            </div>
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- ./row -->
+      </div><!-- /.container-fluid -->
+    </section>
     @endif
     <!-- /.content-header -->
     <section class="content">
