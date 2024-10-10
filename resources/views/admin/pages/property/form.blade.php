@@ -123,6 +123,37 @@
                         <input type="hidden" name="search_keyword[]" id="property_type_id_text" value="">
                       </div>
                     </div>
+                    <div class="col-sm-4" id="avalible_beds" style="display: none;">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <label>Avalible Beds</label>
+                        <input type="text" class="form-control" placeholder="Avalible Beds" name="avalible_beds" value="{{ old('avalible_beds', isset($details->avalible_beds) && $details->avalible_beds ? $details->avalible_beds : '') }}" required="">
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <label>Owner Name</label>
+                        <input type="text" class="form-control" placeholder="Owner Name" name="owner_name" value="{{ old('owner_name', isset($details->owner_name) && $details->owner_name ? $details->owner_name : '') }}" required="">
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <label>Owner Address</label>
+                        <input type="text" class="form-control" placeholder="Owner Address" name="owner_address" value="{{ old('owner_address', isset($details->owner_address) && $details->owner_address ? $details->owner_address : '') }}" required="">
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <label>Owner Info Visible</label>
+                        <select class="form-control select2" name="is_owner_info_visible" id="is_owner_info_visible" required="">
+                          <option value="0" {{ isset($details->is_owner_info_visible) && $details->is_owner_info_visible == 0 ? 'selected' : '' }}>No</option>
+                          <option value="1" {{ isset($details->is_owner_info_visible) && $details->is_owner_info_visible == 1 ? 'selected' : '' }}>Yes</option>
+                        </select>
+                      </div>
+                    </div>
                     <div class="col-sm-4">
                       <!-- text input -->
                       <div class="form-group">
@@ -142,8 +173,8 @@
                         <label>Gender</label>
                         <select class="form-control select2" name="gender" id="gender">
                           <option value="">Select One</option>
-                          <option value="1" {{ isset($details->gender) && $details->gender == 1 ? 'selected' : '' }}>Male</option>
-                          <option value="2" {{ isset($details->gender) && $details->gender == 2 ? 'selected' : '' }}>Female</option>
+                          <option value="1" {{ isset($details->gender) && $details->gender == 1 ? 'selected' : '' }}>Male/Boyes</option>
+                          <option value="2" {{ isset($details->gender) && $details->gender == 2 ? 'selected' : '' }}>Female/Girls</option>
                           <option value="3" {{ isset($details->gender) && $details->gender == 3 ? 'selected' : '' }}>Transgender</option>
                           <option value="4" {{ isset($details->gender) && $details->gender == 4 ? 'selected' : '' }}>No Choice</option>
                         </select>
@@ -375,13 +406,6 @@
                           <option value="1" {{ isset($details->status) && $details->status == 1 ? 'selected' : '' }}>Active</option>
                           <option value="2" {{ isset($details->status) && $details->status == 2 ? 'selected' : '' }}>In-Active</option>
                         </select>
-                      </div>
-                    </div>
-                    <div class="col-sm-12" id="avalible_beds" style="display: none;">
-                      <!-- text input -->
-                      <div class="form-group">
-                        <label>Avalible Beds</label>
-                        <input type="text" class="form-control" placeholder="Avalible Beds" name="avalible_beds" value="{{ old('avalible_beds', isset($details->avalible_beds) && $details->avalible_beds ? $details->avalible_beds : '') }}" required="">
                       </div>
                     </div>
                     <div class="col-sm-12">

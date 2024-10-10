@@ -136,42 +136,116 @@
                       <!-- text input -->
                       <div class="form-group">
                         <label>Property For</label>
-                        <input type="text" class="form-control" name="property_for" value="{{ isset($details->property_for) && $details->property_for ? $details->property_for : '' }}" disabled="">
+                        <select class="form-control select2" name="property_for" id="property_for" required="" disabled="">
+                          <option value="1" {{ isset($details->property_for) && $details->property_for == 1 ? 'selected' : '' }}>Rent</option>
+                          <option value="2" {{ isset($details->property_for) && $details->property_for == 2 ? 'selected' : '' }}>Sell</option>
+                        </select>
+                        <input type="hidden" name="search_keyword[]" id="property_for_text" value="">
                       </div>
                     </div>
                     <div class="col-sm-4">
                       <!-- text input -->
                       <div class="form-group">
                         <label>Posted By</label>
-                        <input type="text" class="form-control" name="posted_by" value="{{ isset($details->posted_by) && $details->posted_by ? $details->posted_by : '' }}" disabled="">
+                        <select class="form-control select2 seo" name="posted_by" id="posted_by" required="" disabled>
+                          <option value="">Select One</option>
+                          <option value="1" {{ isset($details->posted_by) && $details->posted_by == 1 ? 'selected' : '' }}>Broker</option>
+                          <option value="2" {{ isset($details->posted_by) && $details->posted_by == 2 ? 'selected' : '' }}>User</option>
+                        </select>
                       </div>
                     </div>
                     <div class="col-sm-4">
                       <!-- text input -->
                       <div class="form-group">
                         <label>Posted By(User)</label>
-                        <input type="text" class="form-control" name="posted_by_txt" value="{{ isset($details->posted_by_txt) && $details->posted_by_txt ? $details->posted_by_txt : '' }}" disabled="">
+                        <select class="form-control select2" name="posted_by_id" id="posted_by_id" required="" disabled>
+                          <option value="">Select One</option>
+                          <?php
+                          if(isset($details->posted_by_id) && $details->posted_by_id){
+                              if($users){
+                                  foreach ($users as $key => $val) {
+                                      if(isset($details->posted_by) && $details->posted_by == $val->type){
+                                  ?>
+                                     <option value="{{ $val->id }}" {{ isset($details->posted_by_id) && $details->posted_by_id == $val->id ? 'selected' : '' }}>{{ $val->name }}</option>
+                                  <?php
+                                      }
+                                  }
+                              }
+                          }
+                          ?>
+                        </select>
                       </div>
                     </div>
                     <div class="col-sm-4">
                       <!-- text input -->
                       <div class="form-group">
                         <label>Property Type</label>
-                        <input type="text" class="form-control" name="property_type" value="{{ isset($details->property_type) && $details->property_type ? $details->property_type : '' }}" disabled="">
+                        <select class="form-control select2" name="property_type_id" id="property_type_id" required="" disabled>
+                          <option value="">Select Property Type</option>
+                           @if($property_type)
+                               @foreach ($property_type as $val)
+                                <option value="{{ $val->id }}" {{ isset($details->property_type_id) && $details->property_type_id == $val->id ? 'selected' : '' }}>{{ $val->property_type }}</option>
+                               @endforeach
+                            @endif
+                        </select>
+                        <input type="hidden" name="search_keyword[]" id="property_type_id_text" value="">
+                      </div>
+                    </div>      
+                    <div class="col-sm-4" id="avalible_beds">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <label>Avalible Beds</label>
+                        <input type="text" class="form-control" placeholder="Avalible Beds" name="avalible_beds" value="{{ old('avalible_beds', isset($details->avalible_beds) && $details->avalible_beds ? $details->avalible_beds : '') }}" required=""  disabled="">
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <label>Owner Name</label>
+                        <input type="text" class="form-control" placeholder="Owner Name" name="owner_name" value="{{ old('owner_name', isset($details->owner_name) && $details->owner_name ? $details->owner_name : '') }}" required=""  disabled="">
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <label>Owner Address</label>
+                        <input type="text" class="form-control" placeholder="Owner Address" name="owner_address" value="{{ old('owner_address', isset($details->owner_address) && $details->owner_address ? $details->owner_address : '') }}" required=""  disabled="">
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <label>Owner Info Visible</label>
+                        <select class="form-control select2" name="is_owner_info_visible" id="is_owner_info_visible" required="" disabled="">
+                          <option value="0" {{ isset($details->is_owner_info_visible) && $details->is_owner_info_visible == 0 ? 'selected' : '' }}>No</option>
+                          <option value="1" {{ isset($details->is_owner_info_visible) && $details->is_owner_info_visible == 1 ? 'selected' : '' }}>Yes</option>
+                        </select>
                       </div>
                     </div>
                     <div class="col-sm-4">
                       <!-- text input -->
                       <div class="form-group">
                         <label>Preferance</label>
-                        <input type="text" class="form-control" name="preferance" value="{{ isset($details->preferance) && $details->preferance ? $details->preferance : '' }}" disabled="">
+                        <select class="form-control select2" name="preferance" id="preferance" required="" disabled="">
+                          <option value="">Select One</option>
+                          <option value="1" {{ isset($details->preferance) && $details->preferance == 1 ? 'selected' : '' }}>Bachelor</option>
+                          <option value="2" {{ isset($details->preferance) && $details->preferance == 2 ? 'selected' : '' }}>Family</option>
+                          <option value="3" {{ isset($details->preferance) && $details->preferance == 3 ? 'selected' : '' }}>No Preferance</option>
+                        </select>
+                        <input type="hidden" name="search_keyword[]" id="preferance_text" value="">
                       </div>
                     </div>
                     <div class="col-sm-4">
                       <!-- text input -->
                       <div class="form-group">
                         <label>Gender</label>
-                        <input type="text" class="form-control" name="gender" value="{{ isset($details->gender) && $details->gender ? $details->gender : '' }}" disabled="">
+                        <select class="form-control select2" name="gender" id="gender" disabled="">
+                          <option value="">Select One</option>
+                          <option value="1" {{ isset($details->gender) && $details->gender == 1 ? 'selected' : '' }}>Male/Boyes</option>
+                          <option value="2" {{ isset($details->gender) && $details->gender == 2 ? 'selected' : '' }}>Female/Girls</option>
+                          <option value="3" {{ isset($details->gender) && $details->gender == 3 ? 'selected' : '' }}>Transgender</option>
+                          <option value="4" {{ isset($details->gender) && $details->gender == 4 ? 'selected' : '' }}>No Choice</option>
+                        </select>
                       </div>
                     </div>
                     <div class="col-sm-4">
@@ -186,6 +260,27 @@
                       <div class="form-group">
                         <label>Address</label>
                         <input type="text" class="form-control" name="address" value="{{ isset($details->address) && $details->address ? $details->address : '' }}" disabled="">
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <label>Latitude</label>
+                        <input type="text" class="form-control" placeholder="Enter latitude" id="latitude" name="latitude" value="{{ old('latitude', isset($details->latitude) && $details->latitude ? $details->latitude : '') }}" required="" disabled="">
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <label>Longitude</label>
+                        <input type="text" class="form-control" placeholder="Enter longitude" id="longitude" name="longitude" value="{{ old('longitude', isset($details->longitude) && $details->longitude ? $details->longitude : '') }}" required="" disabled="">
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <label>Pin Code</label>
+                        <input type="text" class="form-control" placeholder="Enter Pin Code" id="postcode" name="pin_code" value="{{ old('pin_code', isset($details->pin_code) && $details->pin_code ? $details->pin_code : '') }}" required="" disabled="">
                       </div>
                     </div>
                     <div class="col-sm-4">
@@ -333,6 +428,20 @@
                       <div class="form-group">
                         <label>Video URL</label>
                         <input type="text" class="form-control" name="video_url" value="{{ isset($details->video_url) && $details->video_url ? $details->video_url : '' }}" disabled="">
+                      </div>
+                    </div> 
+                    <div class="col-sm-12">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <label>SEO Description</label>
+                        <textarea class="form-control" name="seo_description" disabled="">{{ old('seo_description', isset($details->seo_description) && $details->seo_description ? $details->seo_description : '') }}</textarea>
+                      </div>
+                    </div>
+                    <div class="col-sm-12">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <label>SEO Keywords</label>
+                        <textarea class="form-control" id="" name="seo_keyword" disabled="">{{ old('seo_keyword', isset($details->seo_keyword) && $details->seo_keyword ? $details->seo_keyword : '') }}</textarea>
                       </div>
                     </div>                    
                   </div>

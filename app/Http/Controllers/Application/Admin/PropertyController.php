@@ -224,6 +224,9 @@ class PropertyController extends Controller{
                     'posted_by' => $request->input('posted_by'),
                     'posted_by_id' => $request->input('posted_by_id'),
                     'property_type_id' => $request->input('property_type_id'),
+                    'owner_name' => $request->input('owner_name'),
+                    'owner_address' => $request->input('owner_address'),
+                    'is_owner_info_visible' => $request->input('is_owner_info_visible'),
                     'preferance' => $request->input('preferance'),
                     'location_id' => $request->input('location_id'),
                     'address' => $request->input('address'),
@@ -286,6 +289,9 @@ class PropertyController extends Controller{
                     'posted_by' => $request->input('posted_by'),
                     'posted_by_id' => $request->input('posted_by_id'),
                     'property_type_id' => $request->input('property_type_id'),
+                    'owner_name' => $request->input('owner_name'),
+                    'owner_address' => $request->input('owner_address'),
+                    'is_owner_info_visible' => $request->input('is_owner_info_visible'),
                     'preferance' => $request->input('preferance'),
                     'location_id' => $request->input('location_id'),
                     'address' => $request->input('address'),
@@ -408,7 +414,7 @@ class PropertyController extends Controller{
         );
 
         $id = decrypt($id);
-        $sql = "SELECT property.id, property.title, property.description, property.property_for, IF(property.property_for = '1', 'Rent', 'Sell') AS property_for_text, property.posted_by, IF(property.posted_by = '1', 'Broker', 'Owner') AS posted_by_txt, property.posted_by_id, users.name as posted_by_name, property.property_type_id, property_type.property_type, property.location_id, location.location, property.address, property.is_address_visible, property.furnishing_status_id, furnishing_status.furnishing_status, property.positioning_status_id, positioning_status.positioning_status, property.car_parking_id, car_parking.car_parking, property.preferance, property.carpet_area, property.floor, property.out_of_floor, property.bathroom, property.no_of_room_id, no_of_room.no_of_room, property.price, property.booking_price, property.maintenance, property.is_booked, IF(property.gender = '1', 'Male', IF(property.gender = '2', 'Female', IF(property.gender = '3', 'Transgender', 'No Choice'))) AS gender, property.note, property.is_phone_visible, property.is_email_visible, property.property_image, property.avalible_from, property.is_admin_aproved, property.status, property.video_url, property.created_at, property.updated_at FROM `property` LEFT JOIN users ON property.posted_by_id = users.id LEFT JOIN property_type ON property.property_type_id = property_type.id LEFT JOIN location ON property.location_id = location.id LEFT JOIN furnishing_status ON property.furnishing_status_id = furnishing_status.id LEFT JOIN positioning_status ON property.positioning_status_id = positioning_status.id LEFT JOIN car_parking ON property.car_parking_id = car_parking.id LEFT JOIN no_of_room ON property.no_of_room_id = no_of_room.id WHERE property.id = '".$id."'"; 
+        $sql = "SELECT property.id, property.title, property.description, property.property_for, IF(property.property_for = '1', 'Rent', 'Sell') AS property_for_text, property.posted_by, IF(property.posted_by = '1', 'Broker', 'Owner') AS posted_by_txt, property.posted_by_id, users.name as posted_by_name, property.property_type_id, property_type.property_type, property.location_id, location.location, property.address, property.is_address_visible, property.furnishing_status_id, furnishing_status.furnishing_status, property.positioning_status_id, positioning_status.positioning_status, property.car_parking_id, car_parking.car_parking, property.preferance, property.carpet_area, property.floor, property.out_of_floor, property.bathroom, property.no_of_room_id, no_of_room.no_of_room, property.price, property.booking_price, property.maintenance, property.is_booked, property.gender, property.note, property.is_phone_visible, property.is_email_visible, property.property_image, property.avalible_from, property.is_admin_aproved, property.status, property.video_url, property.created_at, property.updated_at, property.avalible_beds, property.owner_name, property.owner_address, property.is_owner_info_visible, property.seo_description, property.latitude, property.longitude, property.pin_code, property.seo_keyword FROM `property` LEFT JOIN users ON property.posted_by_id = users.id LEFT JOIN property_type ON property.property_type_id = property_type.id LEFT JOIN location ON property.location_id = location.id LEFT JOIN furnishing_status ON property.furnishing_status_id = furnishing_status.id LEFT JOIN positioning_status ON property.positioning_status_id = positioning_status.id LEFT JOIN car_parking ON property.car_parking_id = car_parking.id LEFT JOIN no_of_room ON property.no_of_room_id = no_of_room.id WHERE property.id = '".$id."'"; 
 
         $details = DB::select($sql); 
         $data['details'] = $details[0];  
@@ -419,6 +425,22 @@ class PropertyController extends Controller{
         $data['call_back'] = $this->CommonModel->get_all($table = "users_requet_for_visit", $select = array('users_requet_for_visit.*', 'users.name', 'users.phone'), $where = array(array('users_requet_for_visit.property_id', '=', $id), array('users_requet_for_visit.is_deleted', '=', 0)), $join = array(), $left = array(array('users', 'users.id', '=', 'users_requet_for_visit.user_id')), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
 
         $data['request_visit'] = $this->CommonModel->get_all($table = "users_requet_for_call_back", $select = array('users_requet_for_call_back.*', 'users.name', 'users.phone'), $where = array(array('users_requet_for_call_back.property_id', '=', $id), array('users_requet_for_call_back.is_deleted', '=', 0)), $join = array(), $left = array(array('users', 'users.id', '=', 'users_requet_for_call_back.user_id')), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
+
+        $data['location'] = $this->CommonModel->get_all($table = 'location', $select = array('*'), $where = array(array('is_deleted', '=', 0)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
+
+        $data['car_parking'] = $this->CommonModel->get_all($table = 'car_parking', $select = array('*'), $where = array(array('is_deleted', '=', 0)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
+
+        $data['no_of_room'] = $this->CommonModel->get_all($table = 'no_of_room', $select = array('*'), $where = array(array('is_deleted', '=', 0)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
+
+        $data['furnishing_status'] = $this->CommonModel->get_all($table = 'furnishing_status', $select = array('*'), $where = array(array('is_deleted', '=', 0)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
+
+        $data['positioning_status'] = $this->CommonModel->get_all($table = 'positioning_status', $select = array('*'), $where = array(array('is_deleted', '=', 0)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
+
+        $data['property_type'] = $this->CommonModel->get_all($table = 'property_type', $select = array('*'), $where = array(array('is_deleted', '=', 0)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
+
+        $data['total_floor'] = $this->CommonModel->get_all($table = 'total_floor', $select = array('*'), $where = array(array('is_deleted', '=', 0)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
+
+        $data['users'] = $this->CommonModel->get_all($table = 'users', $select = array('*'), $where = array(array('is_deleted', '=', 0)), $join = array(), $left = array(), $right = array(), $order = array(), $group = "", $limit = array(), $raw = "", $paging = "");
         
         return view('admin.pages.property.details', $data);
     }
